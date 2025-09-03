@@ -1,10 +1,15 @@
 # Team Structure and Role Rotation
 
-## Team: [Your Team Name]
+## Team: Redwood Analytics
 
 ## Team Members and Individual Motivations
 
-### [Member 1 Name]
+### Dean Callahan
+- **Primary Motivation**: Employment portfolio building
+- **Career Goals**: Data scientist at tech company
+- **Strengths**: Strong Python skills
+
+### Evan Blem
 - **Primary Motivation**: [just pick one, e.g., Graduate school preparation,
 Employment portfolio building, Personal growth, Skill development]
 - **Career Goals**: [e.g., Data scientist at tech company, Research position,
@@ -12,15 +17,7 @@ Consulting role]
 - **Strengths**: [e.g., Strong Python skills, Good communication, Statistical
 background]
 
-### [Member 2 Name]
-- **Primary Motivation**: [just pick one, e.g., Graduate school preparation,
-Employment portfolio building, Personal growth, Skill development]
-- **Career Goals**: [e.g., Data scientist at tech company, Research position,
-Consulting role]
-- **Strengths**: [e.g., Strong Python skills, Good communication, Statistical
-background]
-
-### [Member 3 Name]
+### Zachary Griffiths
 - **Primary Motivation**: [just pick one, e.g., Graduate school preparation,
 Employment portfolio building, Personal growth, Skill development]
 - **Career Goals**: [e.g., Data scientist at tech company, Research position,
