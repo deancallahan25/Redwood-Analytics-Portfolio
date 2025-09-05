@@ -8,7 +8,7 @@
 - **Primary Motivation**: Employment portfolio building
 - **Career Goals**: Data scientist at tech company
 - **Strengths**: Strong Python skills
-tes
+
 ### Evan Blem
 - **Primary Motivation**: Skill and employment building
 - **Career Goals**: Data Analyst in Sports
@@ -16,10 +16,8 @@ tes
 
 ### Zachary Griffiths
 - **Primary Motivation**: Employment opportunities, machine learning coding experience
-- **Career Goals**: [e.g., Data scientist at tech company, Research position,
-Consulting role]
-- **Strengths**: [e.g., Strong Python skills, Good communication, Statistical
-background]
+- **Career Goals**: Data analyst in the entertainment industry
+- **Strengths**: Good communication, python data cleaning and visulization, leadership skills
 
 ## Role Definitions
 
