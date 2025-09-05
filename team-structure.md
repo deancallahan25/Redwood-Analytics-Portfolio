@@ -18,8 +18,7 @@ Consulting role]
 background]
 
 ### Zachary Griffiths
-- **Primary Motivation**: [just pick one, e.g., Graduate school preparation,
-Employment portfolio building, Personal growth, Skill development]
+- **Primary Motivation**: Employment opportunities, machine learning coding experience
 - **Career Goals**: [e.g., Data scientist at tech company, Research position,
 Consulting role]
 - **Strengths**: [e.g., Strong Python skills, Good communication, Statistical
