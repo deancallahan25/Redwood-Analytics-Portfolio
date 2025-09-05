@@ -10,12 +10,9 @@
 - **Strengths**: Strong Python skills
 tes
 ### Evan Blem
-- **Primary Motivation**: [just pick one, e.g., Graduate school preparation,
-Employment portfolio building, Personal growth, Skill development]
-- **Career Goals**: [e.g., Data scientist at tech company, Research position,
-Consulting role]
-- **Strengths**: [e.g., Strong Python skills, Good communication, Statistical
-background]
+- **Primary Motivation**: Skill and employment building
+- **Career Goals**: Data Analyst in Sports
+- **Strengths**: Data cleaning and visualization in python
 
 ### Zachary Griffiths
 - **Primary Motivation**: Employment opportunities, machine learning coding experience
