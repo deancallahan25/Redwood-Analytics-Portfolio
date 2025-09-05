@@ -21,64 +21,69 @@
 
 ## Role Definitions
 
-### [Role 1 Name]
+### Technical Lead
 **Responsibilities:**
-- [List specific responsibilities]
-- [List specific responsibilities]
-- [List specific responsibilities]
+- Code quality
+- Technical decisions
+- Git overflow
+- Best practices
 
 **Skills Developed:**
-- [List skills this role will develop]
-- [List skills this role will develop]
+- Improving git skills
+- Improving technical skills
 
-### [Role 2 Name]
+### Domain Expert
 **Responsibilities:**
-- [List specific responsibilities]
-- [List specific responsibilities]
-- [List specific responsibilities]
+- Business understanding 
+- Success metrics
+- Stakeholder communication
+- Problem definition
+
 
 **Skills Developed:**
-- [List skills this role will develop]
-- [List skills this role will develop]
+- Improving communication skills
+- Business skills
 
-### [Role 3 Name]
+### Project Coordinator
 **Responsibilities:**
-- [List specific responsibilities]
-- [List specific responsibilities]
-- [List specific responsibilities]
+- Timeline management 
+- Team coordination
+- Documentation
+- QA oversight
 
 **Skills Developed:**
-- [List skills this role will develop]
-- [List skills this role will develop]
+- Team skills
+- Management skills
 
 ## Project Role Rotation Plan
 
 ### Project 1: Campus Waste Audits (Weeks 1-7)
 **Focus:** Data collection and storage system recommendation
 
-- **Lead Role**: [Person Name] - [Role Name]
+- **Lead Role**: Dean Callahan - Technical Lead
 - Primary responsibilities for this project
-- **Support Role**: [Person Name] - [Role Name]
+- **Support Role**: Evan Blem -  Domain Expert
 - Supporting responsibilities for this project
-- **Assist Role**: [Person Name] - [Role Name]
-- Assisting responsibilities for this project
+- **Assist Role**: Zach Griffiths- Project Coordinator
+- Assisting responsibilities for this project 
 
 ### Project 2: Transportation Dashboard (Weeks 8-12)
 **Focus:** Interactive visualization and user experience
 
-- **Lead Role**: [Person Name] - [Role Name]
+- **Lead Role**: Zach Griffiths - Technical Lead
 - Primary responsibilities for this project
-- **Support Role**: [Person Name] - [Role Name]
+
+- **Support Role**: Dean Callahan - Domain Expert
 - Supporting responsibilities for this project
-- **Assist Role**: [Person Name] - [Role Name]
+- **Assist Role**: Evan Blem - Project Coordinator
 - Assisting responsibilities for this project
 
 ### Project 3: Prediction Model (Weeks 13-15)
 **Focus:** Advanced analysis and model development
 
-- **Lead Role**: [Person Name] - [Role Name]
+- **Lead Role**: Evan Blem - Technical Lead
 - Primary responsibilities for this project
-- **Support Role**: [Person Name] - [Role Name]
+- **Support Role**: Zach Griffiths- Domain Expert
 - Supporting responsibilities for this project
-- **Assist Role**: [Person Name] - [Role Name]
+- **Assist Role**: Dean Callahan - Project Coordinator
 - Assisting responsibilities for this project
