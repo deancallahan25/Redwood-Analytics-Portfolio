@@ -19,7 +19,7 @@
 - **Career Goals**: Data analyst in the entertainment industry
 - **Strengths**: Good communication, python data cleaning and visulization, leadership skills
 
-- ### Jaiden Roe
+### Jaiden Roe
 - **Primary Motivation**: Coding develpoment skills, Experience Machine learning models 
 - **Career Goals**: Data Sciencetist in Formula 1 motorsports
 - **Strengths**: Python Coding, R coding
@@ -71,7 +71,7 @@
 - Supporting responsibilities for this project
 - **Assist Role**: Zach Griffiths- Project Coordinator
 - Assisting responsibilities for this project
-- ** ** : Jaiden Roe - Quailty Assurance
+- **Lead Role**: Jaiden Roe - Quailty Assurance
 - Noting data Quality and Reviewing Project Plan.
 
 ### Project 2: Transportation Dashboard (Weeks 8-12)
