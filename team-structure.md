@@ -21,7 +21,7 @@
 
 ### Jaiden Roe
 - **Primary Motivation**: Coding develpoment skills, Experience Machine learning models 
-- **Career Goals**: Data Sciencetist in Formula 1 motorsports
+- **Career Goals**: Data Scientist in Formula 1 motorsports
 - **Strengths**: Python Coding, R coding
 
 ## Role Definitions
