@@ -19,15 +19,15 @@
  - **System B:** An Oracle SQL relational database storage system 
 
 ## 3. Evalation Criteria & Methods
-1. Ease of Setup
-2. Ease of Use for Auditors (new and experienced)
-3. Error Prevention / Data Quality
-4. Ability to Handle Relationships
-5. Scalability & Performance
-6. Reporting & Analysis
-7. Integration with Campus IT
-8. Cost (Total Cost of Ownership)
-9. Maintenance After Setup
+1. Ease of Setup: We will evalute this be recording how long it takes, how many steps it takes, and the overall difficulty of the setup. This will be evaluated by our tech lead and quality assurance.  
+2. Ease of Use for Auditors (new and experienced): We will evaluate this metric by having a technical and non-technical person attempt to conduct an audit (likely mock test just to test system) and document any issues or suggestions they have. This will be handled by the quality assurance and the tech lead if they need to make changes to the system.  
+3. Error Prevention / Data Quality: We will test what happens when we enter incorrect data types, illogical data or poor data, and test values that we expect to cause errors. This will primarily be evaluated by the quality assurance who will work with the tech lead to ensure any issues are addressed. 
+4. Ability to Handle Relationships: We will test what happens to data integrity of the systems when neccessary data is purposely missing from entries. This will primarily be evaluated by the quality assurance who will work with the tech lead to ensure any issues are addressed. 
+5. Scalability & Performance: We will test how easy it is to make changes to each system and how they perform doing tasks. This will be evaluated by the tech lead and quality assurance. 
+6. Reporting & Analysis: We will record observations about the two systems and use these to evaluate which system is better. This will be handled mainly by the domain expert in collobaration with the project manager.
+7. Integration with Campus IT: We will evaluate if our recommended system is able to be integrated with any current storage systems the Campus IT uses and the difficulty of giving them control of the system. This will be handled by the domain expert. 
+8. Cost (Total Cost of Ownership): We will evaluate cost by recording any costs of the software neccessary for the systems and the potential time and cost for maintenance or upgrades to the systems. This will be handled by the domain expert. 
+9. Maintenance After Setup: We will evaluate how taxing these systems are to maintain and if they need to be maintained by someone. Our domain expert will handle this criterion.
 
 ## 4. Sample Implementations to be Built
 - **Spreadsheet Prototype:** Data will be entered into a Google Form and will then be exported to a Excel spreadsheet. 
@@ -38,7 +38,7 @@
 - How will you deliberately try bad data to test error prevention? We will test data that we know may cause errors like wrong input types, illogical values, and more to test for possible errors with our system.
 
 ## 6. Roles & Responsibilities
-- **Tech Lead:** Set up the two data storage systems, troubleshoot both systems, improve user experience with data input
+- **Tech Lead:** The tech lead will be responsible for setting up the two data storage systems, troubleshooting both systems, improving user experience with data input,  and ensuring the system is simple for others to modify and maintain. 
 - **Project Manager:**
 - **Domain Expert:**
 - **Quality Assurance:**
