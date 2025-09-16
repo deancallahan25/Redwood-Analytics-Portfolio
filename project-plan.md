@@ -3,9 +3,9 @@
 ## Team Name & Members
 ### Redwood Analytics
 - Tech Lead: Dean Callahan - dpc43@humboldt.edu
-- Project Manager: Zachary Griffiths - 
-- Domain Expert: Evan Blem -
-- Quality Assurance: Jaiden Roe - 
+- Project Manager: Zachary Griffiths - zkg3@humboldt.edu
+- Domain Expert: Evan Blem - eb335@humboldt.edu
+- Quality Assurance: Jaiden Roe - jr650@humboldt.edu
 
 ## Project Title - Database for Zero Waste
 
@@ -30,8 +30,8 @@
 9. Maintenance After Setup: We will evaluate how taxing these systems are to maintain and if they need to be maintained by someone. Our domain expert will handle this criterion.
 
 ## 4. Sample Implementations to be Built
-- **Spreadsheet Prototype:** Data will be entered into a Google Form and will then be exported to a Excel spreadsheet. 
-- **Database Prototype:** Data will be entered into a website using various web applications and then entered into an Oracle SQL database schema. 
+- **Spreadsheet Prototype:** Data will be entered into a Google Form and will then be exported to an Excel spreadsheet. The data will be structed with the columns being the names or descriptions of our data and the rows as the values of the data. 
+- **Database Prototype:** Data will be entered into a frontend website form (or google sheet if this proves too difficult) and then entered into an Oracle SQL database schema. The tables will be made of groups of related data points like weight and category and will have appropriate relations between tables. 
 
 ## 5. Data to be Collected for the Trial
 - What sample data will you enter? We will use our recorded data from our audit we conducted on 9/11. If we need more data or we decide we want to collect other data points, we may conduct another audit. 
@@ -39,14 +39,17 @@
 
 ## 6. Roles & Responsibilities
 - **Tech Lead:** The tech lead will be responsible for setting up the two data storage systems, troubleshooting both systems, improving user experience with data input,  and ensuring the system is simple for others to modify and maintain. 
-- **Project Manager:**
-- **Domain Expert:**
-- **Quality Assurance:**
+- **Project Manager:** The project manager will oversee and manage everyone's tasks, address problems the team encounters, and ensure the project is on schedule.
+- **Domain Expert:**  The domain expert will consider the main goals of the project, make sure the data collected is logical, decide what needs to be collected, and how the data can be visualized and summarized for it to have the most impact.
+- **Quality Assurance:** The quality assurance will test the two prototypes, both personally and with a new user, review all work for clarity and mistakes, and ensure the project is at the appropriate quality.  
 
 ## 7. Timeline
 | Date | Tech Lead | Project Manager | Domain Expert | Quality Assurance|
 |---|---|---|---|---|
 |9/8 | Attend meeting with Morgan King; take notes on system requirements| Attend meeting; record action items| Attend meeting; ask questions about audit practices| Attend meeting; note data quality concerns|
-|9/10| Help design system trial plan| Draft plan document and assign tasks for 9/11| Review plan for domain accuracy| Review plan for clairty and completeness|
+|9/10| Help design system trial plan| Draft plan document and assign tasks for 9/11| Review plan for domain accuracy| Review plan for clarity and completeness|
 |9/11| Record Data| | Record Observations| Record Data (double check with tech lead's afterward)|
 |9/15| Work on and finish project plan| Work on and finish project plan| Work on and finish project plan| 
+|9/18| Begin development of the prototypes| Assist domain expert| Meet with relevant staff to ask about how garbage collection works| |
+|9/19| | | Decide on final data that is to be collected for the audits| |
+|9/25| Have working prototypes| Conduct audit| Test prototypes by conducting an audit| Troubleshoot prototypes|
