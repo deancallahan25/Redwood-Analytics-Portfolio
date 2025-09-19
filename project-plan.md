@@ -51,5 +51,5 @@
 |9/11| Record Data| | Record Observations| Record Data (double check with tech lead's afterward)|
 |9/15| Work on and finish project plan| Work on and finish project plan| Work on and finish project plan| 
 |9/18| Begin development of the prototypes| Assist domain expert| Meet with relevant staff to ask about how garbage collection works| |
-|9/19| | | Decide on final data that is to be collected for the audits| |
+|9/19| | | Decide on final data that is to be collected for the audits| Reviewing Project Plan|
 |9/25| Have working prototypes| Conduct audit| Test prototypes by conducting an audit| Troubleshoot prototypes|
