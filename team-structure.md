@@ -60,6 +60,13 @@
 - Team skills
 - Management skills
 
+### Quailty Insurane 
+**Responsibilities:**
+-
+
+**Skills Developed:**
+
+
 ## Project Role Rotation Plan
 
 ### Project 1: Campus Waste Audits (Weeks 1-7)
