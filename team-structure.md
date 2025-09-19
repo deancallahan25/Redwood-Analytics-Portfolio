@@ -62,10 +62,12 @@
 
 ### Quailty Insurane 
 **Responsibilities:**
--
+- Ensures data Accuracy
+- Identfiy Problems
 
 **Skills Developed:**
-
+- Documentation & Reporting
+- Testing Methodologies & Practices
 
 ## Project Role Rotation Plan
 
