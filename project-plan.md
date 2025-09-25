@@ -14,7 +14,6 @@
 
 - **Context:** From our meetings with Morgan King, the Office of Sustainabilities' Climate Action Analyst, we learned about various goals and challenges he has with the current waste audits. Mr. King's main goal with the audits is to identify issues with the campus waste systems in order to reduce total waste on campus. These audits can then be used to raise awareness in the community about proper waste practices and communicate information to University Administration and other groups. Mr. King's main challenge with the waste audits is a general lack of consistency between audits. Additionally, the audits are conducted by volunteers with varying skill sets meaning the data collection needs to be simple to use and also easy to modify as new waste practices are common at the county and university level. 
 
-
 ## 2. Systems to be Compared
 - **Spreadsheet Prototype:** Data will be entered into a Google Form and will then be exported to a Google Sheets spreadsheet. The data will be collected from a Google Form asking the user various questions that will give insight about the waste audit, such as the location, weight of each bag, and the weight of each individual category of waste in each bag. Within our spreadsheet, we will also collect timestamp data for each response as well. 
 
@@ -41,16 +40,15 @@ format and data storage system that will be used for years to come. As such, our
 9. Maintenance After Setup: System maintenance is an important factor that will influence which system we recommend for use. To evaluate which system is better, we will look at how much maintenance each system will need and the difficulty of maintaining them. To gauge the difficulty, we will estimate or test each system for factors like system updates, modifications to the system’s design schema, and how data is backed up. This criterion will be tested by the Project Manager and Tech Lead.
 
 ## 4 Implementations/Final Deliverables
--ERD/Design Schema (Domain Expert, Tech Lead)
--Two Data Collection and Storage Systems (Tech Lead)
--Simple visualizations of data for each system (Tech Lead, Domain Expert)
--System/Data Tests (Quality Assurance) 
--Information about Data Collection, Data Definitions, and Quality (Domain Expert, Quality Assurance)
--Systems Analysis Report (All)
-    -Comparing and recommending the best system for future use (Project Manager, Domain Expert)
-    -System Cost Analysis (Project Manager, Tech Lead)
-    -System Maintenance and System Summaries (Project Manager, Tech Lead)
-
+- ERD/Design Schema (Domain Expert, Tech Lead)
+- Two Data Collection and Storage Systems (Tech Lead)
+- Simple visualizations of data for each system (Tech Lead, Domain Expert)
+- System/Data Tests (Quality Assurance) 
+- Information about Data Collection, Data Definitions, and Quality (Domain Expert, Quality Assurance)
+- Systems Analysis Report (All)
+    - Comparing and recommending the best system for future use (Project Manager, Domain Expert)
+    - System Cost Analysis (Project Manager, Tech Lead)
+    - System Maintenance and System Summaries (Project Manager, Tech Lead)
 
 ## 5. Data to be Collected for the Trial
 - What sample data will you enter?: We will use our recorded data from our audit we conducted on 9/11 and 9/25, as well as large mock datasets created based on observations from buildings on campus. If we need more data or we decide we want to collect other data points, we may conduct a third audit. For our attributes we will collect building location, time, date, audit id, columns for the weight and percent volume for each category (landfill, mixed recycling, compost, etc.), and what (if any) hazardous materials were present. Additionally, we may collect information about the site waste process itself like what type of bins they use and if they have separate bins for paper towels. The exact definitions will be defined by the Domain Expert.   
@@ -64,7 +62,6 @@ format and data storage system that will be used for years to come. As such, our
 - **Domain Expert:**  The domain expert role is the main role concerned with the data quality and its logical relevance to waste audits. They will consider the main goals of the project, make sure the data collected is logical, provide data definitions, decide what needs to be collected, and how the data can be visualized and summarized for it to have the most impact. The main deliverables they will be responsible for are the ERD/design schema, data collection and data definition information.
 
 - **Quality Assurance:** The quality assurance role will be responsible for evaluating the functionality and reliability of our two data collection and storage systems. This will include creating error/validation tests, testing system performance, and real system tests with users. Additionally, they will review all deliverables for clarity,  logical, and consistency issues, with particular attention to the final report. The main deliverables they will be responsible for are tests, the report comparing the two systems, and data collection and quality information. 
-
 
 ## 7. Timeline
 | Date | Tech Lead | Project Manager | Domain Expert | Quality Assurance|
@@ -81,10 +78,10 @@ format and data storage system that will be used for years to come. As such, our
 |10/2| Have working storage prototypes (fully functional)|contact IT to schedule meeting about system maintenance |Ensure prototypes fit domain |Help with finalizing storage prototypes and error testing them |
 |10/3| Make improvements to prototypes| Go through system with Morgan King and potential third waste audit| Test systems in practice either mock or real audit to ensure fits domain| Continue testing prototypes|
 |10/6| Storage systems and forms finalized | Finalizing storage systems | Finalizing storage systems | Finalizing storage systems |
-|10/8| Create sample uses of the system (show basic visualizations with the data)| Ideally meet with IT here|Work on data visualizations with a focus on ensuring they fit domain and goals| |
-|10/9| Evaluate systems for report, automate basic data visualizations| | Work on data visualizations with a focus on ensuring they fit domain and goals| |
+|10/8| Create sample uses of the system (show basic visualizations with the data)| Ideally meet with IT here|Work on data visualizations with a focus on ensuring they fit domain and goals| Work on system/data tests deliverables|
+|10/9| Evaluate systems for report, automate basic data visualizations| | Work on data visualizations with a focus on ensuring they fit domain and goals|Work on system/data tests deliverables|
 |10/10| Draft report | Draft report | Have draft for all deliverables done | Have draft for all deliverables done |
-|10/11| Have all systems fully operational| Revise report| Revise deliverables |  Edit and revise report|
+|10/11| Have all systems fully operational| Revise report| Revise deliverables | Edit and revise report|
 |10/13| Revise report| Conduct system handoff| Revise deliverables |Edit and revise report|
 |10/15| Final report changes due| Final report changes due| Final report changes due |Final report changes due|
 |10/17| Final deliverables are due| Final deliverables are due| Final deliverables are due| Final deliverables are due|
