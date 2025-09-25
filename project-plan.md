@@ -88,6 +88,3 @@ format and data storage system that will be used for years to come. As such, our
 |10/13| Revise report| Conduct system handoff| Revise deliverables |Edit and revise report|
 |10/15| Final report changes due| Final report changes due| Final report changes due |Final report changes due|
 |10/17| Final deliverables are due| Final deliverables are due| Final deliverables are due| Final deliverables are due|
-
-
-
