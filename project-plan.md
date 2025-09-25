@@ -17,8 +17,6 @@
 
 
 - **Context:** 
-
-
 From our meetings with Morgan King, the Office of Sustainabilities' Climate Action Analyst, we learned about various goals and challenges he has with the current waste audits. Mr. King's main goal with the audits is to identify issues with the campus waste systems in order to reduce total waste on campus. These audits can then be used to raise awareness in the community about proper waste practices and communicate information to University Administration and other groups. Mr. King's main challenge with the waste audits is a general lack of consistency between audits. Additionally, the audits are conducted by volunteers with varying skill sets meaning the data collection needs to be simple to use and also easy to modify as new waste practices are common at the county and university level. 
 
 
