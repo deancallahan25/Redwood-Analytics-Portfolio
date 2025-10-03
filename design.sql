@@ -12,8 +12,8 @@ primary key (BUILDING_ID)
 );
 
 
-drop table Audit cascade constraints;
-create table Audit
+drop table Waste_Audit cascade constraints;
+create table Waste_Audit
 (AUDIT_ID int,
 building_id varchar(20),
 number_bags int,
@@ -29,7 +29,7 @@ drop table Form_Metadata cascade constraints;
 create table Form_Metadata
 (FORM_ID int,
 time_submitted DATE DEFAULT SYSDATE,
-date_submitted DATA DEFAULT SYSDATE,
+date_submitted DATE DEFAULT SYSDATE,
 primary key (FORM_ID)
 );
 

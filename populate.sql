@@ -13,7 +13,7 @@ DELETE FROM Categories;
 DELETE FROM Auditors;
 DELETE FROM Building;
 DELETE FROM Form_Metadata;
-DELETE FROM Audit;
+DELETE FROM Waste_Audit;
 
 prompt Inserting into Building table
 /*
@@ -120,13 +120,13 @@ INSERT INTO Building VALUES ('RSL', 'Redwood Sciences Lab', 'Lab');
 INSERT INTO Building VALUES ('UQ', 'University Quad', 'Quad');
 INSERT INTO Building VALUES ('MRK', 'Marketplace Dining', 'Dining');
 
-prompt Inserting into Audit table
+prompt Inserting into Waste_Audit table
 /*
 Format 
-INSERT INTO Audit VALUES (AUDIT_ID, building_id, number_bags, total_weight, weight_error, date_conducted);
+INSERT INTO Waste_Audit VALUES (AUDIT_ID, building_id, number_bags, total_weight, weight_error, date_conducted);
 */
-INSERT INTO Audit VALUES (100001,'SBS', NULL, 40.17,0,TO_DATE('09-11-2025','DD-MM-YYYY'));
-INSERT INTO Audit VALUES (100002, 'MARKET',11, 51.5,0,TO_DATE('09-25-2025','DD-MM-YYYY'));
+INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.17,0,TO_DATE('09-11-2025','DD-MM-YYYY'));
+INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,TO_DATE('09-25-2025','DD-MM-YYYY'));
 
 
 prompt Inserting into Auditors table
