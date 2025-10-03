@@ -16,9 +16,9 @@ drop table Waste_Audit cascade constraints;
 create table Waste_Audit
 (AUDIT_ID int,
 building_id varchar(20),
-number_bags int,
+number_bags integer,
 total_weight decimal(5,2),
-weight_error boolean,
+weight_error integer,
 date_conducted date,
 primary key (AUDIT_ID),
 foreign key (building_id) references Building(building_id)
@@ -49,9 +49,8 @@ audit_id int,
 category_weight decimal(5,2),
 percent_by_weight decimal(5,2),
 percent_by_volume decimal(5,2),
-primary key (CATEGORY_NAME),
-foreign key (total_weight) references Audit(total_weight),
-foreign key (audit_id) references Audit(audit_id)
+primary key (CATEGORY_NAME,AUDIT_ID),
+foreign key (audit_id) references Waste_Audit(audit_id)
 );
 
 drop table Comments cascade constraints;
@@ -60,7 +59,7 @@ create table Comments
 comment_type varchar(40),
 audit_id int,
 primary key (COMMENT_ID),
-foreign key (audit_id) references Audit(audit_id)
+foreign key (audit_id) references Waste_Audit(audit_id)
 );
 
 drop table  Comments_Toxic_Material cascade constraints;

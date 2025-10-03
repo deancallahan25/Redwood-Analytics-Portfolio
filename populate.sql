@@ -5,6 +5,7 @@ Date Last Modified: 10/02/25
 */
 
 --Delete Statements
+/*
 DELETE FROM Comments_Other;
 DELETE FROM Comments_Collection_Methods;
 DELETE FROM Comments_Toxic_Material;
@@ -14,12 +15,12 @@ DELETE FROM Auditors;
 DELETE FROM Building;
 DELETE FROM Form_Metadata;
 DELETE FROM Waste_Audit;
-
+*/
 prompt Inserting into Building table
 /*
 INSERT INTO Building VALUES(BUILDING_ID, building_type, building_name);
 */
-INSERT INTO Building VALUES ('SBS', 'Administration','Student & Business Services');
+
 INSERT INTO Building VALUES ('ALDER', 'Alder Residence Hall', 'Residence Hall');
 INSERT INTO Building VALUES ('AMH', 'Alistar McCrone Hall', 'Hall');
 INSERT INTO Building VALUES ('ARTA', 'Art A', 'Academic');
@@ -118,15 +119,15 @@ INSERT INTO Building VALUES ('LBC', 'Library Circle', 'Circle');
 INSERT INTO Building VALUES ('RPL', 'Redwood Plaza', 'Plaza');
 INSERT INTO Building VALUES ('RSL', 'Redwood Sciences Lab', 'Lab');
 INSERT INTO Building VALUES ('UQ', 'University Quad', 'Quad');
-INSERT INTO Building VALUES ('MRK', 'Marketplace Dining', 'Dining');
+INSERT INTO Building VALUES ('MARKET', 'Marketplace Dining', 'Dining');
 
 prompt Inserting into Waste_Audit table
 /*
 Format 
 INSERT INTO Waste_Audit VALUES (AUDIT_ID, building_id, number_bags, total_weight, weight_error, date_conducted);
 */
-INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.17,0,TO_DATE('09-11-2025','DD-MM-YYYY'));
-INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,TO_DATE('09-25-2025','DD-MM-YYYY'));
+INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.17,0,TO_DATE('09-11-2025','MM-DD-YYYY'));
+INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,TO_DATE('09-25-2025','MM-DD-YYYY'));
 
 
 prompt Inserting into Auditors table
