@@ -1,6 +1,6 @@
 --design.sql
 /*
-Redwood Analytics: Dean Callahan, Zachary Griffiths, Evan Blem, Jaiden Ro
+Redwood Analytics: Dean Callahan, Zachary Griffiths, Evan Blem, Jaiden Roe
 Date Last Modified: 10/02/25
 */
 drop table Building cascade constraints;
