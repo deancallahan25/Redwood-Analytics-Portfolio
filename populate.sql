@@ -18,7 +18,7 @@ DELETE FROM Waste_Audit;
 */
 prompt Inserting into Building table
 /*
-INSERT INTO Building VALUES(BUILDING_ID, building_type, building_name);
+INSERT INTO Building VALUES(BUILDING_ID, building_name, building_type);
 */
 
 INSERT INTO Building VALUES ('ALDER', 'Alder Residence Hall', 'Residence Hall');
