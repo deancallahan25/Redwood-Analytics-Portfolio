@@ -1,7 +1,7 @@
 --populate.sql
 /*
 Redwood Analytics: Dean Callahan, Zachary Griffiths, Evan Blem, Jaiden Ro
-Date Last Modified: 10/02/25
+Date Last Modified: 10/12/25
 */
 
 --Delete Statements
@@ -13,7 +13,6 @@ DELETE FROM Comments;
 DELETE FROM Categories;
 DELETE FROM Auditors;
 DELETE FROM Building;
-DELETE FROM Form_Metadata;
 DELETE FROM Waste_Audit;
 */
 prompt Inserting into Building table
@@ -124,10 +123,10 @@ INSERT INTO Building VALUES ('MARKET', 'Marketplace Dining', 'Dining');
 prompt Inserting into Waste_Audit table
 /*
 Format 
-INSERT INTO Waste_Audit VALUES (AUDIT_ID, building_id, number_bags, total_weight, weight_error, date_conducted);
+INSERT INTO Waste_Audit VALUES (AUDIT_ID, building_id, number_bags, total_weight, weight_error, volume_error, date_conducted);
 */
-INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.17,0,TO_DATE('09-11-2025','MM-DD-YYYY'));
-INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,TO_DATE('09-25-2025','MM-DD-YYYY'));
+INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.17,0,0,TO_DATE('09-11-2025','MM-DD-YYYY'));
+INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,0,TO_DATE('09-25-2025','MM-DD-YYYY'));
 
 
 prompt Inserting into Auditors table
@@ -138,17 +137,6 @@ INSERT INTO Auditors VALUES (200001, 'dpc43@humboldt.edu','Dean', 'Callahan');
 INSERT INTO Auditors VALUES (200002, 'zkg3@humboldt.edu','Zachary', 'Griffiths');
 INSERT INTO Auditors VALUES (200003, 'eb335@humboldt.edu','Evan', 'Blem');
 INSERT INTO Auditors VALUES (200004, 'jr650@humboldt.edu','Jaiden', 'Roe');
-
-
-
-prompt Inserting into Form_Metadata table
-/*
-INSERT INTO Form_Metadata VALUES(FORM_ID, time_submitted, date_submitted);
-*/
-INSERT INTO Form_Metadata VALUES (300001,sysdate, sysdate);
-INSERT INTO Form_Metadata VALUES (300002,sysdate, sysdate);
-INSERT INTO Form_Metadata VALUES (300003,sysdate, sysdate);
-INSERT INTO Form_Metadata VALUES (300004,sysdate, sysdate);
 
 
 prompt Inserting into Categories table
