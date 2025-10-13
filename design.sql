@@ -6,7 +6,7 @@ Date Last Modified: 10/12/25
 
 DROP TABLE Building CASCADE CONSTRAINTS;
 CREATE TABLE Building
-(BUILDING_ID    VARCHAR2(20),
+(BUILDING_ID    VARCHAR2(11),
 building_name   VARCHAR2(40) NOT NULL,
 building_type   VARCHAR2(40),
 PRIMARY KEY (BUILDING_ID)
@@ -17,7 +17,7 @@ PRIMARY KEY (BUILDING_ID)
 DROP TABLE Waste_Audit CASCADE CONSTRAINTS;
 CREATE TABLE Waste_Audit
 (AUDIT_ID    INTEGER,
-building_id  VARCHAR2(20) NOT NULL,
+building_id  VARCHAR2(11) NOT NULL,
 number_bags  INTEGER,
 total_weight DECIMAL(5,2),
 weight_error INTEGER,

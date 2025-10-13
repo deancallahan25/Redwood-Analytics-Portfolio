@@ -56,16 +56,16 @@
     </select>
     <br /> 
     <br />
-    <label for="landfill_weight">Landfill: Weight (lbs):</label>
+    <label for="landfill_weight">Landfill Weight (lbs):</label>
     <input type="number" id="landfill_weight" name="landfill_weight" min="0.0" required="required"/>
-    <label for="landfill_volume">Landfill: Volume (%):</label>
+    <label for="landfill_volume">Landfill Volume (%):</label>
     <input type="number" id="landfill_volume" name="landfill_volume" min="0.0" max="100" required="required"/>
      <br />
 
      <br />
     <label for="mixed_recycling_weight">Mixed Recycling Weight (lbs):</label>
     <input type="number" id="mixed_recycling_weight" name="mixed_recycling_weight" min="0.0" required="required"/>
-    <label for="mixed_recycling_volume">Mixed Recycling: Volume (%):</label>
+    <label for="mixed_recycling_volume">Mixed Recycling Volume (%):</label>
     <input type="number" id="mixed_recycling_volume" name="mixed_recycling_volume" min="0.0" max="100" required="required"/>
 
     <br />
@@ -74,14 +74,14 @@
     <br />
     <label for="compost_weight">Compost Weight (lbs):</label>
     <input type="number" id="compost_weight" name="compost_weight" min="0.0" required="required"/>
-    <label for="compost_volume">Compost: Volume (%):</label>
+    <label for="compost_volume">Compost Volume (%):</label>
     <input type="number" id="compost_volume" name="compost_volume" min="0.0" max="100" required="required"/>
     <br />
 
      <br />
     <label for="universal_waste_recycling_weight">Universal Waste Recycling Weight (lbs):</label>
     <input type="number" id="universal_waste_recycling_weight" name="universal_waste_recycling_weight" min="0.0" required="required"/>
-    <label for="universal_waste_recycling_volume">Universal Waste Recycling: Volume (%):</label>
+    <label for="universal_waste_recycling_volume">Universal Waste Recycling Volume (%):</label>
     <input type="number" id="universal_waste_recycling_volume" name="universal_waste_recycling_volume" min="0.0" max="100" required="required"/>    
 <br />
 
@@ -95,7 +95,7 @@
     <br />
     <label for="other_weight">Other Weight (lbs):</label>
     <input type="number" id="other_weight" name="other_weight" min="0.0" required="required"/>
-    <label for="other_volume">Other: Volume (%):</label>
+    <label for="other_volume">Other Volume (%):</label>
     <input type="number" id="other_volume" name="other_volume" min="0.0" max="100" required="required"/>
 
     <br />
