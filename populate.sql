@@ -125,7 +125,7 @@ prompt Inserting into Waste_Audit table
 Format 
 INSERT INTO Waste_Audit VALUES (AUDIT_ID, building_id, number_bags, total_weight, weight_error, volume_error, date_conducted);
 */
-INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.17,0,0,TO_DATE('09-11-2025','MM-DD-YYYY'));
+INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.67,0,0,TO_DATE('09-11-2025','MM-DD-YYYY'));
 INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,0,TO_DATE('09-25-2025','MM-DD-YYYY'));
 
 
@@ -151,11 +151,11 @@ INSERT INTO Categories VALUES ('Hazardous Waste', 100001, 0, 0, 0);
 INSERT INTO Categories VALUES ('Other', 100001, 2.5, 6.2, 2);
 
 INSERT INTO Categories VALUES ('Landfill', 100002, 22.59, 43.86, 65);
-INSERT INTO Categories VALUES ('Mixed Recycling', 100002, 8.33, 13.1, 15);
+INSERT INTO Categories VALUES ('Mixed Recycling', 100002, 4.55, 8.83, 15);
 INSERT INTO Categories VALUES ('Compost', 100002, 24.36, 47.37, 20);
 INSERT INTO Categories VALUES ('Universal Waste Recycling', 100002, 0, 0, 0);
 INSERT INTO Categories VALUES ('Hazardous Waste', 100002, 0, 0, 0);
-INSERT INTO Categories VALUES ('Other', 100002, 2.5, 6.2, 2);
+INSERT INTO Categories VALUES ('Other', 100002, 0, 0, 0);
 
 
 prompt Inserting into Comments table
