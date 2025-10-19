@@ -3,7 +3,7 @@
 
 <!--
     by: Redwood Analytics
-    last modified: 10/03/25
+    last modified: 10/15/25
 
     you can run this using the URL: https://nrs-projects.humboldt.edu/~dpc43/311project/form.php
 
@@ -19,9 +19,11 @@
 
 </head>
 <body>
-    <h1>Cal Poly Humboldt Waste Audit Form V1.0</h1>
-    <p> By Redwood Analytics</p>
-   
+    <h1>Cal Poly Humboldt Waste Audit Form</h1>
+    <h2> By Redwood Analytics</h2>
+    <h2> <a href="show_results.php">View Waste Audit Form Results</a></h2>
+    <hr />    
+
     <?php
     if ($_SERVER["REQUEST_METHOD"]=="GET")
     {    
@@ -131,20 +133,36 @@
     <label for="audit_time">Time:</label>
     <input type="time" id="audit_time" name="audit_time" required="required">
     <br />
-    
-    <br />
-    <label for="auditor_email">Email:</label>
-    <input type="email" id="auditor_email" name="auditor_email" required="required">
-    <br />
 
-    <br />
-    <label for="auditor_fname">First Name:</label>
-    <input type="text" id="auditor_fname" name="auditor_fname">
-    <label for="auditor_fname">Last Name:</label>
-    <input type="text" id="auditor_lname" name="auditor_lname">
+     <h3>Auditor Information</h3>
 
-    <br />
+     <div id="auditors_container">
+       <div class="auditor-entry">
+        <label>Email:</label>
+        <input type="email" name="auditor_email[]" required>
+        <label>First Name:</label>
+        <input type="text" name="auditor_fname[]" required>
+        <label>Last Name:</label>
+        <input type="text" name="auditor_lname[]" required>
+        <button type="button" class="remove-btn" style="display:none;">Remove</button>
+       </div>
+     </div>
+    <p><button type="button" id="add_auditor_btn">+ Add Another Auditor</button></p>
 
+     <script>
+         document.getElementById('add_auditor_btn').addEventListener('click', function() {
+           const container = document.getElementById('auditors_container');
+           const first = container.querySelector('.auditor-entry');
+           const clone = first.cloneNode(true);
+           clone.querySelectorAll('input').forEach(input => input.value = '');
+           clone.querySelector('.remove-btn').style.display = 'inline';
+           container.appendChild(clone);
+	   clone.querySelector('.remove-btn').addEventListener('click', function() 
+	   {
+             clone.remove();
+           });
+         });
+        </script>
      
     <br />
     <p> Optionally fill these in to improve the quality of the data collection:</p>
@@ -181,41 +199,62 @@
 	    $other_comment=$_POST["other_comment"];
 	    $audit_date=$_POST["audit_date"];
 	    $audit_time=$_POST["audit_time"];
-	    $auditor_email=$_POST["auditor_email"];
-            $auditor_fname=$_POST["auditor_fname"];
-	    $auditor_lname=$_POST["auditor_lname"];
+	    $auditor_emails=$_POST["auditor_email"] ?? [];
+            $auditor_fname=$_POST["auditor_fname"] ?? [];
+	    $auditor_lname=$_POST["auditor_lname"] ?? [];
 	    $total_weight=$_POST["total_weight"];
 	    $bags_audited=$_POST["bags_audited"];
 
 
 	    $conn=hum_conn_no_login();
-	    $auditor_insert_str="INSERT INTO Auditors (auditor_id, email_address, auditor_fname, auditor_lname)
-		                 VALUES (NULL,:email, :fname, :lname)";
-		
-	    $auditor_insert_stmt=oci_parse($conn, $auditor_insert_str);
-	    oci_bind_by_name($auditor_insert_stmt, ":email",$auditor_email);
-	    oci_bind_by_name($auditor_insert_stmt, ":fname",$auditor_fname);
-  	    oci_bind_by_name($auditor_insert_stmt, ":lname",$auditor_lname);
-	    oci_execute($auditor_insert_stmt, OCI_DEFAULT); 
-
-
-
+            
 	    $audit_insert_str="INSERT INTO Waste_Audit (audit_id, building_id, number_bags, date_conducted,total_weight)
-				VALUES (NULL, :building, :num_bags,TO_DATE(:audit_date,'YYYY-MM-DD'), :total_weight)";
-	    $audit_insert_stmt=oci_parse($conn, $audit_insert_str);
-	    oci_bind_by_name($audit_insert_stmt, ":building",$building_id);	
-	    oci_bind_by_name($audit_insert_stmt, ":num_bags",$bags_audited);
-	    oci_bind_by_name($audit_insert_stmt, ":audit_date",$audit_date);
-	    oci_bind_by_name($audit_insert_stmt, ":total_weight",$total_weight);
- 	    oci_execute($audit_insert_stmt, OCI_DEFAULT);  
+                                VALUES (NULL, :building, :num_bags,TO_DATE(:audit_date,'YYYY-MM-DD'), :total_weight)";
+            $audit_insert_stmt=oci_parse($conn, $audit_insert_str);
+            oci_bind_by_name($audit_insert_stmt, ":building",$building_id);
+            oci_bind_by_name($audit_insert_stmt, ":num_bags",$bags_audited);
+            oci_bind_by_name($audit_insert_stmt, ":audit_date",$audit_date);
+            oci_bind_by_name($audit_insert_stmt, ":total_weight",$total_weight);
+            oci_execute($audit_insert_stmt, OCI_DEFAULT);
 
             $curr_audit_id="SELECT waste_audit_seq.CURRVAL FROM dual";
-     	    $audit_id_stmt=oci_parse($conn, $curr_audit_id);
-	    oci_execute($audit_id_stmt);
-	    $row=oci_fetch_array($audit_id_stmt);
-	    $audit_id=$row[0];
-	    oci_free_statement($audit_id_stmt);
-	     
+            $audit_id_stmt=oci_parse($conn, $curr_audit_id);
+            oci_execute($audit_id_stmt);
+            $row=oci_fetch_array($audit_id_stmt);
+            $audit_id=$row[0];
+            oci_free_statement($audit_id_stmt);
+
+
+
+
+	    foreach ($auditor_emails as $i => $email) {
+               if (trim($email)==='') continue;
+               $fname=$auditor_fname[$i] ?? '';
+               $lname=$auditor_lname[$i] ?? '';
+               $insert_aud_str="INSERT INTO Auditors (auditor_id, email_address, auditor_fname, auditor_lname)
+			        VALUES (NULL, :email, :fname, :lname)";
+               $insert_aud=oci_parse($conn, $insert_aud_str);
+               oci_bind_by_name($insert_aud, ":email", $email);
+               oci_bind_by_name($insert_aud, ":fname", $fname);
+               oci_bind_by_name($insert_aud, ":lname", $lname);
+               oci_execute($insert_aud, OCI_DEFAULT);
+               $get_id_str="SELECT auditor_seq.CURRVAL AS ID FROM dual";
+	       $get_id=oci_parse($conn, $get_id_str);
+	       oci_execute($get_id);
+               $r=oci_fetch_assoc($get_id);
+               $new_id=$r['ID'];
+               $link_str="INSERT INTO Audit_Auditors (audit_id, auditor_id)
+        				      VALUES (:audit_id, :auditor_id)";
+	       $link_stmt=oci_parse($conn, $link_str);
+	       oci_bind_by_name($link_stmt, ":audit_id", $audit_id);
+    	       oci_bind_by_name($link_stmt, ":auditor_id", $new_id);
+   	       oci_execute($link_stmt, OCI_DEFAULT);
+    	       oci_free_statement($insert_aud);
+   	       oci_free_statement($get_id);
+               oci_free_statement($link_stmt);
+            }
+
+	 
 
 	    $categories=[
 		["Landfill",$landfill_weight, $landfill_volume],
@@ -291,7 +330,7 @@
 
 	    
 
-            oci_free_statement($auditor_insert_stmt);
+           
 	    oci_free_statement($audit_insert_stmt);
 	    oci_free_statement($category_insert_stmt);
 	    oci_commit($conn);
@@ -304,18 +343,8 @@
    
 ?> 
     <footer>
-    <p> Waste Audit Form </p>
     <hr />
-    <p>
-        Validate by pasting .xhtml copy's URL into<br />
-        <a href="https://validator.w3.org/nu">
-            https://validator.w3.org/nu
-        </a>
-        or
-        <a href="https://html5.validator.nu/">
-            https://html5.validator.nu/
-        </a>
-    </p>
+    <p>Redwood Analytics 2025</p>
     </footer>
 </body>
 </html>

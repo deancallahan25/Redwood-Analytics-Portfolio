@@ -70,6 +70,14 @@ BEGIN
 END;
 /
 
+DROP TABLE Audit_Auditors CASCADE Constraints;
+CREATE TABLE Audit_Auditors(
+    audit_id    INTEGER,
+    auditor_id  INTEGER,
+    PRIMARY KEY (audit_id, auditor_id),
+    FOREIGN KEY (audit_id) references Waste_Audit(audit_id),
+    FOREIGN KEY (auditor_id) references Auditors(auditor_id)
+);
 
 
 DROP TABLE Categories CASCADE CONSTRAINTS;
