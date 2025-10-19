@@ -125,8 +125,8 @@ prompt Inserting into Waste_Audit table
 Format 
 INSERT INTO Waste_Audit VALUES (AUDIT_ID, building_id, number_bags, total_weight, weight_error, volume_error, date_conducted);
 */
-INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.67,0,0,TO_DATE('09-11-2025','MM-DD-YYYY'));
-INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,0,TO_DATE('09-25-2025','MM-DD-YYYY'));
+INSERT INTO Waste_Audit VALUES (100001,'SBS', NULL, 40.67,0,0,TO_DATE('09-11-2025','MM-DD-YYYY'),TO_TIMESTAMP('12:00:00','HH24:MI:SS'));
+INSERT INTO Waste_Audit VALUES (100002, 'MARKET',11, 51.5,0,0,TO_DATE('09-25-2025','MM-DD-YYYY'),TO_TIMESTAMP('12:00:00','HH24:MI:SS'));
 
 
 prompt Inserting into Auditors table

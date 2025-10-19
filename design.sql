@@ -23,6 +23,7 @@ total_weight DECIMAL(5,2),
 weight_error INTEGER,
 volume_error INTEGER,
 date_conducted DATE NOT NULL,
+time_submitted TIMESTAMP DEFAULT SYSTIMESTAMP,
 PRIMARY KEY (AUDIT_ID),
 FOREIGN KEY (building_id) REFERENCES Building(building_id)
 );

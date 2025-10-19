@@ -208,13 +208,15 @@
 
 	    $conn=hum_conn_no_login();
             
-	    $audit_insert_str="INSERT INTO Waste_Audit (audit_id, building_id, number_bags, date_conducted,total_weight)
-                                VALUES (NULL, :building, :num_bags,TO_DATE(:audit_date,'YYYY-MM-DD'), :total_weight)";
+	    $audit_insert_str="INSERT INTO Waste_Audit (audit_id, building_id, number_bags, date_conducted,time_submitted,total_weight)
+                                VALUES (NULL, :building, :num_bags,TO_DATE(:audit_date,'YYYY-MM-DD'),TO_TIMESTAMP(:audit_time,'HH24:MI:SS'), :total_weight)";
             $audit_insert_stmt=oci_parse($conn, $audit_insert_str);
             oci_bind_by_name($audit_insert_stmt, ":building",$building_id);
             oci_bind_by_name($audit_insert_stmt, ":num_bags",$bags_audited);
             oci_bind_by_name($audit_insert_stmt, ":audit_date",$audit_date);
-            oci_bind_by_name($audit_insert_stmt, ":total_weight",$total_weight);
+	    oci_bind_by_name($audit_insert_stmt,":audit_time", $audit_time);
+	    oci_bind_by_name($audit_insert_stmt, ":total_weight",$total_weight);
+	    
             oci_execute($audit_insert_stmt, OCI_DEFAULT);
 
             $curr_audit_id="SELECT waste_audit_seq.CURRVAL FROM dual";
