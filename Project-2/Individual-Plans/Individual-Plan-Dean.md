@@ -10,7 +10,7 @@
 * Create the dashboard design/layout
     * Time Estimate: 1.5 hours
     * Timeline: Have done by EOD November 12
-    * Approach/Methodology: Create a dashboard design (likely on paper or in drawing software) showing basic desgin elements including layout, themes, and what visualization to include
+    * Approach/Methodology: Create a dashboard design (likely on paper or in drawing software) showing basic design elements including layout, themes, and what visualization to include
     * Dependencies: Coordinate with Tech Lead to make sure it can be implemented and for brainstorming ideas
 ### Coordination
 * Organize and facilitate team meeetings and ensure clear communcation across all roles
@@ -22,7 +22,7 @@
 dashboard
     * Time Estimate: 2 hours
     * Timeline: Partially dependent on when other roles finish their deliverables, should have everything integrated before final deadline of November 21
-    * Approach/Methodology: 
+    * Approach/Methodology: Will work/meet with each team member to understand their deliverables and how to connect everything together. Will include things like linking the final clean dataset to the visualizations and loading the visualizations into the dashboard.  
     * Dependencies: Relies on deliverables from other team members to make everything fully connected
 * Manage GitHub repository structure and ensure all components are properly organized
     * Time Estimate: 30 minutes
@@ -40,4 +40,5 @@ dashboard
     * Timeline: Work on throughout project, have final version by final group submission deadline of November 21 
     * Approach/Methodology: Work on throughout project documentating project in the github readme file. Will include basic project information like the team roles, how to view/use the dashboard, explanation/summary of the project and more. 
     * Dependencies: None, not reliant on other team members
+
 
