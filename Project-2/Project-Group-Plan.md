@@ -12,9 +12,9 @@
 | Date | Tech Lead | Project Manager | Domain Expert | Quality Assurance|
 |---|---|---|---|---|
 |10/06 |d | |d |d |
-|10/07 |d | |d |d |
-|10/10 |d | Complete Project Plan (Group) |d |d |
-|10/12 |d | Complete dashboard design/layout|d |d |
-|10/13 |d | |d |d |
-|10/20 |d | Project readme file is done|d |d |
-|10/21 |d | Project Finished; Everything is intergrated properly; GitHub repo final version for project 2 (organized, all files uploaded, project is reproducible); |d |d |
+|10/07 | | | Information Requirements Research Completed; Domain Knowledge and Analysis Section 1 & 2 Done| |
+|10/10 | | Complete Project Plan (Group) | | |
+|10/12 | | Complete dashboard design/layout| Student Interviews and Survey Coordination| |
+|10/13 | | |Address Data Management and Geographic Visualization Rough Draft | |
+|10/20 |d | Project readme file is done| Address Data Management and Geographic Visualization Finalized| |
+|10/21 |d | Project Finished; Everything is intergrated properly; GitHub repo final version for project 2 (organized, all files uploaded, project is reproducible); GitHub deployable site displays project |  Domain Knowledge and Analysis Section 4 Done| |
