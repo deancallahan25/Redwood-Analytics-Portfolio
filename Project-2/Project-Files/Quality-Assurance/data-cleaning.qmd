@@ -1,0 +1,29 @@
+# Data Cleaning
+### First five of original data:
+```{python}
+#| echo: false
+import pandas as pd
+import numpy as np
+import re
+
+messy_data = pd.read_csv("messy_address_data.csv")
+messy_data.head()
+```
+## Part 1: Identify important data
+The permanent address data is not important for the purpose of this project so we will drop them from the data set.
+### Here is the first 5 rows of new data set without permanent address data:
+
+```{python}
+#| echo: false
+data_no_perm = messy_data.drop(columns=["permanent_street", "permanent_city", "permanent_state", "permanent_zip", "permanent_region"])
+data_no_perm.head()
+```
+
+## Part 2: Identify which rows are usable
+#### Rows without data in the current_street column will not be useful as we need to narrow the location of each student in order to get the travel distances and times for each person
+### Here is the first 5 rows of new data set without rows with null street address data:
+```{python}
+#| echo: false
+data_no_null_street = data_no_perm.dropna(subset=["current_street"])
+data_no_null_street.head()
+```
