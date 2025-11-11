@@ -10,12 +10,12 @@ messy_data = pd.read_csv("messy_address_data.csv")
 messy_data.head()
 ```
 ## Part 1: Identify important data
-The permanent address data is not important for the purpose of this project so we will drop them from the data set.
+#### The permanent address data is not important for the purpose of this project so we will drop them from the data set. We do not need the zip for the addresses either.
 ### Here is the first 5 rows of new data set without permanent address data:
 
 ```{python}
 #| echo: false
-data_no_perm = messy_data.drop(columns=["permanent_street", "permanent_city", "permanent_state", "permanent_zip", "permanent_region"])
+data_no_perm = messy_data.drop(columns=["permanent_street", "permanent_city", "permanent_state", "permanent_zip", "permanent_region", "current_zip"])
 data_no_perm.head()
 ```
 
@@ -26,4 +26,64 @@ data_no_perm.head()
 #| echo: false
 data_no_null_street = data_no_perm.dropna(subset=["current_street"])
 data_no_null_street.head()
+```
+### Format current cities the same
+```{python}
+#| echo: false
+data_no_null_street["current_city"] = data_no_null_street["current_city"].str.title()
+data_no_null_street.head()
+```
+### Find unique current cities
+```{python}
+#| echo: false
+data_no_null_street["current_city"].unique()
+```
+### Drop the invalid or null cities
+```{python}
+#| echo: false
+data_valid_cities = data_no_null_street.dropna(subset=["current_city"])
+data_valid_cities = data_valid_cities[data_valid_cities["current_city"].str.contains("Fake City") == False]
+data_valid_cities.head()
+```
+### Fix the mispellings and check all unique 
+```{python}
+#| echo: false
+corrections = {
+    'Arcatra': 'Arcata',
+    'Eurika': 'Eureka'
+}
+data_valid_cities["current_city"] = data_valid_cities["current_city"].replace(corrections, regex=False)
+data_valid_cities["current_city"].unique()
+```
+
+### Make house number and street seperate columns 
+```{python}
+#| echo: false
+data_valid_cities[["current_address_number", "current_street"]] = data_valid_cities["current_street"].str.split(" ",n = 1,expand=True)
+data_valid_cities.head()
+```
+
+### Check for valid street names
+```{python}
+#| echo: false
+data_valid_cities["current_street"].unique()
+```
+### Make them all the same format 
+```{python}
+#| echo: false
+data_valid_cities["current_street"] = data_valid_cities["current_street"].str.title()
+data_valid_cities.head()
+```
+### Change all current_state values to "CA"
+```{python}
+#| echo: false
+final_data = data_valid_cities
+final_data["current_state"] = "CA"
+final_data.head()
+```
+### Concatenate columns to make a final full address
+```{python}
+#| echo: false
+final_data["full_current_address"] = final_data["current_address_number"] + " " + final_data["current_street"] + " " + final_data["current_city"] + ", " + final_data["current_state"]
+final_data.head()
 ```
