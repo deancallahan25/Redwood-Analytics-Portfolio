@@ -7,10 +7,13 @@
 - Domain Expert: Zachary Griffiths - zkg3@humboldt.edu, will link everyones github repos here
 - Quality Assurance: Evan Blem - eb335@humboldt.edu, will link everyones github repos here
 
-### How to Use: The Streamlit Dashboard is deployed to the Streamlit Cloud Communiity and can be accessed here: INSERT LINK LATER. 
-### Project Goals: We have created an interactive Streamlit Dashboard that students at Cal Poly Humboldt can use to make a data driven decision about whether they should bring a car to campus. Our project showcases our skills in group collaboration and GitHub practices, data cleaning, using API's, data visualizations, and creating dashboards. Additionally, we followed proper data privacy practices with our use of student addresses. 
+### How to Use: 
+The Streamlit Dashboard is deployed to the Streamlit Cloud Communiity and can be accessed here: INSERT LINK LATER. 
+### Project Goals: 
+We have created an interactive Streamlit Dashboard that students at Cal Poly Humboldt can use to make a data driven decision about whether they should bring a car to campus. Our project showcases our skills in group collaboration and GitHub practices, data cleaning, using API's, data visualizations, and creating dashboards. Additionally, we followed proper data privacy practices with our use of student addresses. 
 
-### Project Purpose: Cal Poly Humboldt collects basic transportation data from students and faculty yearly and compiles it into a Commuter Report (link to it). We were tasked with creating an interactive dashboard so students can utilize the results of the survey.
+### Project Purpose: 
+Cal Poly Humboldt collects basic transportation data from students and faculty yearly and compiles it into a Commuter Report (link to it). We were tasked with creating an interactive dashboard so students can utilize the results of the survey.
 
 ## Resources used: 
 - Python Libraries: Streamlit, Pandas, ...
