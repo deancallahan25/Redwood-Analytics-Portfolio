@@ -14,6 +14,6 @@
   - Additional note: Decided this will include making the project linked properly in the github page deployment, (have not done this yet)
   - Time Reflection: Difference of 0, Initial assessment was accurate. Will likely end up spending more time over the course of the project when dealing with integrating files and as I decided this should include improving the GitHub website deployment. 
 - Readme file/Documentation:
-  - File Location: Project-2/Project-2.readme
+  - File Location: Project-2/Project-2-readme.md
   - Projected Time Spent: 2 hours, Actual Time Spent: 1 hour
   - Time Reflection: Difference of 1 hour, Initial assessment was inaccurate with time spent being an hour less. Difference isn't that significant as more work will be done once everything is intergrated and dashboard is actually deployed with the readme describing the features and how to use it. 
