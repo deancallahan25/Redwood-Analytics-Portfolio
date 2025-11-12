@@ -14,6 +14,6 @@
 |10/07 | | | Information Requirements Research Completed; Domain Knowledge and Analysis Section 1 & 2 Done| |
 |10/10 | | Complete Project Plan (Group) | | |
 |10/12 | | Complete dashboard design/layout| Student Interviews and Survey Coordination| |
-|10/13 |Have dashboard functioning prototype | Intergrate all the deliverables together| Address Data Management and Geographic Visualization Rough Draft |  |
+|10/13 |Individual Deliverables Due; Have dashboard functioning prototype |Individual Deliverables Due; Intergrate all the deliverables together|Individual Deliverables Due; Address Data Management and Geographic Visualization Rough Draft |Individual Deliverables Due; |
 |10/20 | Dashboard is finalized | Project readme file is done| Address Data Management and Geographic Visualization Finalized||
-|10/21 | | Project Finished; Everything is intergrated properly; GitHub repo final version for project 2 (organized, all files uploaded, project is reproducible); GitHub deployable site displays project |  Domain Knowledge and Analysis Section 4 Done| |
+|10/21 | Final Group Deliverables Due; | Final Group Deliverables Due; Project Finished; Everything is intergrated properly; GitHub repo final version for project 2 (organized, all files uploaded, project is reproducible); GitHub deployable site displays project |  Final Group Deliverables Due; Domain Knowledge and Analysis Section 4 Done| Final Group Deliverables Due;|
