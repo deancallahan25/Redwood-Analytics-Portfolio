@@ -16,4 +16,4 @@
 - Readme file/Documentation:
   - File Location: Project-2/Project-2.readme
   - Projected Time Spent: 2 hours, Actual Time Spent: 1 hour
-  - Time Reflection: Difference of 1 hour, Initial assessment was inaccurate with time spent being an hour less. Difference isn't that significant as more work will be done once everything is intergrated and dashboard is actually deployed describing features and how to use it. 
+  - Time Reflection: Difference of 1 hour, Initial assessment was inaccurate with time spent being an hour less. Difference isn't that significant as more work will be done once everything is intergrated and dashboard is actually deployed with the readme describing the features and how to use it. 
