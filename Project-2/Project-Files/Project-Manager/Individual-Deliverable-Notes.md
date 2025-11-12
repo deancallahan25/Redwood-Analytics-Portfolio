@@ -12,7 +12,7 @@
 - Github Structure:
   - Projected Time Spent: 30 minutes, Actual Time Spent: 30 minutes
   - Additional note: Decided this will include making the project linked properly in the github page deployment, (have not done this yet)
-  - Time Reflection: Difference of 0, Initial assessment was accurate. Will likely end up spending more time over the course of the project when dealing with integrating files
+  - Time Reflection: Difference of 0, Initial assessment was accurate. Will likely end up spending more time over the course of the project when dealing with integrating files and as I decided this should include improving the GitHub website deployment. 
 - Readme file/Documentation:
   - File Location: Project-2/Project-2.readme
   - Projected Time Spent: 2 hours, Actual Time Spent: 1 hour
