@@ -17,3 +17,5 @@
   - File Location: Project-2/Project-2-readme.md
   - Projected Time Spent: 2 hours, Actual Time Spent: 1 hour
   - Time Reflection: Difference of 1 hour, Initial assessment was inaccurate with time spent being an hour less. Difference isn't that significant as more work will be done once everything is intergrated and dashboard is actually deployed with the readme describing the features and how to use it. 
+
+General Learnings About Time: Time can be hard to estimate, in this instance I tended to overestimate the amount of time a task would take. 
