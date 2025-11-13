@@ -85,5 +85,11 @@ final_data.head()
 ```{python}
 #| echo: false
 final_data["full_current_address"] = final_data["current_address_number"] + " " + final_data["current_street"] + " " + final_data["current_city"] + ", " + final_data["current_state"]
+final_data = final_data.reset_index().drop(columns = "index")
 final_data.head()
+```
+
+```{python}
+#| echo: False
+final_data.to_csv('final_address_data.csv', index=False)
 ```
