@@ -3,6 +3,9 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 
+#run the file py -m streamlit run d311_db.py
+# or streamlit run d311_db.py
+
 # --- Streamlit setup ---
 st.set_page_config(
     page_title="Should I Bring a Car to Campus?",
@@ -68,16 +71,56 @@ right_cell = cols[1].container(border=True, height="stretch", vertical_alignment
 
 # Right cell with the map
 with right_cell:
-    st.header("Interactive Map")
+    st.header("Transportation Radius Map")
 
-    # Create a Folium map centered at SF
-    m = folium.Map(location=[40.8758, -124.0786], zoom_start=12)
+    # Coordinates for Cal Poly Humboldt
+    lat, lon = 40.8758, -124.0786
+
+    # Create Folium map
+    m = folium.Map(location=[lat, lon], zoom_start=13)
+
+    # Marker for the campus
     folium.Marker(
-        [40.8758, -124.0786],
+        [lat, lon],
         popup="Cal Poly Humboldt University",
-        tooltip="Click me"
+        tooltip="Campus Center"
     ).add_to(m)
 
-    # Display the map
+    # Define radius (in meters) for each transport method
+    radius_map = {
+        "WALK": 800,      # about 10 minutes walking distance
+        "BIKE": 1000,     # short bike ride
+        "SHUTTLE": 1700,  # local shuttle coverage
+        "CAR": 3000      # drivable range from campus
+    }
+
+    color_map = {
+        "WALK": "green",
+        "BIKE": "orange",
+        "SHUTTLE": "purple",
+        "CAR": "blue"
+    }
+
+    # Add circles for each selected method
+    for method in tickers:
+        if method in radius_map:
+            folium.Circle(
+                location=[lat, lon],
+                radius=radius_map[method],
+                color=color_map.get(method, "gray"),
+                fill=True,
+                fill_opacity=0.3,
+                popup=f"{method} radius: {radius_map[method]} m"
+            ).add_to(m)
+
+    # Display map
     st_folium(m, width=800, height=500)
-    st.caption("Map showing student addresses and transportation options.")
+    st.caption("Each circle shows the approximate travel radius from Cal Poly Humboldt by transport type.")
+
+bottom_left_cell = cols[0].container(
+    border=True, height="stretch", vertical_alignment="center"
+)
+
+
+st.subheader("Data Preview")
+st.dataframe(df.head())
