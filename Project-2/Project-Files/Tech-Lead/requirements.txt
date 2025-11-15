@@ -1,1 +1,4 @@
 folium
+pandas
+st_folium
+requests
