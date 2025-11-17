@@ -1,4 +1,5 @@
+streamlit
 folium
 pandas
-st_folium
+streamlit_folium
 requests
