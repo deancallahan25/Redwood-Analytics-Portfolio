@@ -14,7 +14,7 @@ CAMPUS_LON = -124.0786
 # DATA LOADING
 @st.cache_data
 def load_data():
-    df = pd.read_csv("population_addresses_validated_test_100.csv")
+    df = pd.read_csv("Project-2/Project-Files/Tech-Lead/population_addresses_validated_test_100.csv")
     return df
 df = load_data()
 
