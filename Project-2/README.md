@@ -3,7 +3,7 @@
 ## Project 2 - Streamlit Dashboard Project - Should I Bring a Car to Campus
 ### Created by Redwood Analytics
 - Tech Lead: Jaiden Roe - jr650@humboldt.edu, will link everyones github repos here
-- Project Manager: Dean Callahan - dpc43@humboldt.edu, will link everyones github repos here
+- Project Manager: Dean Callahan - deancallahan25@gmail.com - GitHub: https://github.com/deancallahan25
 - Domain Expert: Zachary Griffiths - zkg3@humboldt.edu, will link everyones github repos here
 - Quality Assurance: Evan Blem - eb335@humboldt.edu, will link everyones github repos here
 - Project Web Page: (link here)
@@ -23,8 +23,8 @@ We have created an interactive Streamlit Dashboard that students at Cal Poly Hum
 
 ### Team Contributions:
 - Jaiden Roe: Tech Lead for the project responsible for the coding of the streamlit dashboard and creation of the visualizations. 
-- Zachary Griffith: Domain Expert for the project responsible for finding additional API's, ensuring dashboard was relevant to the domain, and the dashboard was user-friendly. 
-- Evan Blem: Quality Assurance for the project responsible for the data cleaning
+- Zachary Griffith: Domain Expert for the project responsible for finding additional API's, ensuring dashboard was relevant to the domain, and that the dashboard was user-friendly. 
+- Evan Blem: Quality Assurance for the project responsible for the data cleaning.
 - Dean Callahan: Project Manager for the project responsible for the project planning, file coordination, documentation of the project, and structuring the GitHub repository. 
 
 ## Resources used: 
