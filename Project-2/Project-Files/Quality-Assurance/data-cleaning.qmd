@@ -89,6 +89,27 @@ final_data = final_data.reset_index().drop(columns = "index")
 final_data.head()
 ```
 
+### API Time
+```{python}
+import googlemaps
+from datetime import datetime
+
+gmaps = googlemaps.Client(key='AIzaSyCK28ITsrC4lM6QbGgm5NbrpJdHpytTUWE')
+geocode_result = gmaps.geocode(final_data["full_current_address"][1])[0]['geometry']['location']['lng']
+
+print(geocode_result)
+```
+
+```{python}
+latitude_list = []
+longitude_list = []
+for i in range(len(final_data["full_current_address"])):
+    longitude_list.append(gmaps.geocode(final_data["full_current_address"][i])[0]['geometry']['location']['lng'])
+    latitude_list.append(gmaps.geocode(final_data["full_current_address"][i])[0]['geometry']['location']['lat'])
+final_data['lon'] = longitude_list
+final_data['lat'] = latitude_list
+final_data.head()
+```
 ```{python}
 #| echo: False
 final_data.to_csv('final_address_data.csv', index=False)
