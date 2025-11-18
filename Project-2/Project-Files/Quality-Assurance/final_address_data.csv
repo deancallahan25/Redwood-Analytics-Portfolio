@@ -1,83 +1,83 @@
-pop_id,role,current_street,current_city,current_state,current_address_number,full_current_address
-POP_S_7315039,Student,J St,Eureka,CA,7917,"7917 J St Eureka, CA"
-POP_S_4194026,Student,Bates Rd,Mckinleyville,CA,1845,"1845 Bates Rd Mckinleyville, CA"
-POP_S_4662231,Student,H St,Eureka,CA,8466,"8466 H St Eureka, CA"
-POP_S_4654016,Student,Broadway St,Eureka,CA,4132,"4132 Broadway St Eureka, CA"
-POP_S_2112110,Student,G St,Arcata,CA,8337,"8337 G St Arcata, CA"
-POP_S_6276986,Student,K St,Eureka,CA,6727,"6727 K St Eureka, CA"
-POP_S_8719581,Student,Heartwood Dr,Mckinleyville,CA,7492,"7492 Heartwood Dr Mckinleyville, CA"
-POP_S_2414010,Student,Central Ave,Mckinleyville,CA,7836,"7836 Central Ave Mckinleyville, CA"
-POP_S_6286266,Student,Spears Rd,Arcata,CA,1675,"1675 Spears Rd Arcata, CA"
-POP_S_6228097,Student,Hiller Rd,Mckinleyville,CA,9522,"9522 Hiller Rd Mckinleyville, CA"
-POP_S_7023735,Student,Broadway St,Eureka,CA,5038,"5038 Broadway St Eureka, CA"
-POP_S_2880986,Student,G St,Arcata,CA,442,"442 G St Arcata, CA"
-POP_S_4770292,Student,Alliance Rd,Arcata,CA,9115,"9115 Alliance Rd Arcata, CA"
-POP_S_6830775,Student,Alliance Rd,Arcata,CA,6600,"6600 Alliance Rd Arcata, CA"
-POP_S_5769569,Student,Q St,Arcata,CA,4446,"4446 Q St Arcata, CA"
-POP_S_6877850,Student,Baldwin St,Arcata,CA,7456,"7456 Baldwin St Arcata, CA"
-POP_S_6413414,Student,Lk Wood Blvd,Arcata,CA,5161,"5161 Lk Wood Blvd Arcata, CA"
-POP_S_8297154,Student,Wabash Ave,Eureka,CA,6767,"6767 Wabash Ave Eureka, CA"
-POP_S_8903984,Student,Murray Rd,Mckinleyville,CA,7959,"7959 Murray Rd Mckinleyville, CA"
-POP_S_4891745,Student,14Th St,Arcata,CA,9678,"9678 14Th St Arcata, CA"
-POP_S_5138664,Student,Lk Wood Blvd,Arcata,CA,2260,"2260 Lk Wood Blvd Arcata, CA"
-POP_S_8398477,Student,6Th St,Eureka,CA,3473,"3473 6Th St Eureka, CA"
-POP_S_3341992,Student,Main St,Fortuna,CA,4540,"4540 Main St Fortuna, CA"
-POP_S_7733838,Student,Alliance Rd,Arcata,CA,7341,"7341 Alliance Rd Arcata, CA"
-POP_S_2244793,Student,6Th St,Eureka,CA,6002,"6002 6Th St Eureka, CA"
-POP_S_7940193,Student,Broadway St,Eureka,CA,3534,"3534 Broadway St Eureka, CA"
-POP_S_5468255,Student,Taylor Way,Blue Lake,CA,215,"215 Taylor Way Blue Lake, CA"
-POP_S_9052375,Student,11Th St,Arcata,CA,9007,"9007 11Th St Arcata, CA"
-POP_S_8928336,Student,Broadway St,Eureka,CA,1257,"1257 Broadway St Eureka, CA"
-POP_S_7451474,Student,Hiller Rd,Mckinleyville,CA,8485,"8485 Hiller Rd Mckinleyville, CA"
-POP_S_6533000,Student,South Rail St,Blue Lake,CA,2555,"2555 South Rail St Blue Lake, CA"
-POP_S_1181699,Student,Alliance Rd,Arcata,CA,9250,"9250 Alliance Rd Arcata, CA"
-POP_S_7926169,Student,Main St,Trinidad,CA,7059,"7059 Main St Trinidad, CA"
-POP_S_7993182,Student,Harris St,Eureka,CA,1611,"1611 Harris St Eureka, CA"
-POP_S_6222257,Student,11Th St,Arcata,CA,6998,"6998 11Th St Arcata, CA"
-POP_S_7366358,Student,Baldwin St,Arcata,CA,2208,"2208 Baldwin St Arcata, CA"
-POP_S_9246969,Student,K St,Eureka,CA,163,"163 K St Eureka, CA"
-POP_S_4689429,Student,Spears Rd,Arcata,CA,9252,"9252 Spears Rd Arcata, CA"
-POP_S_3505117,Student,Baldwin St,Arcata,CA,4641,"4641 Baldwin St Arcata, CA"
-POP_S_8159642,Student,Lk Wood Blvd,Arcata,CA,7778,"7778 Lk Wood Blvd Arcata, CA"
-POP_S_8539577,Student,H St,Arcata,CA,9141,"9141 H St Arcata, CA"
-POP_S_2520690,Student,Samoa Blvd,Arcata,CA,3077,"3077 Samoa Blvd Arcata, CA"
-POP_S_4081538,Student,5Th St,Eureka,CA,5674,"5674 5Th St Eureka, CA"
-POP_S_5648819,Student,11Th St,Arcata,CA,9297,"9297 11Th St Arcata, CA"
-POP_S_2109183,Student,14Th St,Arcata,CA,1097,"1097 14Th St Arcata, CA"
-POP_S_8451223,Student,Broadway St,Eureka,CA,6574,"6574 Broadway St Eureka, CA"
-POP_S_4066171,Student,Spears Rd,Arcata,CA,4586,"4586 Spears Rd Arcata, CA"
-POP_S_3881924,Student,Alliance Rd,Arcata,CA,5615,"5615 Alliance Rd Arcata, CA"
-POP_S_7781220,Student,Wabash Ave,Eureka,CA,9026,"9026 Wabash Ave Eureka, CA"
-POP_S_8811547,Student,Bates Rd,Mckinleyville,CA,6339,"6339 Bates Rd Mckinleyville, CA"
-POP_S_7119154,Student,H St,Arcata,CA,8431,"8431 H St Arcata, CA"
-POP_S_4344141,Student,Bates Rd,Mckinelyville,CA,8259,"8259 Bates Rd Mckinelyville, CA"
-POP_S_2930270,Student,Wabash Ave,Eureka,CA,764,"764 Wabash Ave Eureka, CA"
-POP_S_1792822,Student,School Rd,Mckinleyville,CA,7940,"7940 School Rd Mckinleyville, CA"
-POP_S_5662454,Student,Union St,Arcata,CA,1636,"1636 Union St Arcata, CA"
-POP_S_6634305,Student,Heartwood Dr,Mckinleyville,CA,9401,"9401 Heartwood Dr Mckinleyville, CA"
-POP_S_6011988,Student,Samoa Blvd,Arcata,CA,7550,"7550 Samoa Blvd Arcata, CA"
-POP_S_4191680,Student,5Th St,Eureka,CA,4869,"4869 5Th St Eureka, CA"
-POP_S_5390476,Student,6Th St,Eureka,CA,3721,"3721 6Th St Eureka, CA"
-POP_S_2105801,Student,Lk Wood Blvd,Arcata,CA,4372,"4372 Lk Wood Blvd Arcata, CA"
-POP_S_4412381,Student,Baldwin St,Arcata,CA,9928,"9928 Baldwin St Arcata, CA"
-POP_S_4158783,Student,Janis Ct,Arcata,CA,8421,"8421 Janis Ct Arcata, CA"
-POP_S_9926967,Student,11Th St,Arcata,CA,4098,"4098 11Th St Arcata, CA"
-POP_S_2618167,Student,G St,Arcata,CA,9043,"9043 G St Arcata, CA"
-POP_S_5749533,Student,Baldwin St,Arcata,CA,2737,"2737 Baldwin St Arcata, CA"
-POP_S_9565542,Student,Lk Wood Blvd,Arcata,CA,7120,"7120 Lk Wood Blvd Arcata, CA"
-POP_S_5509523,Student,Hatchery Rd,Blue Lake,CA,7588,"7588 Hatchery Rd Blue Lake, CA"
-POP_S_3021758,Student,Parker Creek Rd,Trinidad,CA,767,"767 Parker Creek Rd Trinidad, CA"
-POP_S_3086291,Student,I St,Eureka,CA,7213,"7213 I St Eureka, CA"
-POP_S_3195993,Student,Baldwin St,Arcata,CA,6982,"6982 Baldwin St Arcata, CA"
-POP_S_1521096,Student,Winchester Ave,Mckinleyville,CA,1914,"1914 Winchester Ave Mckinleyville, CA"
-POP_S_1698008,Student,H St,Arcata,CA,4351,"4351 H St Arcata, CA"
-POP_S_4847060,Student,H St,Eureka,CA,7145,"7145 H St Eureka, CA"
-POP_S_3360046,Student,11Th St,Arcata,CA,2918,"2918 11Th St Arcata, CA"
-POP_S_2082109,Student,Samoa Blvd,Arcata,CA,6963,"6963 Samoa Blvd Arcata, CA"
-POP_S_7731914,Student,5Th St,Eureka,CA,3103,"3103 5Th St Eureka, CA"
-POP_S_4242253,Student,11Th St,Arcata,CA,8225,"8225 11Th St Arcata, CA"
-POP_S_3672167,Student,11Th St,Arcata,CA,5647,"5647 11Th St Arcata, CA"
-POP_S_4855672,Student,Alliance Rd,Arcata,CA,5286,"5286 Alliance Rd Arcata, CA"
-POP_S_7513723,Student,14Th St,Arcata,CA,2360,"2360 14Th St Arcata, CA"
-POP_S_2610289,Student,Myrtle Ave,Eureka,CA,1291,"1291 Myrtle Ave Eureka, CA"
-POP_S_6436394,Student,Parker Creek Rd,Trinidad,CA,3611,"3611 Parker Creek Rd Trinidad, CA"
+pop_id,role,current_street,current_city,current_state,current_address_number,full_current_address,lon,lat
+POP_S_7315039,Student,J St,Eureka,CA,7917,"7917 J St Eureka, CA",-124.158895,40.7895569
+POP_S_4194026,Student,Bates Rd,Mckinleyville,CA,1845,"1845 Bates Rd Mckinleyville, CA",-124.1026447,40.94829989999999
+POP_S_4662231,Student,H St,Eureka,CA,8466,"8466 H St Eureka, CA",-124.1612612,40.7886862
+POP_S_4654016,Student,Broadway St,Eureka,CA,4132,"4132 Broadway St Eureka, CA",-124.191964,40.7684735
+POP_S_2112110,Student,G St,Arcata,CA,8337,"8337 G St Arcata, CA",-124.0853123,40.8699965
+POP_S_6276986,Student,K St,Eureka,CA,6727,"6727 K St Eureka, CA",-124.157677,40.7760793
+POP_S_8719581,Student,Heartwood Dr,Mckinleyville,CA,7492,"7492 Heartwood Dr Mckinleyville, CA",-124.1009363,40.9395028
+POP_S_2414010,Student,Central Ave,Mckinleyville,CA,7836,"7836 Central Ave Mckinleyville, CA",-124.1096898,40.988579
+POP_S_6286266,Student,Spears Rd,Arcata,CA,1675,"1675 Spears Rd Arcata, CA",-124.087837,40.8900832
+POP_S_6228097,Student,Hiller Rd,Mckinleyville,CA,9522,"9522 Hiller Rd Mckinleyville, CA",-124.1141313,40.9416402
+POP_S_7023735,Student,Broadway St,Eureka,CA,5038,"5038 Broadway St Eureka, CA",-124.1920564,40.7663465
+POP_S_2880986,Student,G St,Arcata,CA,442,"442 G St Arcata, CA",-124.0867565,40.8652502
+POP_S_4770292,Student,Alliance Rd,Arcata,CA,9115,"9115 Alliance Rd Arcata, CA",-124.090753,40.883424
+POP_S_6830775,Student,Alliance Rd,Arcata,CA,6600,"6600 Alliance Rd Arcata, CA",-124.0863955,40.8931923
+POP_S_5769569,Student,Q St,Arcata,CA,4446,"4446 Q St Arcata, CA",-124.0949228,40.8756939
+POP_S_6877850,Student,Baldwin St,Arcata,CA,7456,"7456 Baldwin St Arcata, CA",-124.0860917,40.8829104
+POP_S_6413414,Student,Lk Wood Blvd,Arcata,CA,5161,"5161 Lk Wood Blvd Arcata, CA",-124.0795918,40.8909147
+POP_S_8297154,Student,Wabash Ave,Eureka,CA,6767,"6767 Wabash Ave Eureka, CA",-124.1515697,40.7912777
+POP_S_8903984,Student,Murray Rd,Mckinleyville,CA,7959,"7959 Murray Rd Mckinleyville, CA",-124.0392572,40.97019299999999
+POP_S_4891745,Student,14Th St,Arcata,CA,9678,"9678 14Th St Arcata, CA",-124.0829607,40.8725007
+POP_S_5138664,Student,Lk Wood Blvd,Arcata,CA,2260,"2260 Lk Wood Blvd Arcata, CA",-124.080991,40.879818
+POP_S_8398477,Student,6Th St,Eureka,CA,3473,"3473 6Th St Eureka, CA",-124.1445014,40.8039891
+POP_S_3341992,Student,Main St,Fortuna,CA,4540,"4540 Main St Fortuna, CA",-124.1268476,40.5609466
+POP_S_7733838,Student,Alliance Rd,Arcata,CA,7341,"7341 Alliance Rd Arcata, CA",-124.090753,40.883424
+POP_S_2244793,Student,6Th St,Eureka,CA,6002,"6002 6Th St Eureka, CA",-124.1581617,40.802147
+POP_S_7940193,Student,Broadway St,Eureka,CA,3534,"3534 Broadway St Eureka, CA",-124.1908841,40.7747448
+POP_S_5468255,Student,Taylor Way,Blue Lake,CA,215,"215 Taylor Way Blue Lake, CA",-123.9954895,40.87913959999999
+POP_S_9052375,Student,11Th St,Arcata,CA,9007,"9007 11Th St Arcata, CA",-124.0914222,40.8717646
+POP_S_8928336,Student,Broadway St,Eureka,CA,1257,"1257 Broadway St Eureka, CA",-124.1760549,40.7951408
+POP_S_7451474,Student,Hiller Rd,Mckinleyville,CA,8485,"8485 Hiller Rd Mckinleyville, CA",-124.1141313,40.9416402
+POP_S_6533000,Student,South Rail St,Blue Lake,CA,2555,"2555 South Rail St Blue Lake, CA",-123.9930174,40.8828634
+POP_S_1181699,Student,Alliance Rd,Arcata,CA,9250,"9250 Alliance Rd Arcata, CA",-124.090753,40.883424
+POP_S_7926169,Student,Main St,Trinidad,CA,7059,"7059 Main St Trinidad, CA",-124.1408696,41.0613826
+POP_S_7993182,Student,Harris St,Eureka,CA,1611,"1611 Harris St Eureka, CA",-124.1510078,40.7806046
+POP_S_6222257,Student,11Th St,Arcata,CA,6998,"6998 11Th St Arcata, CA",-124.0914222,40.8717646
+POP_S_7366358,Student,Baldwin St,Arcata,CA,2208,"2208 Baldwin St Arcata, CA",-124.0861503,40.880321
+POP_S_9246969,Student,K St,Eureka,CA,163,"163 K St Eureka, CA",-124.1609459,40.8046395
+POP_S_4689429,Student,Spears Rd,Arcata,CA,9252,"9252 Spears Rd Arcata, CA",-124.1081166,40.7776156
+POP_S_3505117,Student,Baldwin St,Arcata,CA,4641,"4641 Baldwin St Arcata, CA",-124.0852773,40.8854878
+POP_S_8159642,Student,Lk Wood Blvd,Arcata,CA,7778,"7778 Lk Wood Blvd Arcata, CA",-124.0795918,40.8909147
+POP_S_8539577,Student,H St,Arcata,CA,9141,"9141 H St Arcata, CA",-124.0863659,40.8702525
+POP_S_2520690,Student,Samoa Blvd,Arcata,CA,3077,"3077 Samoa Blvd Arcata, CA",-124.0976419,40.8667627
+POP_S_4081538,Student,5Th St,Eureka,CA,5674,"5674 5Th St Eureka, CA",-124.148062,40.8038628
+POP_S_5648819,Student,11Th St,Arcata,CA,9297,"9297 11Th St Arcata, CA",-124.0914222,40.8717646
+POP_S_2109183,Student,14Th St,Arcata,CA,1097,"1097 14Th St Arcata, CA",-124.0884346,40.8736857
+POP_S_8451223,Student,Broadway St,Eureka,CA,6574,"6574 Broadway St Eureka, CA",-124.1920564,40.7663465
+POP_S_4066171,Student,Spears Rd,Arcata,CA,4586,"4586 Spears Rd Arcata, CA",-124.1074384,40.7776251
+POP_S_3881924,Student,Alliance Rd,Arcata,CA,5615,"5615 Alliance Rd Arcata, CA",-124.0863955,40.8931923
+POP_S_7781220,Student,Wabash Ave,Eureka,CA,9026,"9026 Wabash Ave Eureka, CA",-124.1515697,40.7912777
+POP_S_8811547,Student,Bates Rd,Mckinleyville,CA,6339,"6339 Bates Rd Mckinleyville, CA",-124.1057387,40.9490212
+POP_S_7119154,Student,H St,Arcata,CA,8431,"8431 H St Arcata, CA",-124.0863659,40.8702525
+POP_S_4344141,Student,Bates Rd,Mckinelyville,CA,8259,"8259 Bates Rd Mckinelyville, CA",-124.1057387,40.9490212
+POP_S_2930270,Student,Wabash Ave,Eureka,CA,764,"764 Wabash Ave Eureka, CA",-124.1515587,40.79127769999999
+POP_S_1792822,Student,School Rd,Mckinleyville,CA,7940,"7940 School Rd Mckinleyville, CA",-124.1142713,40.9343124
+POP_S_5662454,Student,Union St,Arcata,CA,1636,"1636 Union St Arcata, CA",-124.0761091,40.87307
+POP_S_6634305,Student,Heartwood Dr,Mckinleyville,CA,9401,"9401 Heartwood Dr Mckinleyville, CA",-124.1009363,40.9395028
+POP_S_6011988,Student,Samoa Blvd,Arcata,CA,7550,"7550 Samoa Blvd Arcata, CA",-124.0837481,40.8628909
+POP_S_4191680,Student,5Th St,Eureka,CA,4869,"4869 5Th St Eureka, CA",-124.1328653,40.8051134
+POP_S_5390476,Student,6Th St,Eureka,CA,3721,"3721 6Th St Eureka, CA",-124.1445014,40.8039891
+POP_S_2105801,Student,Lk Wood Blvd,Arcata,CA,4372,"4372 Lk Wood Blvd Arcata, CA",-124.0795918,40.8909147
+POP_S_4412381,Student,Baldwin St,Arcata,CA,9928,"9928 Baldwin St Arcata, CA",-124.0860917,40.8829104
+POP_S_4158783,Student,Janis Ct,Arcata,CA,8421,"8421 Janis Ct Arcata, CA",-124.1404676,41.0623198
+POP_S_9926967,Student,11Th St,Arcata,CA,4098,"4098 11Th St Arcata, CA",-124.1049581,40.8735043
+POP_S_2618167,Student,G St,Arcata,CA,9043,"9043 G St Arcata, CA",-124.0853123,40.8699965
+POP_S_5749533,Student,Baldwin St,Arcata,CA,2737,"2737 Baldwin St Arcata, CA",-124.0852773,40.8854878
+POP_S_9565542,Student,Lk Wood Blvd,Arcata,CA,7120,"7120 Lk Wood Blvd Arcata, CA",-124.0795918,40.8909147
+POP_S_5509523,Student,Hatchery Rd,Blue Lake,CA,7588,"7588 Hatchery Rd Blue Lake, CA",-123.99185,40.87907
+POP_S_3021758,Student,Parker Creek Rd,Trinidad,CA,767,"767 Parker Creek Rd Trinidad, CA",-124.1397653,41.0596298
+POP_S_3086291,Student,I St,Eureka,CA,7213,"7213 I St Eureka, CA",-124.1600775,40.7904516
+POP_S_3195993,Student,Baldwin St,Arcata,CA,6982,"6982 Baldwin St Arcata, CA",-124.0860917,40.8829104
+POP_S_1521096,Student,Winchester Ave,Mckinleyville,CA,1914,"1914 Winchester Ave Mckinleyville, CA",-124.103043,40.9617468
+POP_S_1698008,Student,H St,Arcata,CA,4351,"4351 H St Arcata, CA",-124.0863659,40.8702525
+POP_S_4847060,Student,H St,Eureka,CA,7145,"7145 H St Eureka, CA",-124.1613958,40.77120559999999
+POP_S_3360046,Student,11Th St,Arcata,CA,2918,"2918 11Th St Arcata, CA",-124.1049581,40.8735043
+POP_S_2082109,Student,Samoa Blvd,Arcata,CA,6963,"6963 Samoa Blvd Arcata, CA",-124.0837481,40.8628909
+POP_S_7731914,Student,5Th St,Eureka,CA,3103,"3103 5Th St Eureka, CA",-124.1328653,40.8051134
+POP_S_4242253,Student,11Th St,Arcata,CA,8225,"8225 11Th St Arcata, CA",-124.0914222,40.8717646
+POP_S_3672167,Student,11Th St,Arcata,CA,5647,"5647 11Th St Arcata, CA",-124.0914222,40.8717646
+POP_S_4855672,Student,Alliance Rd,Arcata,CA,5286,"5286 Alliance Rd Arcata, CA",-124.0863955,40.8931923
+POP_S_7513723,Student,14Th St,Arcata,CA,2360,"2360 14Th St Arcata, CA",-124.0829607,40.8725007
+POP_S_2610289,Student,Myrtle Ave,Eureka,CA,1291,"1291 Myrtle Ave Eureka, CA",-124.1454153,40.7984594
+POP_S_6436394,Student,Parker Creek Rd,Trinidad,CA,3611,"3611 Parker Creek Rd Trinidad, CA",-124.1397653,41.0596298
