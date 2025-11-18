@@ -1,5 +1,7 @@
 ## Project 2 README File
 
+
+
 ## Project 2 - Streamlit Dashboard Project - Should I Bring a Car to Campus
 ### Created by Redwood Analytics
 - Tech Lead: Jaiden Roe - jr650@humboldt.edu, will link everyones github repos here
@@ -7,9 +9,10 @@
 - Domain Expert: Zachary Griffiths - zkg3@humboldt.edu, will link everyones github repos here
 - Quality Assurance: Evan Blem - eb335@humboldt.edu, will link everyones github repos here
 - Project Web Page: (link here)
+- Streamlit cloud link: https://redwood-analytics-project2.streamlit.app/
 
 ### Setup Instruction: 
-The Streamlit Dashboard is deployed to the Streamlit Cloud Communiity and can be accessed here at this link INSERT LINK LATER. Once you have clicked the link, either enter an address or select a region and our dashboard will determine if you should bring a car based on that location. Other information which may influence your decision to bring a car is displayed below the map. In order to get real transportion times, you will need to enter a Google Maps API key in the textbox provided. If you don't enter the API key, the dashboard will still function but the transportion times and data will be randomized values. All other visualizations will function as intended with or without the API key.  
+The Streamlit Dashboard is deployed to the Streamlit Cloud Communiity and can be accessed here at this link https://redwood-analytics-project2.streamlit.app/. Once you have clicked the link, either enter an address or select a region and our dashboard will determine if you should bring a car based on that location. Other information which may influence your decision to bring a car is displayed below the map. In order to get real transportion times, you will need to enter a Google Maps API key in the textbox provided. If you don't enter the API key, the dashboard will still function but the transportion times and data will be randomized values. All other visualizations will function as intended with or without the API key.  
 
 ### Dashboard Features:
 
