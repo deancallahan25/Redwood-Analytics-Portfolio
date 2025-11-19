@@ -20,7 +20,7 @@ df = load_data()
 
 @st.cache_data
 def load_data_two():
-    df= pd.read_csv("Project-2/streamlit_app/data/final_address.data_csv")
+    df= pd.read_csv("Project-2/streamlit_app/data/final_address_data.csv")
     return df
 df_two= load_data_two()
 
