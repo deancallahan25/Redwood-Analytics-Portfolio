@@ -12,17 +12,12 @@ CAMPUS_LAT = 40.8762
 CAMPUS_LON = -124.0786
 
 # DATA LOADING
-@st.cache_data
-def load_data():
-    df = pd.read_csv("Project-2/streamlit_app/data/population_addresses_validated_test_100.csv")
-    return df
-df_two = load_data()
 
 @st.cache_data
-def load_data_two():
+def load_data():
     df= pd.read_csv("Project-2/streamlit_app/data/final_address_data.csv")
     return df
-df= load_data_two()
+df= load_data()
 
 # SIDEBAR CONTROLS
 
@@ -235,6 +230,3 @@ if clicked:
 # Data Preview
 st.header("Raw Data Preview")
 st.dataframe(df.head())
-
-st.header("Cleaned Raw Data Preview")
-st.dataframe(df_two.head())
