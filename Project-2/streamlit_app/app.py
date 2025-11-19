@@ -18,6 +18,12 @@ def load_data():
     return df
 df = load_data()
 
+@st.cache_data
+def load_data_two():
+    df= pd.read_csv("Project-2/streamlit_app/data/final_address.data_csv")
+    return df
+df_two= load_data_two()
+
 # SIDEBAR CONTROLS
 
 cols = st.columns([1, 3])
@@ -230,3 +236,6 @@ if clicked:
 # Data Preview
 st.header("Raw Data Preview")
 st.dataframe(df.head())
+
+st.header("Cleaned Raw Data Preview")
+st.dataframe(df_two.head())
