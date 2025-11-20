@@ -17,7 +17,7 @@ CAMPUS_LON = -124.0786
 def load_data():
     df= pd.read_csv("Project-2/streamlit_app/data/final_address_data.csv")
     return df
-df= load_data_two()
+df= load_data()
 
 # SIDEBAR CONTROLS
 
