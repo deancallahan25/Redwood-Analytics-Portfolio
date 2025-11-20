@@ -47,17 +47,16 @@ with cols[0]:
 @st.cache_data
 def get_common_locations(df):
     valid = df[
-        (df['current_geocode_status'] == 'ok') &
-        df['current_lat'].notna() &
-        df['current_lon'].notna()
+        df['lat'].notna() &
+        df['lon'].notna()
     ].copy()
 
-    valid['lat_r'] = valid['current_lat'].round(2)
-    valid['lon_r'] = valid['current_lon'].round(2)
+    valid['lat_r'] = valid['lat'].round(2)
+    valid['lon_r'] = valid['lon'].round(2)
 
     groups = valid.groupby(['lat_r', 'lon_r']).agg({
-        'current_lat': 'first',
-        'current_lon': 'first',
+        'lat': 'first',
+        'lon': 'first',
         'current_city': 'first',
         'pop_id': 'count'
     }).reset_index()
