@@ -40,10 +40,13 @@ api_key_test = st.text_input(
         help = "Optional: enable Directions API in Google Cloud Console"
     )
 
-st.header("Toggle Public Transit Information")
+st.header("Toggle Information")
 bus_stops_on = st.toggle("Show bus stops")
 if bus_stops_on:
     st.write("Bus stops are displayed on the map.")
+km_mode_on = st.toggle("Show distances in kilometers")
+if km_mode_on:
+    st.write("Distances are shown in kilometers.")
 
 # PREPROCESS LIVING LOCATION CLUSTERS
 @st.cache_data
@@ -156,29 +159,42 @@ with right:
             if minutes is None or km is None:
                 st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> not available</p>", unsafe_allow_html=True)
             else:
-                st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {km:.2f} km</p>", unsafe_allow_html=True)
+                if km_mode_on:
+                    st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {km:.2f} km</p>", unsafe_allow_html=True)
+                else: 
+                    miles = km * 0.621371
+                    st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {miles:.2f} mi</p>", unsafe_allow_html=True)
         # DRIVING
         t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "driving")
         show_route("Driving", t, d)
-        commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_km": d})
-
+        if km_mode_on:
+            commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_mi": d*.621371})
         # Walking
         t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "walking")
         show_route("Walking", t, d)
-        commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_km": d})
-
+        if km_mode_on:
+            commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_mi": d*.621371})
         # Biking
         t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "bicycling")
         show_route("Biking", t, d)
-        commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_km": d})
-
+        if km_mode_on:
+            commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_mi": d*.621371})            
         # Transit
         t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "transit")
         show_route("Transit", t, d)
-        commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_km": d})
-
+        if km_mode_on:
+            commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_mi": d*.621371})
     else:
         st.markdown("<p style='font-size:20px;'>Click a point on the map to estimate commute times.</p>", unsafe_allow_html=True)
+        
         commute_data = []
 
 
@@ -187,7 +203,11 @@ if commute_data:
     df_commute = pd.DataFrame(commute_data)
     
     # Melt dataframe for Altair plotting
-    df_melt = df_commute.melt(id_vars="Mode", value_vars=["Minutes", "Distance_km"],
+    if km_mode_on:
+        df_melt = df_commute.melt(id_vars="Mode", value_vars=["Minutes", "Distance_km"],
+                                  var_name="Type", value_name="Value")
+    else:
+        df_melt = df_commute.melt(id_vars="Mode", value_vars=["Minutes", "Distance_mi"],
                               var_name="Type", value_name="Value")
 
     chart = alt.Chart(df_melt).mark_bar().encode(
