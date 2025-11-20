@@ -21,27 +21,44 @@ API_KEY = "AIzaSyCK28ITsrC4lM6QbGgm5NbrpJdHpytTUWE"
 # DATA LOADING
 @st.cache_data
 def load_data():
-    df = pd.read_csv("Project-2/streamlit_app/data/population_addresses_validated_test_100.csv")
+    df = pd.read_csv("final_address_data.csv")
     return df
 
 df = load_data()
 
+def load_data_two():
+    df = pd.read_csv("jack-pass-bus-stops.csv")
+    return df
+
+df_two = load_data_two()
+
+st.header("Google Maps API (Optional)")
+
+api_key_test = st.text_input(
+        "Google Maps API Key",
+        type = "password",
+        help = "Optional: enable Directions API in Google Cloud Console"
+    )
+
+st.header("Toggle Public Transit Information")
+bus_stops_on = st.toggle("Show bus stops")
+if bus_stops_on:
+    st.write("Bus stops are displayed on the map.")
 
 # PREPROCESS LIVING LOCATION CLUSTERS
 @st.cache_data
 def get_common_locations(df):
     valid = df[
-        (df['current_geocode_status'] == 'ok') &
-        df['current_lat'].notna() &
-        df['current_lon'].notna()
+        df['lat'].notna() &
+        df['lon'].notna()
     ].copy()
 
-    valid['lat_r'] = valid['current_lat'].round(2)
-    valid['lon_r'] = valid['current_lon'].round(2)
+    valid['lat_r'] = valid['lat'].round(2)
+    valid['lon_r'] = valid['lon'].round(2)
 
     groups = valid.groupby(['lat_r', 'lon_r']).agg({
-        'current_lat': 'first',
-        'current_lon': 'first',
+        'lat': 'first',
+        'lon': 'first',
         'current_city': 'first',
         'pop_id': 'count'
     }).reset_index()
@@ -68,6 +85,19 @@ with left:
         tooltip="Campus Center",
         icon=folium.Icon(color="red", icon="university", prefix="fa")
     ).add_to(m)
+
+    # Bus stops
+    if bus_stops_on:
+        for _, row in df_two.iterrows():
+            folium.CircleMarker(
+                [row['latitude'], row['longitude']],
+                radius=3,
+                popup=f"Stop ID: {row['stop_name']}",
+                color='green',
+                fill=True,
+                fill_opacity=0.7,
+                tooltip=f"Stop ID: {row['stop_name']}"
+            ).add_to(m)
 
     # Housing clusters
     for loc in locations:
@@ -174,3 +204,6 @@ if commute_data:
 # RAW DATA PREVIEW
 st.header("Raw Data Preview")
 st.dataframe(df.head())
+
+st.header("Bus Raw Data Preview")
+st.dataframe(df_two.head())
