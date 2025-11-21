@@ -111,7 +111,7 @@ with left:
             ).add_to(m)
     # May over lap with housing clusters, but provides additional detail
     # Intersection points from lon_lat_final_data.csv (original survey data)
-    df_thre=df_three.groupby(['lat','lon']).size().reset_index(name='count')
+    df_three=df_three.groupby(['lat','lon']).size().reset_index(name='count')
     for _, point in df_three.iterrows():
         folium.CircleMarker(
             [point['lat'], point['lon']],
@@ -132,7 +132,7 @@ with left:
             fill_opacity=0.6,
             tooltip=f"{loc['city']} ({loc['count']} students)"
         ).add_to(m)
-    # Intersection points from lon_lat_final_data.csv
+
    
         
     map_data = st_folium(m, width=900, height=600, returned_objects=["last_clicked"])
