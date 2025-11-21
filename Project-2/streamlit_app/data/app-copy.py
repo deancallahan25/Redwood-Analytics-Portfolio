@@ -202,24 +202,42 @@ with right:
 # ADD BAR CHART
 if commute_data:
     df_commute = pd.DataFrame(commute_data)
-    
-    # Melt dataframe for Altair plotting
-    if km_mode_on:
-        df_melt = df_commute.melt(id_vars="Mode", value_vars=["Minutes", "Distance_km"],
-                                  var_name="Type", value_name="Value")
-    else:
-        df_melt = df_commute.melt(id_vars="Mode", value_vars=["Minutes", "Distance_mi"],
-                              var_name="Type", value_name="Value")
 
-    chart = alt.Chart(df_melt).mark_bar().encode(
-        x=alt.X("Mode:N", title="Transportation Mode"),
-        y=alt.Y("Value:Q", title="Value"),
-        color="Type:N",
-        tooltip=["Mode", "Type", "Value"]
-    ).properties(width=300, height=300)
+    # --- MINUTES CHART ---
+    df_minutes = df_commute[["Mode", "Minutes"]].copy()
 
-    st.header("Commuting Times & Distances")
-    st.altair_chart(chart)
+    chart_minutes = (
+        alt.Chart(df_minutes)
+        .mark_bar(color = "#1f77b4")  # Blue
+        .encode(
+            x = alt.X("Mode:N", title = "Transportation Mode"),
+            y = alt.Y("Minutes:Q", title = "Minutes"),
+            tooltip = ["Mode", "Minutes"]
+        )
+        .properties(title = "Commute Time (Minutes)", width = 300, height = 300)
+    )
+
+    # --- DISTANCE CHART ---
+    df_distance = df_commute[["Mode", "Distance_mi"]].copy()
+
+    chart_distance = (
+        alt.Chart(df_distance)
+        .mark_bar(color = "#2ca02c")  # Green
+        .encode(
+            x = alt.X("Mode:N", title = "Transportation Mode"),
+            y = alt.Y("Distance_mi:Q", title = "Distance (mi)"),
+            tooltip = ["Mode", "Distance_mi"]
+        )
+        .properties(title="Commute Distance (mi)", width=300, height=300)
+    )
+
+    st.header("Commute Time & Distance")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.altair_chart(chart_minutes)
+    with col2:
+        st.altair_chart(chart_distance)
+
 
 # Recommendation Logic
 
