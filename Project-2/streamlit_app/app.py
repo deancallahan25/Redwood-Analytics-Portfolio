@@ -34,7 +34,7 @@ df_two = load_data_two()
 
 #load the validated lon lat data from the suvery data file
 def load_data_three():
-    df = pd.read_csv("Project-2/streamlit_app/data/lon_lat_final.csv")
+    df = pd.read_csv("Project-2/streamlit_app/data/lon_lat_final_data.csv")
     return df
 df_three = load_data_three()
 
