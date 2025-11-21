@@ -3,58 +3,59 @@ import pandas as pd
 import folium
 from streamlit_folium import st_folium
 import requests
+import altair as alt
 
-# PAGE SETTINGS
+
+
+# CONFIGURATION
 st.set_page_config(page_title="Transportation & Housing Dashboard", layout="wide")
 st.title("🚗 Should I Bring a Car to Campus?")
 
 CAMPUS_LAT = 40.8762
 CAMPUS_LON = -124.0786
 
-# DATA LOADING
+# 🔐 HARD-CODED GOOGLE MAPS API KEY (replace with your real key)
+API_KEY = "AIzaSyCK28ITsrC4lM6QbGgm5NbrpJdHpytTUWE"
 
+
+# DATA LOADING
 @st.cache_data
 def load_data():
-    df= pd.read_csv("Project-2/streamlit_app/data/final_address_data.csv")
+    df = pd.read_csv("Project-2/streamlit_app/data/final_address_data.csv")
     return df
-df= load_data()
 
-# SIDEBAR CONTROLS
+df = load_data()
 
-cols = st.columns([1, 3])
+def load_data_two():
+    df = pd.read_csv("Project-2/streamlit_app/data/jack-pass-bus-stops.csv")
+    return df
 
-with cols[0]:
-    st.header("Transportation Options")
+df_two = load_data_two()
 
-    METHODS = ["CAR", "WALK", "SHUTTLE", "BIKE"]
-    DEFAULT = ["CAR", "WALK"]
+def load_data_three():
+    df = pd.read_csv("Project-2/streamlit_app/data/commuter_intersections.csv")
+    return df
 
-    tickers = st.multiselect(
-        "Transportation methods",
-        options = METHODS,
-        default = DEFAULT,
-        placeholder = "Choose transport methods",
-    )
+df_three = load_data_three()
 
-    tickers = [t.upper() for t in tickers]
 
-    if not tickers:
-        st.info("Pick at least one transportation method.")
-        st.stop()
+st.header("Google Maps API (Optional)")
 
-    st.divider()
-    st.header("Google Maps API (Optional)")
-
-    api_key = st.text_input(
+api_key_test = st.text_input(
         "Google Maps API Key",
         type = "password",
         help = "Optional: enable Directions API in Google Cloud Console"
     )
 
+st.header("Toggle Information")
+bus_stops_on = st.toggle("Show bus stops")
+if bus_stops_on:
+    st.write("Bus stops are displayed on the map.")
+km_mode_on = st.toggle("Show distances in kilometers")
+if km_mode_on:
+    st.write("Distances are shown in kilometers.")
 
-
-# COMPUTE COMMON LIVING LOCATIONS
-
+# PREPROCESS LIVING LOCATION CLUSTERS
 @st.cache_data
 def get_common_locations(df):
     valid = df[
@@ -73,17 +74,19 @@ def get_common_locations(df):
     }).reset_index()
 
     groups.columns = ['lat_r', 'lon_r', 'lat', 'lon', 'city', 'count']
-
     return groups.to_dict("records")
 
 locations = get_common_locations(df)
 
-# ONE UNIFIED MAP (RADIUS + CLUSTERS + CLICK)
 
-with cols[1]:
-    st.header("Transportation Map")
 
-    # BASE MAP
+# MAP + ROUTE CELLS
+st.header("Transportation Map")
+
+left, right = st.columns([1.3, 1])  # slightly wider map, narrower right cell
+
+# LEFT CELL → MAP
+with left:
     m = folium.Map(location=[CAMPUS_LAT, CAMPUS_LON], zoom_start=13)
 
     # Campus marker
@@ -94,139 +97,201 @@ with cols[1]:
         icon=folium.Icon(color="red", icon="university", prefix="fa")
     ).add_to(m)
 
-    # Transport radii
-    radius_map = {
-        "WALK": 800,
-        "BIKE": 1000,
-        "SHUTTLE": 1700,
-        "CAR": 3000
-    }
-    color_map = {
-        "WALK": "green",
-        "BIKE": "orange",
-        "SHUTTLE": "purple",
-        "CAR": "blue",
-    }
-
-    for method in tickers:
-        folium.Circle(
-            location = [CAMPUS_LAT, CAMPUS_LON],
-            radius = radius_map.get(method, 0),
-            color = color_map.get(method, "gray"),
-            fill = True,
-            fill_opacity = 0.25,
-            popup = f"{method} radius"
-        ).add_to(m)
-
-    # Adding hosuing clusters with knn & with click interaction if the api is provided
-
-    if api_key:
-        st.success("API key detected — showing housing clusters & interactive routing.")
-
-        # Add student living clusters
-        for loc in locations:
+    # Bus stops
+    if bus_stops_on:
+        for _, row in df_two.iterrows():
             folium.CircleMarker(
-                [loc['lat'], loc['lon']],
-                radius = loc['count'] / 2,
-                popup = f"{loc['city']}<br>Students: {loc['count']}",
-                color = 'blue',
-                fill = True,
-                fill_opacity = 0.6,
-                tooltip = f"{loc['city']} ({loc['count']} students)"
+                [row['latitude'], row['longitude']],
+                radius=3,
+                popup=f"Stop ID: {row['stop_name']}",
+                color='green',
+                fill=True,
+                fill_opacity=0.7,
+                tooltip=f"Stop ID: {row['stop_name']}"
             ).add_to(m)
 
-        # Map supports clicking
-        map_data = st_folium(m, width=900, height=600, returned_objects=["last_clicked"])
-    else:
-        st.info("Enter a Google Maps API key to enable interactive commuting estimates.")
-        # Static rendering — no clicks returned
-        map_data = st_folium(m, width=900, height=600)
+    # Housing clusters
+    for loc in locations:
+        folium.CircleMarker(
+            [loc['lat'], loc['lon']],
+            radius=loc['count'] / 2,
+            popup=f"{loc['city']}<br>Students: {loc['count']}",
+            color='blue',
+            fill=True,
+            fill_opacity=0.6,
+            tooltip=f"{loc['city']} ({loc['count']} students)"
+        ).add_to(m)
 
-# Extract click only when allowed
-clicked = map_data.get("last_clicked") if api_key else None
+    map_data = st_folium(m, width=900, height=600, returned_objects=["last_clicked"])
+    clicked = map_data.get("last_clicked")
 
-# Communting time / Distance estimates time of arrival
 
-if clicked:
-    clicked_lat = clicked["lat"]
-    clicked_lon = clicked["lng"]
+# RIGHT CELL → ROUTE ESTIMATES
+with right:
+    if clicked:
+        clicked_lat = clicked["lat"]
+        clicked_lon = clicked["lng"]
 
-    st.subheader(
-        f"Commuting Times from Selected Location ({clicked_lat:.4f}, {clicked_lon:.4f})"
-    )
+        st.markdown("<h2>Commuting Times</h2>", unsafe_allow_html=True)
 
-    # Find closest city grouping
-    closest = min(
-        locations,
-        key = lambda loc: (loc["lat"] - clicked_lat)**2 + (loc["lon"] - clicked_lon)**2
-    )
+        # nearest city cluster
+        closest = min(
+            locations,
+            key=lambda loc: (loc["lat"] - clicked_lat)**2 + (loc["lon"] - clicked_lon)**2
+        )
 
-    st.write(f"Closest location: **{closest['city']}**")
-    st.write(f"Student count: {closest['count']}")
+        st.markdown(f"<p style='font-size:20px;'><b>Closest:</b> {closest['city']}</p>", unsafe_allow_html=True)
+        st.markdown(f"<p style='font-size:20px; margin-bottom:10px;'><b>Students:</b> {closest['count']}</p>", unsafe_allow_html=True)
 
-    col1, col2, col3 = st.columns(3)
+        commute_data = []  # store data for bar chart
 
-    #Google Api map
-    if api_key:
-
+        # GOOGLE DIRECTIONS API FUNCTION
         def get_route(start_lat, start_lon, end_lat, end_lon, mode):
             url = "https://maps.googleapis.com/maps/api/directions/json"
             params = {
                 "origin": f"{start_lat},{start_lon}",
                 "destination": f"{end_lat},{end_lon}",
                 "mode": mode,
-                "key": api_key
+                "key": API_KEY
             }
             response = requests.get(url, params=params)
             data = response.json()
             if data["status"] != "OK":
                 return None, None
             leg = data["routes"][0]["legs"][0]
-            return leg["duration"]["value"]/60, leg["distance"]["value"]/1000  # minutes, km
-
-        with col1:
-            st.write("Walking")
-            t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "walking")
-            st.metric("Time", f"{t:.1f} min")
-            st.metric("Distance", f"{d:.2f} km")
+            return leg["duration"]["value"]/60, leg["distance"]["value"]/1000
 
 
-
-        with col2:
-            st.write("Biking")
-            t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "bicycling")
-            st.metric("Time", f"{t:.1f} min")
-            st.metric("Distance", f"{d:.2f} km")
-
-        with col3:
-            st.write("Transit")
-            t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "transit")
-            st.metric("Time", f"{t:.1f} min")
-            st.metric("Distance", f"{d:.2f} km")
-
-    #Estimated (NO API KEY) 
+        # SHOW ROUTE FUNCTION (BIGGER TEXT)
+        def show_route(label, minutes, km):
+            if minutes is None or km is None:
+                st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> not available</p>", unsafe_allow_html=True)
+            else:
+                if km_mode_on:
+                    st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {km:.2f} km</p>", unsafe_allow_html=True)
+                else: 
+                    miles = km * 0.621371
+                    st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {miles:.2f} mi</p>", unsafe_allow_html=True)
+        # DRIVING
+        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "driving")
+        show_route("Driving", t, d)
+        if km_mode_on:
+            commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_mi": d*.621371})
+        # Walking
+        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "walking")
+        show_route("Walking", t, d)
+        if km_mode_on:
+            commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_mi": d*.621371})
+        # Biking
+        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "bicycling")
+        show_route("Biking", t, d)
+        if km_mode_on:
+            commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_mi": d*.621371})            
+        # Transit
+        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "Transit")
+        show_route("Transit", t, d)
+        if km_mode_on:
+            commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_km": d})
+        else:
+            commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_mi": d*.621371})
     else:
-        st.info("Enter a Google Maps API key for real travel times. Showing estimates instead.")
-
-        dist_km = ((clicked_lat - CAMPUS_LAT)**2 + (clicked_lon - CAMPUS_LON)**2)**0.5 * 111
-
-        with col1:
-            st.write("Walking")
-            st.metric("Time", f"{dist_km * 12:.1f} min")
-            st.metric("Distance", f"{dist_km:.2f} km")
-
-        with col2:
-            st.write("Biking")
-            st.metric("Time", f"{dist_km * 4:.1f} min")
-            st.metric("Distance", f"{dist_km:.2f} km")
-
-        with col3:
-            st.write("Transit")
-            st.metric("Time", f"{dist_km * 3:.1f} min")
-            st.metric("Distance", f"{dist_km:.2f} km")
+        st.markdown("<p style='font-size:20px;'>Click a point on the map to estimate commute times.</p>", unsafe_allow_html=True)
+        
+        commute_data = []
 
 
+# ADD BAR CHART
+if commute_data:
+    df_commute = pd.DataFrame(commute_data)
 
-# Data Preview
-st.header("Raw Data Preview")
-st.dataframe(df.head())
+    # --- MINUTES CHART ---
+    df_minutes = df_commute[["Mode", "Minutes"]].copy()
+
+    chart_minutes = (
+        alt.Chart(df_minutes)
+        .mark_bar(color = "#1f77b4")  # Blue
+        .encode(
+            x = alt.X("Mode:N", title = "Transportation Mode"),
+            y = alt.Y("Minutes:Q", title = "Minutes"),
+            tooltip = ["Mode", "Minutes"]
+        )
+        .properties(title = "Commute Time (Minutes)", width = 300, height = 300)
+    )
+
+    # --- DISTANCE CHART ---
+    df_distance = df_commute[["Mode", "Distance_mi"]].copy()
+
+    chart_distance = (
+        alt.Chart(df_distance)
+        .mark_bar(color = "#2ca02c")  # Green
+        .encode(
+            x = alt.X("Mode:N", title = "Transportation Mode"),
+            y = alt.Y("Distance_mi:Q", title = "Distance (mi)"),
+            tooltip = ["Mode", "Distance_mi"]
+        )
+        .properties(title="Commute Distance (mi)", width=300, height=300)
+    )
+
+    st.header("Commute Time & Distance")
+    col1, col2 = st.columns(2)
+    with col1:
+        st.altair_chart(chart_minutes)
+    with col2:
+        st.altair_chart(chart_distance)
+
+
+# Recommendation Logic
+
+def get_minutes_for_mode(mode):
+    for row in commute_data:
+        if row['Mode'] == mode:
+            return row['Minutes']
+    return None
+
+drive_time=get_minutes_for_mode("Driving")
+walk_time=get_minutes_for_mode("Walking")
+biking_time=get_minutes_for_mode("Biking")
+transit_time=get_minutes_for_mode("Transit")
+
+
+#can change these values possibly based on user input later
+bring_car = None
+max_walk_time=20 
+max_bike_time=30 
+max_transit_time=45  
+
+if(walk_time!=None):
+    if(walk_time > max_walk_time):
+        bring_car=True
+    else:
+        bring_car=False
+elif(biking_time!=None):
+    if(biking_time > max_bike_time):
+        bring_car=True
+    else:
+        bring_car=False
+elif(transit_time!=None):
+    if(transit_time > max_transit_time):
+        bring_car=True
+    else:
+        bring_car=False
+
+
+# Recommendation Text
+
+st.header("Recommendation")
+if bring_car==True:
+    st.success("We recommend bringing a car to campus")
+elif bring_car==False:
+    st.text("We do not recommend bringing a car to campus")
+else:
+    st.text("No recommendation available at this time")
+
+
+

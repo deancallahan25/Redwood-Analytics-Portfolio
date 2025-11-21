@@ -16,23 +16,6 @@
     * This will involve compiling the findings from the two above steps into a document that outlines the specific data elements needed for our project
 * This portion should be completed by: November 7, 2025
 
-## Student Interviews and Survey Coordination
-* Conduct interviews with other students to understand their decision-making process
-    * Time estimation: 2 hours
-    * This will involve preparing a google form or at least some interview questions, finding participants, and either sending out the survey or conducting interviews
-    * This could potentially invovle collaborating with other team members to reach a wider audience
-* Collaborate with campus transportation services to draft relevant questions for Cal Poly Humboldt's annual spring semester survey
-    * Time estimation: 30 mins to an hour
-    * This will involve organizing with our professor Rosanna Overholser to reach out to campus transportation services and working with them to draft questions that align with our project's goals
-* Synthesize interview and survey insights into actionable data requirements
-    * Time estimation: 30 mins to an hour
-    * This will involve analyzing the responses from the interviews and/or survey to identify what the key data factors are for students when deciding whether to bring a car to campus
-    * This will likely involve collaborating with Tech Lead and Quality Assurance roles to ensure they know what data to focus on when building the dashboard
-* Document interview and survey findings, and survey question recommendations
-    * Time estimation: 1 hour
-    * This will involve compiling the insights from the interviews and survey into a document that outlines the key findings and recommendations for survey questions
-* This portion should be completed by: November 12, 2025
-
 ## Address Data Management and Geographic Visualization
 * Validate address data to ensure addresses are real and accurate using geo validation
     * Time estimation: 1-2 hours
@@ -42,10 +25,6 @@
     * Time estimation: 2-3 hours
     * This step will involve trying a few different methods to summarize the address data, such as clustering based on geographic proximity or aggregating to a higher-level geographic unit like neighborhood or street
     * Collaboration with Tech Lead and Quality Assurance may be necessary to ensure the summarized data still meets the project's needs
-* Create map visualizations showing common living locations around campus
-    * Time estimation: 2 hours
-    * This will involve using geographic visualization tools, like geopandas or a similar library, to visualize the summarized address data on a map to show common living locations around campus
-    * Collaboration with Tech Lead and Quality Assurance may be helpful in this step to ensure the visualizations are effective and meet the project's goals
 * Overlay transit options on the map
     * Time estimation: 1-1.5 hours
     * This will involve combining the map visualizations with data on campus transit options to provide a comprehensive view of transportation options for students
@@ -70,4 +49,5 @@
     * Time estimation: 1 hour
     * This will involve compiling the findings from the research and analysis into insights that can inform the content and features of the dashboard being developed
 * Sections 1 and 2 of this portion should be completed by: November 7, 2025
+
 * Section 4 of this portion should be completed by: November 20th, 2025
