@@ -35,6 +35,8 @@ df_two = load_data_two()
 #load the validated lon lat data from the suvery data file
 def load_data_three():
     df = pd.read_csv("Project-2/streamlit_app/data/lon_lat_final_data.csv")
+    st.dataframe(df.head())        # shows what columns actually exist
+    st.write("Columns:", list(df.columns))
     return df
 df_three = load_data_three()
 #df_three[['lon','lat']] = df_three[['Lon','Lat']].str.split(',', expand=True).astype(float)
@@ -42,7 +44,7 @@ df_three = load_data_three()
 #df_three['lon'] = pd.to_numeric(df_three['lon'], errors='coerce')
 #df_three['lat'] = pd.to_numeric(df_three['lat'], errors='coerce')
 #df_three = df_three.dropna(subset=['lon', 'lat'])
-print(df_three.head())
+
 
 st.header("Google Maps API (Optional)")
 
