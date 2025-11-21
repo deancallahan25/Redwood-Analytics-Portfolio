@@ -109,7 +109,15 @@ with left:
                 fill_opacity=0.7,
                 tooltip=f"Stop ID: {row['stop_name']}"
             ).add_to(m)
-
+    # May over lap with housing clusters, but provides additional detail
+    for _, point in df_three.iterrows():
+        folium.CircleMarker(
+            [point['lat'], point['lon']],
+            radius=2,
+            color='orange',
+            fill=True,
+            fill_opacity=0.5,
+        ).add_to(m)
     # Housing clusters
     #lat lon from final_address_data.csv
     for loc in locations:
@@ -123,15 +131,7 @@ with left:
             tooltip=f"{loc['city']} ({loc['count']} students)"
         ).add_to(m)
     # Intersection points from lon_lat_final_data.csv
-    # May over lap with housing clusters, but provides additional detail
-    for _, point in df_three.iterrows():
-        folium.CircleMarker(
-            [point['lat'], point['lon']],
-            radius=2,
-            color='orange',
-            fill=True,
-            fill_opacity=0.5,
-        ).add_to(m)
+   
         
     map_data = st_folium(m, width=900, height=600, returned_objects=["last_clicked"])
     clicked = map_data.get("last_clicked")
