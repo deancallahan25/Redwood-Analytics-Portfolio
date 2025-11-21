@@ -216,6 +216,43 @@ with right:
     else:
         st.markdown("<p style='font-size:20px;'>Click a point on the map to estimate commute times.</p>", unsafe_allow_html=True)
         commute_data = []
+# Recommendation Logic
+
+def get_minutes_for_mode(mode):
+    for row in commute_data:
+        if row['Mode'] == mode:
+            return row['Minutes']
+    return None
+
+drive_time=get_minutes_for_mode("Driving")
+walk_time=get_minutes_for_mode("Walking")
+biking_time=get_minutes_for_mode("Biking")
+transit_time=get_minutes_for_mode("Transit")
+
+# --- Recommendation Logic ---
+max_walk_time = 20
+max_bike_time = 30
+max_transit_time = 45
+bring_car = None
+if commute_data:
+    # only compare if values exist
+    walk_ok =(walk_time is not None) and (walk_time <= max_walk_time)
+    bike_ok = (biking_time is not None) and (biking_time <= max_bike_time)
+    transit_ok = (transit_time is not None) and (transit_time <= max_transit_time)
+    # If at least one non-car mode is convenient (under its threshold), no need for a car
+    if walk_ok or bike_ok or transit_ok:
+        bring_car = False
+    else:
+        bring_car = True
+
+# Recommendation Text
+st.header("Recommendation")
+if bring_car==True:
+    st.success("We recommend bringing a car to campus")
+elif bring_car==False:
+    st.text("We do not recommend bringing a car to campus")
+else:
+    st.text("No recommendation available at this time")
 
 # ADD BAR CHART
 if commute_data:
@@ -262,49 +299,6 @@ if commute_data:
     with col2:
         st.altair_chart(chart_distance)
 
-
-# Recommendation Logic
-
-def get_minutes_for_mode(mode):
-    for row in commute_data:
-        if row['Mode'] == mode:
-            return row['Minutes']
-    return None
-
-drive_time=get_minutes_for_mode("Driving")
-walk_time=get_minutes_for_mode("Walking")
-biking_time=get_minutes_for_mode("Biking")
-transit_time=get_minutes_for_mode("Transit")
-
-# --- Recommendation Logic ---
-max_walk_time = 20
-max_bike_time = 30
-max_transit_time = 45
-
-bring_car = None
-
-if commute_data:
-    # only compare if values exist
-    walk_ok    = (walk_time is not None) and (walk_time <= max_walk_time)
-    bike_ok    = (biking_time is not None) and (biking_time <= max_bike_time)
-    transit_ok = (transit_time is not None) and (transit_time <= max_transit_time)
-
-    # If at least one non-car mode is convenient (under its threshold), no need for a car
-    if walk_ok or bike_ok or transit_ok:
-        bring_car = False
-    else:
-        bring_car = True
-
-
-# Recommendation Text
-
-st.header("Recommendation")
-if bring_car==True:
-    st.success("We recommend bringing a car to campus")
-elif bring_car==False:
-    st.text("We do not recommend bringing a car to campus")
-else:
-    st.text("No recommendation available at this time")
 
 
 
