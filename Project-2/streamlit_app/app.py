@@ -290,9 +290,4 @@ else:
     st.text("No recommendation available at this time")
 
 
-# RAW DATA PREVIEW
-st.header("Raw Data Preview")
-st.dataframe(df.head())
 
-st.header("Bus Raw Data Preview")
-st.dataframe(df_two.head())
