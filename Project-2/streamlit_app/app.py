@@ -272,7 +272,6 @@ if(walk_time!=None):
 elif(biking_time!=None):
     if(biking_time > max_bike_time):
         bring_car=True
-
 elif(transit_time!=None):
     if(transit_time > max_transit_time):
         bring_car=True
@@ -284,7 +283,7 @@ else:
 st.header("Recommendation")
 if bring_car==True:
     st.success("We recommend bringing a car to campus")
-if bring_car==False:
+elif bring_car==False:
     st.text("We do not recommend bringing a car to campus")
 else:
     st.text("No recommendation available at this time")
