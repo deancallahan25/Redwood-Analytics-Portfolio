@@ -6,8 +6,8 @@
 ### Created by Redwood Analytics
 - Tech Lead: Jaiden Roe - jaidenroe@gmail.com, Github: https://github.com/m0chii-choco
 - Project Manager: Dean Callahan - deancallahan25@gmail.com - GitHub: https://github.com/deancallahan25
-- Domain Expert: Zachary Griffiths - zgriffiths73@gmail.com, https://github.com/WatermelonGOD7
-- Quality Assurance: Evan Blem - blem3147@gmail.com, https://github.com/bleme8779
+- Domain Expert: Zachary Griffiths - zgriffiths73@gmail.com, GitHub: https://github.com/WatermelonGOD7
+- Quality Assurance: Evan Blem - blem3147@gmail.com, GitHub: https://github.com/bleme8779
 - Project Web Page: (link here)
 - Streamlit cloud link: https://redwood-analytics-project2.streamlit.app/
 
