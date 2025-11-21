@@ -38,11 +38,11 @@ def load_data_three():
     return df
 df_three = load_data_three()
 #df_three[['lon','lat']] = df_three[['Lon','Lat']].str.split(',', expand=True).astype(float)
-df_three[['lon', 'lat']] = df_three['lon, lat'].str.split(',', expand=True)
-df_three['lon'] = pd.to_numeric(df_three['lon'], errors='coerce')
-df_three['lat'] = pd.to_numeric(df_three['lat'], errors='coerce')
-df_three = df_three.dropna(subset=['lon', 'lat'])
-
+#df_three[['lon', 'lat']] = df_three['lon, lat'].str.split(',', expand=True)
+#df_three['lon'] = pd.to_numeric(df_three['lon'], errors='coerce')
+#df_three['lat'] = pd.to_numeric(df_three['lat'], errors='coerce')
+#df_three = df_three.dropna(subset=['lon', 'lat'])
+print(df_three.head())
 
 st.header("Google Maps API (Optional)")
 
