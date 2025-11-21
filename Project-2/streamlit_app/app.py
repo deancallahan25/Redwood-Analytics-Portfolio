@@ -123,7 +123,7 @@ with left:
 
     for point in df_three.itertuples():
         folium.CircleMarker(
-            location=[point.latitude, point.longitude],
+            location=[point.lat, point.lon],
             radius=2,
             color='orange',
             fill=True,
