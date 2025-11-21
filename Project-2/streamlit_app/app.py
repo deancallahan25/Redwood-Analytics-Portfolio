@@ -84,6 +84,7 @@ locations = get_common_locations(df)
 st.header("Transportation Map")
 
 left, right = st.columns([1.3, 1])  # slightly wider map, narrower right cell
+commute_data = []
 
 # LEFT CELL → MAP
 with left:
@@ -217,7 +218,6 @@ with right:
     else:
         st.markdown("<p style='font-size:20px;'>Click a point on the map to estimate commute times.</p>", unsafe_allow_html=True)
         commute_data = []
-
 
 # ADD BAR CHART
 if commute_data:
