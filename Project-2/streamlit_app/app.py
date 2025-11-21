@@ -32,7 +32,7 @@ def load_data_two():
 
 df_two = load_data_two()
 
-#load the validated lon lat data from the suvery data file
+#load the validated lon lat data of the intersections from the suvery data file
 def load_data_three():
     df = pd.read_csv("Project-2/streamlit_app/data/lon_lat_final_data.csv")
     return df
@@ -111,6 +111,7 @@ with left:
             ).add_to(m)
 
     # Housing clusters
+    #lat lon from final_address_data.csv
     for loc in locations:
         folium.CircleMarker(
             [loc['lat'], loc['lon']],
@@ -121,15 +122,15 @@ with left:
             fill_opacity=0.6,
             tooltip=f"{loc['city']} ({loc['count']} students)"
         ).add_to(m)
-
+    # Intersection points from lon_lat_final_data.csv
+    # May over lap with housing clusters, but provides additional detail
     for _, point in df_three.iterrows():
         folium.CircleMarker(
             [point['lat'], point['lon']],
-            radius=3,
+            radius=2,
             color='orange',
             fill=True,
             fill_opacity=0.5,
-            tooltip=f"Intersection Point"
         ).add_to(m)
         
     map_data = st_folium(m, width=900, height=600, returned_objects=["last_clicked"])
