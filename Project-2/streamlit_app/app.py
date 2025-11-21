@@ -32,11 +32,6 @@ def load_data_two():
 
 df_two = load_data_two()
 
-def load_data_three():
-    df = pd.read_csv("Project-2/streamlit_app/data/commuter_intersections.csv")
-    return df
-
-df_three = load_data_three()
 
 
 st.header("Google Maps API (Optional)")
