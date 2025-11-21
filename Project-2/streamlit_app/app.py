@@ -14,8 +14,6 @@ st.title("🚗 Should I Bring a Car to Campus?")
 CAMPUS_LAT = 40.8762
 CAMPUS_LON = -124.0786
 
-# 🔐 HARD-CODED GOOGLE MAPS API KEY (replace with your real key)
-API_KEY = "AIzaSyCK28ITsrC4lM6QbGgm5NbrpJdHpytTUWE"
 
 
 # DATA LOADING
@@ -41,7 +39,7 @@ df_three = load_data_three()
 
 st.header("Google Maps API (Optional)")
 
-api_key_test = st.text_input(
+API_KEY = st.text_input(
         "Google Maps API Key",
         type = "password",
         help = "Optional: enable Directions API in Google Cloud Console"
@@ -141,7 +139,7 @@ with left:
 # RIGHT CELL → ROUTE ESTIMATES
 with right:
     if clicked:
-        if api_key_test:
+        if API_KEY:
             clicked_lat = clicked["lat"]
             clicked_lon = clicked["lng"]
 
@@ -165,7 +163,7 @@ with right:
                     "origin": f"{start_lat},{start_lon}",
                     "destination": f"{end_lat},{end_lon}",
                     "mode": mode,
-                    "key": api_key_test
+                    "key": API_KEY
                 }
                 response = requests.get(url, params=params)
                 data = response.json()
