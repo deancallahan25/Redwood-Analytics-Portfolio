@@ -140,80 +140,82 @@ with left:
 # RIGHT CELL → ROUTE ESTIMATES
 with right:
     if clicked:
-        clicked_lat = clicked["lat"]
-        clicked_lon = clicked["lng"]
+        if api_key_test:
+            clicked_lat = clicked["lat"]
+            clicked_lon = clicked["lng"]
 
-        st.markdown("<h2>Commuting Times</h2>", unsafe_allow_html=True)
+            st.markdown("<h2>Commuting Times</h2>", unsafe_allow_html=True)
 
-        # nearest city cluster
-        closest = min(
-            locations,
-            key=lambda loc: (loc["lat"] - clicked_lat)**2 + (loc["lon"] - clicked_lon)**2
-        )
+            # nearest city cluster
+            closest = min(
+               locations,
+              key=lambda loc: (loc["lat"] - clicked_lat)**2 + (loc["lon"] - clicked_lon)**2
+            )
 
-        st.markdown(f"<p style='font-size:20px;'><b>Closest:</b> {closest['city']}</p>", unsafe_allow_html=True)
-        st.markdown(f"<p style='font-size:20px; margin-bottom:10px;'><b>Students:</b> {closest['count']}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size:20px;'><b>Closest:</b> {closest['city']}</p>", unsafe_allow_html=True)
+            st.markdown(f"<p style='font-size:20px; margin-bottom:10px;'><b>Students:</b> {closest['count']}</p>", unsafe_allow_html=True)
 
-        commute_data = []  # store data for bar chart
+            commute_data = []  # store data for bar chart
 
-        # GOOGLE DIRECTIONS API FUNCTION
-        def get_route(start_lat, start_lon, end_lat, end_lon, mode):
-            url = "https://maps.googleapis.com/maps/api/directions/json"
-            params = {
-                "origin": f"{start_lat},{start_lon}",
-                "destination": f"{end_lat},{end_lon}",
-                "mode": mode,
-                "key": API_KEY
-            }
-            response = requests.get(url, params=params)
-            data = response.json()
-            if data["status"] != "OK":
-                return None, None
-            leg = data["routes"][0]["legs"][0]
-            return leg["duration"]["value"]/60, leg["distance"]["value"]/1000
+            # GOOGLE DIRECTIONS API FUNCTION
+            def get_route(start_lat, start_lon, end_lat, end_lon, mode):
+                url = "https://maps.googleapis.com/maps/api/directions/json"
+                params = {
+                    "origin": f"{start_lat},{start_lon}",
+                    "destination": f"{end_lat},{end_lon}",
+                    "mode": mode,
+                    "key": api_key_test
+                }
+                response = requests.get(url, params=params)
+                data = response.json()
+                if data["status"] != "OK":
+                    return None, None
+                leg = data["routes"][0]["legs"][0]
+                return leg["duration"]["value"]/60, leg["distance"]["value"]/1000
 
 
-        # SHOW ROUTE FUNCTION (BIGGER TEXT)
-        def show_route(label, minutes, km):
-            if minutes is None or km is None:
-                st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> not available</p>", unsafe_allow_html=True)
+            # SHOW ROUTE FUNCTION (BIGGER TEXT)
+            def show_route(label, minutes, km):
+                if minutes is None or km is None:
+                    st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> not available</p>", unsafe_allow_html=True)
+                else:
+                    if km_mode_on:
+                       st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {km:.2f} km</p>", unsafe_allow_html=True)
+                    else: 
+                       miles = km * 0.621371
+                       st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {miles:.2f} mi</p>", unsafe_allow_html=True)
+            # DRIVING
+            t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "driving")
+            show_route("Driving", t, d)
+            if km_mode_on:
+                commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_km": d})
             else:
-                if km_mode_on:
-                    st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {km:.2f} km</p>", unsafe_allow_html=True)
-                else: 
-                    miles = km * 0.621371
-                    st.markdown(f"<p style='font-size:20px;'><b>{label}:</b> {minutes:.1f} min • {miles:.2f} mi</p>", unsafe_allow_html=True)
-        # DRIVING
-        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "driving")
-        show_route("Driving", t, d)
-        if km_mode_on:
-            commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_km": d})
+                commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_mi": d*.621371})
+            # Walking
+            t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "walking")
+            show_route("Walking", t, d)
+            if km_mode_on:
+                commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_km": d})
+            else:
+                commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_mi": d*.621371})
+            # Biking
+            t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "bicycling")
+            show_route("Biking", t, d)
+            if km_mode_on:
+                commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_km": d})
+            else:
+                commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_mi": d*.621371})            
+            # Transit
+            t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "Transit")
+            show_route("Transit", t, d)
+            if km_mode_on:
+                commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_km": d})
+            else:
+                commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_mi": d*.621371})
         else:
-            commute_data.append({"Mode": "Driving", "Minutes": t, "Distance_mi": d*.621371})
-        # Walking
-        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "walking")
-        show_route("Walking", t, d)
-        if km_mode_on:
-            commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_km": d})
-        else:
-            commute_data.append({"Mode": "Walking", "Minutes": t, "Distance_mi": d*.621371})
-        # Biking
-        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "bicycling")
-        show_route("Biking", t, d)
-        if km_mode_on:
-            commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_km": d})
-        else:
-            commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_mi": d*.621371})            
-        # Transit
-        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "Transit")
-        show_route("Transit", t, d)
-        if km_mode_on:
-            commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_km": d})
-        else:
-            commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_mi": d*.621371})
+            st.warning("Please enter a valid Google Maps API Key to get commute estimates.")
     else:
         st.markdown("<p style='font-size:20px;'>Click a point on the map to estimate commute times.</p>", unsafe_allow_html=True)
-        
         commute_data = []
 
 
