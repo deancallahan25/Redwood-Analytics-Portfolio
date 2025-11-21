@@ -110,11 +110,12 @@ with left:
                 tooltip=f"Stop ID: {row['stop_name']}"
             ).add_to(m)
     # May over lap with housing clusters, but provides additional detail
+    # Intersection points from lon_lat_final_data.csv (original survey data)
     for _, point in df_three.iterrows():
         folium.CircleMarker(
             [point['lat'], point['lon']],
             radius=2,
-            color='orange',
+            color='blue',
             fill=True,
             fill_opacity=0.5,
         ).add_to(m)
