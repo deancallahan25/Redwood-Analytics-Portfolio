@@ -113,5 +113,45 @@ final_data.head()
 ### Save data set to be used 
 ```{python}
 #| echo: False
-final_data.to_csv('final_address_data.csv', index=False)
+#final_data.to_csv('final_address_data.csv', index=False)
+```
+### Commuter data cleaning
+```{python}
+import pandas as pd
+intersection_data = pd.read_csv("commuter_intersections.csv")
+clean_intersections = intersection_data[['nearest_intersection']]
+clean_intersections['nearest_intersection'] = clean_intersections['nearest_intersection'] + ', Humboldt County'
+clean_intersections.head()
+```
+### Add latitude and longitude columns for interesections
+```{python}
+import googlemaps
+from datetime import datetime
+import numpy as np
+gmaps = googlemaps.Client(key='AIzaSyCK28ITsrC4lM6QbGgm5NbrpJdHpytTUWE')
+latitude_list = []
+longitude_list = []
+for i in range(len(clean_intersections["nearest_intersection"])):
+    if len(gmaps.geocode(clean_intersections["nearest_intersection"][i])) > 0:
+        longitude_list.append(gmaps.geocode(clean_intersections["nearest_intersection"][i])[0]['geometry']['location']['lng'])
+        latitude_list.append(gmaps.geocode(clean_intersections["nearest_intersection"][i])[0]['geometry']['location']['lat'])
+    else:
+        longitude_list.append(0)
+        latitude_list.append(0)
+clean_intersections['lon'] = longitude_list
+clean_intersections['lat'] = latitude_list
+clean_intersections.head()
+print(len(clean_intersections['lat']))
+```
+### We only need to use the lat and lon from both datasets so we will combine just those columns 
+```{python}
+lon_lat_final_data = pd.DataFrame()
+lon_lat_final_data['lon'] = pd.concat([final_data['lon'],clean_intersections['lon']])
+lon_lat_final_data['lat'] = pd.concat([final_data['lat'],clean_intersections['lat']])
+lon_lat_final_data.head()
+```
+### Save the file for use
+```{python}
+#| echo: False
+lon_lat_final_data.to_csv('lon_lat_final_data.csv', index=False)
 ```
