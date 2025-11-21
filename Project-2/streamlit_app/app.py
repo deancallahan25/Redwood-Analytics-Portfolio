@@ -32,7 +32,11 @@ def load_data_two():
 
 df_two = load_data_two()
 
-
+#load the validated lon lat data from the suvery data file
+def load_data_three():
+    df = pd.read_csv("Project-2/streamlit_app/data/lon_lat_final.csv")
+    return df
+df_three = load_data_three()
 
 st.header("Google Maps API (Optional)")
 
@@ -117,6 +121,16 @@ with left:
             tooltip=f"{loc['city']} ({loc['count']} students)"
         ).add_to(m)
 
+    for point in df_three.itertuples():
+        folium.CircleMarker(
+            location=[point.latitude, point.longitude],
+            radius=2,
+            color='orange',
+            fill=True,
+            fill_opacity=0.5,
+            tooltip=f"Intersection Point"
+        ).add_to(m)
+        \
     map_data = st_folium(m, width=900, height=600, returned_objects=["last_clicked"])
     clicked = map_data.get("last_clicked")
 
