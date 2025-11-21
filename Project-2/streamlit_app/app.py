@@ -276,28 +276,24 @@ walk_time=get_minutes_for_mode("Walking")
 biking_time=get_minutes_for_mode("Biking")
 transit_time=get_minutes_for_mode("Transit")
 
+# --- Recommendation Logic ---
+max_walk_time = 20
+max_bike_time = 30
+max_transit_time = 45
 
-#can change these values possibly based on user input later
 bring_car = None
-max_walk_time=20 
-max_bike_time=30 
-max_transit_time=45  
 
-if(walk_time!=None):
-    if(walk_time > max_walk_time):
-        bring_car=True
+if commute_data:
+    # only compare if values exist
+    walk_ok    = (walk_time is not None) and (walk_time <= max_walk_time)
+    bike_ok    = (biking_time is not None) and (biking_time <= max_bike_time)
+    transit_ok = (transit_time is not None) and (transit_time <= max_transit_time)
+
+    # If at least one non-car mode is convenient (under its threshold), no need for a car
+    if walk_ok or bike_ok or transit_ok:
+        bring_car = False
     else:
-        bring_car=False
-elif(biking_time!=None):
-    if(biking_time > max_bike_time):
-        bring_car=True
-    else:
-        bring_car=False
-elif(transit_time!=None):
-    if(transit_time > max_transit_time):
-        bring_car=True
-    else:
-        bring_car=False
+        bring_car = True
 
 
 # Recommendation Text
