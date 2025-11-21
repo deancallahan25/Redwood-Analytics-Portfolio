@@ -194,7 +194,7 @@ with right:
         else:
             commute_data.append({"Mode": "Biking", "Minutes": t, "Distance_mi": d*.621371})            
         # Transit
-        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "transit")
+        t, d = get_route(clicked_lat, clicked_lon, CAMPUS_LAT, CAMPUS_LON, "Transit")
         show_route("Transit", t, d)
         if km_mode_on:
             commute_data.append({"Mode": "Transit", "Minutes": t, "Distance_km": d})
