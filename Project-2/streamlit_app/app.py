@@ -262,8 +262,8 @@ transit_time=get_minutes_for_mode("Transit")
 
 #can change these values possibly based on user input later
 bring_car = None
-max_walk_time=30 
-max_bike_time=20 
+max_walk_time=20 
+max_bike_time=30 
 max_transit_time=45  
 
 if(walk_time!=None):
