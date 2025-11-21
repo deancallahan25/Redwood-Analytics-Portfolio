@@ -37,7 +37,7 @@ def load_data_three():
     df = pd.read_csv("Project-2/streamlit_app/data/lon_lat_final_data.csv")
     return df
 df_three = load_data_three()
-df_three[['lon','lat']] = df_three[['lon','lat']].split(',', expand=True).astype(float)
+df_three[['lon','lat']] = df_three[['Lon','Lat']].str.split(',', expand=True).astype(float)
 
 
 
