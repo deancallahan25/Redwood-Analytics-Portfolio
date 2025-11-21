@@ -252,7 +252,7 @@ if commute_data:
             y = alt.Y("Distance:Q", title =y_title),
             tooltip = ["Mode", "Distance"]
         )
-        .properties(title="Commute Distance", width=300, height=300)
+        .properties(title="Commute "+y_title, width=300, height=300)
     )
 
     st.header("Commute Time & Distance")
