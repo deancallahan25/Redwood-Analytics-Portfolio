@@ -72,6 +72,7 @@ def get_common_locations(df):
 locations = get_common_locations(df)
 
 
+
 # MAP + ROUTE CELLS
 st.header("Transportation Map")
 
@@ -219,6 +220,49 @@ if commute_data:
 
     st.header("Commuting Times & Distances")
     st.altair_chart(chart)
+
+# Recommendation Logic
+
+def get_minutes_for_mode(mode):
+    for row in commute_data:
+        if row['Mode'] == mode:
+            return row['Minutes']
+    return None
+
+drive_time=get_minutes_for_mode("Driving")
+walk_time=get_minutes_for_mode("Walking")
+biking_time=get_minutes_for_mode("Biking")
+transit_time=get_minutes_for_mode("Transit")
+
+
+#can change these values possibly based on user input later
+bring_car = None
+max_walk_time=30 
+max_bike_time=20 
+max_transit_time=45  
+
+if(walk_time!=None):
+    if(walk_time > max_walk_time):
+        bring_car=True
+elif(biking_time!=None):
+    if(biking_time > max_bike_time):
+        bring_car=True
+
+elif(transit_time!=None):
+    if(transit_time > max_transit_time):
+        bring_car=True
+else:
+    bring_car=False
+
+# Recommendation Text
+
+st.header("Recommendation")
+if bring_car==True:
+    st.success("We recommend bringing a car to campus")
+if bring_car==False:
+    st.text("We do not recommend bringing a car to campus")
+else:
+    st.text("No recommendation available at this time")
 
 
 # RAW DATA PREVIEW
