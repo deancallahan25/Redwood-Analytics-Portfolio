@@ -14,8 +14,6 @@ st.title("🚗 Should I Bring a Car to Campus?")
 CAMPUS_LAT = 40.8762
 CAMPUS_LON = -124.0786
 
-# 🔐 HARD-CODED GOOGLE MAPS API KEY (replace with your real key)
-API_KEY = "AIzaSyCK28ITsrC4lM6QbGgm5NbrpJdHpytTUWE"
 
 
 # DATA LOADING
