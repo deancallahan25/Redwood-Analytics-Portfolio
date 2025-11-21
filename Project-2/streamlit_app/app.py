@@ -132,8 +132,6 @@ with left:
             fill_opacity=0.6,
             tooltip=f"{loc['city']} ({loc['count']} students)"
         ).add_to(m)
-
-   
         
     map_data = st_folium(m, width=900, height=600, returned_objects=["last_clicked"])
     clicked = map_data.get("last_clicked")
@@ -238,17 +236,23 @@ if commute_data:
     )
 
     # --- DISTANCE CHART ---
-    df_distance = df_commute[["Mode", "Distance_mi"]].copy()
+    if km_mode_on:
+        df_distance = df_commute[['Mode', 'Distance_km']].rename(columns={'Distance_km': 'Distance'})
+        y_title = "Distance (km)"
+    else:
+        df_distance = df_commute[['Mode', 'Distance_mi']].rename(columns={'Distance_mi': 'Distance'})
+        y_title = "Distance (mi)"
+
 
     chart_distance = (
         alt.Chart(df_distance)
         .mark_bar(color = "#2ca02c")  # Green
         .encode(
             x = alt.X("Mode:N", title = "Transportation Mode"),
-            y = alt.Y("Distance_mi:Q", title = "Distance (mi)"),
-            tooltip = ["Mode", "Distance_mi"]
+            y = alt.Y("Distance:Q", title =y_title),
+            tooltip = ["Mode", "Distance"]
         )
-        .properties(title="Commute Distance (mi)", width=300, height=300)
+        .properties(title="Commute Distance", width=300, height=300)
     )
 
     st.header("Commute Time & Distance")
