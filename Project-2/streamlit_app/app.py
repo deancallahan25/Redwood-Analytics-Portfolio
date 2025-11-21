@@ -111,10 +111,11 @@ with left:
             ).add_to(m)
     # May over lap with housing clusters, but provides additional detail
     # Intersection points from lon_lat_final_data.csv (original survey data)
+    df_thre=df_three.groupby(['lat','lon']).size().reset_index(name='count')
     for _, point in df_three.iterrows():
         folium.CircleMarker(
             [point['lat'], point['lon']],
-            radius=.5,
+            radius=point['count'] / 2,
             color='blue',
             fill=True,
             fill_opacity=0.5,
