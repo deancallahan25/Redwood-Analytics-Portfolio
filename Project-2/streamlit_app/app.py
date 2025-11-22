@@ -304,15 +304,18 @@ with st.expander("Click here to see other transportation options"):
         **Zipcar**
         - Zipcar offers university students a free year of membership for their products
         - Link for more info: https://www.zipcar.com/universities/cal-poly-humboldt 
+             
         **Humboldt Bike Share**
         - Students can rent a bike to use around Arcata
         - They can get a year membership for $20 (one-third off the original price)
         - The first 30 minutes are free with a rate of $1.50 for each 30 minute interval after that
         - Link for more info: https://www.tandem-mobility.com/humboldt 
-        **JackPass**
+             
+        **JackPass** 
         - Program that allows students to use the local public buses for free as long as you have your student ID card
         - All of the bus stops you can use are shown on the map above
         - Link for more info: https://www.humboldt.edu/transportation-parking/sustainable-transportation/jackpass
              ''')
+    
 
 
