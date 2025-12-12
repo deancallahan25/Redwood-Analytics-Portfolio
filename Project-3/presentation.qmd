@@ -2,16 +2,136 @@
 ---
 title: "Redwood Analytics Project 3"
 format: pptx
-echo: false
+execute:
+    echo: false
 ---
+```{python}
+#| echo: false
+#Setting up environment & dataframes
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+#from sklearn.linear_model import LinearRegression
+#from sklearn.neighbors import KNeighborsRegressor
+#from sklearn.metrics import mean_squared_error, mean_squared_log_error
+#from sklearn.preprocessing import StandardScaler
+#from scipy import stats
+#from mpl_toolkits.mplot3d import Axes3D
+#import warnings
+#warnings.filterwarnings('ignore')
 
-## Domain Expert 1
+# Set random seed for reproducibility
+#| echo: false
+np.random.seed(42)
 
-## Domain Expert 2
+#| echo: false
+df=pd.read_csv("/Users/deancallahan/Desktop/Redwood-Analytics/Redwood-Analytics-Portfolio/Project-3/data/biomass_model_dataset.csv")
+full_species_codes=pd.read_csv("/Users/deancallahan/Desktop/Redwood-Analytics/Redwood-Analytics-Portfolio/Project-3/data/FIATreeSpeciesCode.csv")
+species_codes=full_species_codes[["SPCD","COMMON_NAME"]]
+df_visuals=df.merge(species_codes,on='SPCD', how='left')
+#df_visuals.head()
+```
 
-- Test
+<!--Domain Expert Slides Start -->
+# Data Dictionary
 
+- UNITS
 
-## Project Manager
-## Technical Lead
-## Quality Assurance
+- SPCD (Species Code): A numeric code which unqiuely identifies each tree species as specifed by the FIA (Forest Inventory and Analysis) species coding system. Each FIA species code corresponds uniquely to a scientific and common name. (Official definition: FIA species code.)
+
+- DO_BH (Diameter at Breast Height [Outside Bark]): Diameter of the tree stem measured at breast height (4.5 feet or 1.37 meters above ground) including bark. This is the standard foresty measurement "DBH (outside bark)" and is the primary size variable used in nearly all allometric biomass models.
+
+- HT_TOT (Total Tree Height): The total height of the tree measured from ground level to the top of the crown. Used as a second size metric in volume and biomass modeling.
+- TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). This value comes from destructive sampling: the tree was felled, seperated into componenets, oven-dried, and weighed. This variable serves as the response variable ("target") from biomass prediction.
+- COMMON_NAME: The corresponding string common name for the tree species for a FIA SPCD code.
+
+#Domain Expert 2
+
+# Univariate Visualizations
+```{python}
+
+ #Univariate Visulizations & Summaries
+fig, axes = plt.subplots(1, 3, figsize=(16, 8))
+axes[0].hist(df_visuals['DO_BH'],bins=50)
+axes[0].set_xlim(0,50)
+axes[0].set_xlabel('Diameter', fontsize=11)
+axes[0].set_ylabel('Frequency', fontsize=11)
+axes[0].set_title('Tree Diameter Distribution', fontsize=12, fontweight='bold')
+
+axes[1].hist(df_visuals['HT_TOT'],bins=20)
+axes[1].set_xlim(0,200)
+
+axes[1].set_xlabel('Height', fontsize=11)
+axes[1].set_ylabel('Frequency', fontsize=11)
+axes[1].set_title('Tree Height Distribution', fontsize=12, fontweight='bold')
+
+log_biomass = np.log10(df_visuals['TT_DW_CRM'])
+axes[2].hist(log_biomass,bins=50)
+axes[2].set_xlabel('Biomass', fontsize=11)
+axes[2].set_ylabel('Frequency', fontsize=11)
+axes[2].set_title('Tree Biomass Frequency', fontsize=12, fontweight='bold')
+plt.show()
+
+```
+
+# Bivariate Visualizations
+```{python}
+#Bivariate Visualizations
+# Figure 2: Individual relationships
+fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+
+axes[0].scatter(df_visuals['DO_BH'], df_visuals['TT_DW_CRM'], alpha=0.7, s=80, edgecolors='black')
+axes[0].set_xlabel('Tree Diameter', fontsize=11)
+axes[0].set_ylabel('Biomass', fontsize=11)
+axes[0].set_title('Tree Diameter vs Biomass', fontsize=12, fontweight='bold')
+axes[0].grid(True, alpha=0.3)
+
+axes[1].scatter(df_visuals['HT_TOT'], df_visuals['TT_DW_CRM'], alpha=0.7, s=80, edgecolors='black', color='orange')
+axes[1].set_xlabel('Tree Height', fontsize=11)
+axes[1].set_ylabel('Biomass', fontsize=11)
+axes[1].set_title('Tree Height vs Biomass', fontsize=12, fontweight='bold')
+axes[1].grid(True, alpha=0.3)
+``` 
+
+# Additional Visualizations
+```{python}
+ #combined vars vs biomass 3d view
+fig, axes = plt.subplots(1, 2, figsize=(16, 8))
+
+# Left: Scatter plot colored by tree biomass
+scatter = axes[0].scatter(df['DO_BH'], df['HT_TOT'], c=df['TT_DW_CRM'],
+                         cmap='viridis', s=50, alpha=0.7, edgecolors='black')
+axes[0].set_xlabel('Diameter', fontsize=12)
+axes[0].set_ylabel('Height', fontsize=12)
+axes[0].set_title('Tree Measurements vs Biomass (Color)', fontsize=14, fontweight='bold')
+plt.colorbar(scatter, ax=axes[0], label='Biomass')
+axes[0].grid(True, alpha=0.3)
+
+# Right: 3D relationship (DO_BH, HT_TOT, TT_DW_CRM)
+ax = fig.add_subplot(122, projection='3d')
+scatter3d = ax.scatter(df['DO_BH'], df['HT_TOT'], df['TT_DW_CRM'],
+                      c=df['TT_DW_CRM'], cmap='viridis', s=50, alpha=0.7)
+ax.set_xlabel('Diameter', fontsize=11)
+ax.set_ylabel('Height', fontsize=11)
+ax.set_zlabel('Biomass', fontsize=11)
+ax.set_title('3D View: Tree Measurements vs Biomass', fontsize=14, fontweight='bold')
+
+plt.tight_layout()
+plt.show()
+```
+
+# Additional Visualizations
+```{python}
+#Visualization Containing all 4 Variables
+sns.scatterplot(data=df_visuals, x='DO_BH',y='HT_TOT',hue='COMMON_NAME',size='TT_DW_CRM',legend=False)
+plt.show()
+```
+
+# Domain Expert 3 (Explain the inputs and settings for the best model)
+
+<!--Domain Expert Slides Start -->
+
+# Project Manager
+# Technical Lead
+# Quality Assurance
