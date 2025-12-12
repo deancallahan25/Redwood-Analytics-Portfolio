@@ -1,1 +1,17 @@
+# Redwood Analytics Project 3
+---
+title: "Redwood Analytics Project 3"
+format: pptx
+echo: false
+---
 
+## Domain Expert 1
+
+## Domain Expert 2
+
+- Test
+
+
+## Project Manager
+## Technical Lead
+## Quality Assurance
