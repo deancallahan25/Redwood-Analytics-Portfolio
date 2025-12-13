@@ -1,4 +1,4 @@
-# Redwood Analytics Project 3
+#Redwood Analytics Project 3
 ---
 title: "Redwood Analytics Project 3"
 format: pptx
@@ -40,9 +40,10 @@ df_visuals=df.merge(species_codes,on='SPCD', how='left')
 
 - DO_BH (Diameter at Breast Height [Outside Bark]): Diameter of the tree stem measured at breast height (4.5 feet or 1.37 meters above ground) including bark. This is the standard foresty measurement "DBH (outside bark)" and is the primary size variable used in nearly all allometric biomass models. This is measured in inches. 
 
+# Data Dictionary Continued
 - HT_TOT (Total Tree Height): The total height of the tree measured from ground level to the top of the crown. Used as a second size metric in volume and biomass modeling.This is measured in feet. 
 
-- NEED UNITS (likely KG) STILL TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). This value comes from destructive sampling: the tree was felled, seperated into componenets, oven-dried, and weighed. This variable serves as the response variable ("target") from biomass prediction.
+-TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). This value comes from destructive sampling: the tree was felled, seperated into componenets, oven-dried, and weighed. This variable serves as the response variable ("target") from biomass prediction. This is measured in kilograms.
 
 
 # Univariate Visualizations
@@ -203,4 +204,20 @@ performance_df
 ```
 
 # Technical Lead
+```{python}
+#| echo: false
+trees = pd.read_csv("biomass_model_dataset.csv")
+species = pd.read_csv("FIATreeSpeciesCode.csv")
+species_codes = species[["SPCD","COMMON_NAME"]]
+trees.head()
+```
+```{python}
+#| echo: false
+species_codes.head()
+```
+```{python}
+#| echo: false
+combined_df = trees.merge(species_codes,on='SPCD', how='left')
+combined_df.head()
+```
 # Quality Assurance
