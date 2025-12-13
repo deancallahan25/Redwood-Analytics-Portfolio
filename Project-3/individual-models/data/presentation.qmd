@@ -26,8 +26,8 @@ import seaborn as sns
 np.random.seed(42)
 
 #| echo: false
-df=pd.read_csv("/Users/deancallahan/Desktop/Redwood-Analytics/Redwood-Analytics-Portfolio/Project-3/data/biomass_model_dataset.csv")
-full_species_codes=pd.read_csv("/Users/deancallahan/Desktop/Redwood-Analytics/Redwood-Analytics-Portfolio/Project-3/data/FIATreeSpeciesCode.csv")
+df=pd.read_csv("biomass_model_dataset.csv")
+full_species_codes=pd.read_csv("FIATreeSpeciesCode.csv")
 species_codes=full_species_codes[["SPCD","COMMON_NAME"]]
 df_visuals=df.merge(species_codes,on='SPCD', how='left')
 #df_visuals.head()
