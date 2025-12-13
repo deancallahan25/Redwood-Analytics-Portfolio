@@ -131,4 +131,20 @@ plt.show()
 
 # Project Manager
 # Technical Lead
+```{python}
+#| echo: false
+trees = pd.read_csv("biomass_model_dataset.csv")
+species = pd.read_csv("FIATreeSpeciesCode.csv")
+species_codes = species[["SPCD","COMMON_NAME"]]
+trees.head()
+```
+```{python}
+#| echo: false
+species_codes.head()
+```
+```{python}
+#| echo: false
+combined_df = trees.merge(species_codes,on='SPCD', how='left')
+combined_df.head()
+```
 # Quality Assurance
