@@ -26,32 +26,31 @@ warnings.filterwarnings('ignore')
 np.random.seed(42)
 
 #| echo: false
-df=pd.read_csv("biomass_model_dataset.csv")
-full_species_codes=pd.read_csv("FIATreeSpeciesCode.csv")
+df=pd.read_csv("individual-models/data/biomass_model_dataset.csv")
+full_species_codes=pd.read_csv("individual-models/data/FIATreeSpeciesCode.csv")
 species_codes=full_species_codes[["SPCD","COMMON_NAME"]]
 df_visuals=df.merge(species_codes,on='SPCD', how='left')
-#df_visuals.head()
 ```
 
 <!--Domain Expert Slides Start -->
 # Data Dictionary
 
-- SPCD (Species Code): A numeric code which unqiuely identifies each tree species as specifed by the FIA (Forest Inventory and Analysis) species coding system. Each FIA species code corresponds uniquely to a scientific and common name. (Official definition: FIA species code.)
+- SPCD (FIA Species Code): A numeric code which unqiuely identifies each tree species and corresponds to a scientific and common name for the tree as specified by the FIA (Forest Inventory and Analysis) species coding system.
 
-- DO_BH (Diameter at Breast Height [Outside Bark]): Diameter of the tree stem measured at breast height (4.5 feet or 1.37 meters above ground) including bark. This is the standard foresty measurement "DBH (outside bark)" and is the primary size variable used in nearly all allometric biomass models. This is measured in inches. 
+- DO_BH (Diameter at Breast Height): Diameter of the tree stem measured at breast height (4.5 feet or 1.37 meters above ground) including bark. This is the standard foresty measurement "DBH (outside bark)" and is the primary size variable used in nearly all allometric biomass models. This is measured in **inches**. 
 
 # Data Dictionary Continued
-- HT_TOT (Total Tree Height): The total height of the tree measured from ground level to the top of the crown. Used as a second size metric in volume and biomass modeling.This is measured in feet. 
+- HT_TOT (Total Tree Height): The total height of the tree measured from ground level to the top of the crown. Used as a second size metric in volume and biomass modeling. This is measured in **feet**. 
 
-- TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). This value comes from destructive sampling: the tree was felled, seperated into componenets, oven-dried, and weighed. This variable serves as the response variable ("target") from biomass prediction. This is measured in kilograms.
+- TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). The value comes from destructive sampling: the tree was felled, separated into componenets, oven-dried, and weighed. This variable serves as the target variable from biomass prediction. Measured in **kilograms**.
 
 
 # Univariate Visualizations
 ```{python}
 
- #Univariate Visulizations & Summaries
+#Univariate Visulizations & Summaries
 
- #Plot the diameter distribution
+#Plot the diameter distribution
 fig, axes = plt.subplots(1, 3, figsize=(16, 8))
 axes[0].hist(df_visuals['DO_BH'],bins=50)
 axes[0].set_xlim(0,50)
@@ -177,74 +176,115 @@ plt.show()
 # Performance Metric
 
 The Performance metric we choose is Root Mean Square Logarithmic Error(RMSLE), because when we were looking at the dataset of the biomass of different kinds of tree species, we saw that some species have more data than other species so the assume that the data is skewed 
-
+```{python}
+#| echo: false
+trees = pd.read_csv("individual-models/data/biomass_model_dataset.csv")
+species = pd.read_csv("individual-models/data/FIATreeSpeciesCode.csv")
+species_codes = species[["SPCD","COMMON_NAME"]]
+combined_df = trees.merge(species_codes,on='SPCD', how='left')
+combined_df = combined_df.dropna(subset = "COMMON_NAME")
+counts = combined_df["COMMON_NAME"].value_counts()
+frequent_values = counts[counts >= 100].index
+df_filtered = combined_df[combined_df["COMMON_NAME"].isin(frequent_values)]
+train = []
+test = []
+selection = []
+tree = []
+for i in range(len(df_filtered)):
+  #ntrain = df_filtered["COMMON_NAME"].value_counts()[0] * 0.80
+  #nst = df_filtered["COMMON_NAME"].value_counts()[0] - ntrain
+  #nselection = nst/2
+  #ntest = nselection
+  if (df_filtered["COMMON_NAME"].iloc[i] == "loblolly pine"):
+    tree.append(df_filtered.iloc[i])
+```
 # Model
 ```{python}
 #| echo: false
+# Assume df_filtered already exists and includes COMMON_NAME
+train_list = []
+test_list = []
+selection_list = []
+
+for species_name in df_filtered['COMMON_NAME'].unique():
+    tree = df_filtered[df_filtered['COMMON_NAME'] == species_name]
+
+    n = len(tree)
+    if n < 5:
+        continue  # skip species with too little data
+
+    train_index = int(n * 0.80)
+    test_index = int(n * 0.90)
+
+    train = tree.iloc[:train_index]
+    test = tree.iloc[train_index:test_index]
+    selection = tree.iloc[test_index:]
+
+    train_list.append(train)
+    test_list.append(test)
+    selection_list.append(selection)
+
+# Combine all species
+train_df = pd.concat(train_list, ignore_index=True)
+test_df = pd.concat(test_list, ignore_index=True)
+selection_df = pd.concat(selection_list, ignore_index=True)
+
+```
+``` {python}
+from sklearn.neighbors import KNeighborsRegressor
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_squared_log_error
-train_df=pd.read_csv("training_data.csv")
-test_df=pd.read_csv("testing_data.csv")
+
 
 # Metrics storage
 performance = []
 
-# Loop through each species
 for species in train_df["COMMON_NAME"].unique():
 
-    # Filter datasets
     train_species = train_df[train_df["COMMON_NAME"] == species]
     test_species = test_df[test_df["COMMON_NAME"] == species]
 
-    # Skip if too few samples
+    # Skip species with insufficient data
     if len(train_species) < 3 or len(test_species) < 1:
-        print(f"Skipping {species} (not enough data)")
         continue
 
-    # Features and target
     X_train = train_species[['SPCD', 'DO_BH', 'HT_TOT']]
     y_train = train_species['TT_DW_CRM']
 
     X_test = test_species[['SPCD', 'DO_BH', 'HT_TOT']]
     y_test = test_species['TT_DW_CRM']
 
-    # Scale features
     scaler = StandardScaler()
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
 
-    # Try k = 2 through 10
     for k in range(2, 11):
-
         model = KNeighborsRegressor(n_neighbors=k)
         model.fit(X_train_scaled, y_train)
 
         y_pred = model.predict(X_test_scaled)
 
-        # Compute metrics
+        # Metrics
         mse = mean_squared_error(y_test, y_pred)
         rmse = np.sqrt(mse)
         mae = mean_absolute_error(y_test, y_pred)
 
-        # RMSLE — must ensure predictions > 0
+        # RMSLE (protect against zero/negative values)
         y_pred_adj = np.maximum(y_pred, 1e-5)
         y_test_adj = np.maximum(y_test, 1e-5)
         rmsle = np.sqrt(mean_squared_log_error(y_test_adj, y_pred_adj))
 
-        # Save metrics
         performance.append({
             "Species": species,
             "k": k,
-            "MSE": mse,
             "RMSE": rmse,
             "MAE": mae,
             "RMSLE": rmsle
         })
-```
-``` {python}
-# Convert to dataframe
+
 performance_df = pd.DataFrame(performance)
 performance_df
+
 ```
 
 # Technical Lead
@@ -255,8 +295,8 @@ performance_df
 # Tree Measurement Data:
 ```{python}
 #| echo: false
-trees = pd.read_csv("biomass_model_dataset.csv")
-species = pd.read_csv("FIATreeSpeciesCode.csv")
+trees = pd.read_csv("individual-models/data/biomass_model_dataset.csv")
+species = pd.read_csv("individual-models/data/FIATreeSpeciesCode.csv")
 species_codes = species[["SPCD","COMMON_NAME"]]
 trees.head()
 ```
