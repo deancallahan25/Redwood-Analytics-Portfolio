@@ -1,6 +1,6 @@
-#Redwood Analytics Project 3
 ---
-title: "Redwood Analytics Project 3"
+title: "Redwood Analytics Project 3: Predicting Tree Biomass"
+subtitle: "By Evan Blem, Dean Callahan, Zach Griffiths, and Jaiden Roe"
 format: pptx
 execute:
     echo: false
@@ -12,14 +12,14 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-#from sklearn.linear_model import LinearRegression
-#from sklearn.neighbors import KNeighborsRegressor
-#from sklearn.metrics import mean_squared_error, mean_squared_log_error
-#from sklearn.preprocessing import StandardScaler
-#from scipy import stats
-#from mpl_toolkits.mplot3d import Axes3D
-#import warnings
-#warnings.filterwarnings('ignore')
+from sklearn.linear_model import LinearRegression
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.metrics import mean_squared_error, mean_squared_log_error
+from sklearn.preprocessing import StandardScaler
+from scipy import stats
+from mpl_toolkits.mplot3d import Axes3D
+import warnings
+warnings.filterwarnings('ignore')
 
 # Set random seed for reproducibility
 #| echo: false
@@ -43,7 +43,7 @@ df_visuals=df.merge(species_codes,on='SPCD', how='left')
 # Data Dictionary Continued
 - HT_TOT (Total Tree Height): The total height of the tree measured from ground level to the top of the crown. Used as a second size metric in volume and biomass modeling.This is measured in feet. 
 
--TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). This value comes from destructive sampling: the tree was felled, seperated into componenets, oven-dried, and weighed. This variable serves as the response variable ("target") from biomass prediction. This is measured in kilograms.
+- TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). This value comes from destructive sampling: the tree was felled, seperated into componenets, oven-dried, and weighed. This variable serves as the response variable ("target") from biomass prediction. This is measured in kilograms.
 
 
 # Univariate Visualizations
@@ -71,6 +71,12 @@ axes[2].set_ylabel('Frequency', fontsize=11)
 axes[2].set_title('Tree Biomass Frequency', fontsize=12, fontweight='bold')
 plt.show()
 
+```
+# Data Summaries
+```{python}
+#Univariate for SPCD (using corresponding common name instead for readibility)
+print(df_visuals["COMMON_NAME"].value_counts().head(10))
+df_visuals.describe()
 ```
 
 # Bivariate Visualizations
@@ -131,7 +137,7 @@ plt.show()
 <!--Domain Expert Slides Start -->
 
 <!--Project Manager Slides Start -->
-# Performace Metric
+# Performance Metric
 
 The Performance metric we choose is Root Mean Square Logarithmic Error(RMSLE), because when we were looking at the dataset of the biomass of different kinds of tree species, we saw that some species have more data than other species so the assume that the data is skewed 
 
@@ -140,7 +146,8 @@ The Performance metric we choose is Root Mean Square Logarithmic Error(RMSLE), b
 #| echo: false
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_squared_log_error
-
+train_df=pd.read_csv("training_data.csv")
+test_df=pd.read_csv("testing_data.csv")
 
 # Metrics storage
 performance = []
