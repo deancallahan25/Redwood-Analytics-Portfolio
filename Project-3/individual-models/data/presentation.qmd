@@ -132,6 +132,7 @@ plt.show()
 
 # Project Manager
 # Technical Lead
+Tree Measurement Data:
 ```{python}
 #| echo: false
 trees = pd.read_csv("biomass_model_dataset.csv")
@@ -139,10 +140,12 @@ species = pd.read_csv("FIATreeSpeciesCode.csv")
 species_codes = species[["SPCD","COMMON_NAME"]]
 trees.head()
 ```
+# Tree Species Name Data:
 ```{python}
 #| echo: false
 species_codes.head()
 ```
+# Combined Dataset (species mapped onto bigger dataset):
 ```{python}
 #| echo: false
 combined_df = trees.merge(species_codes,on='SPCD', how='left')
