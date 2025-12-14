@@ -174,9 +174,14 @@ plt.show()
 <!--Domain Expert Slides End -->
 
 <!--Project Manager Slides Start -->
+# Consultation SERC scientist
+
+
+
 # Performance Metric
 
-The Performance metric we choose is Root Mean Square Logarithmic Error(RMSLE), because when we were looking at the dataset of the biomass of different kinds of tree species, we saw that some species have more data than other species so the assume that the data is skewed 
+When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous grandpa trees, some trees having exponential growth. RMSLE focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. This metric is particularly useful in accurately assessing the predictive performance of models when dealing with such diverse ranges of tree sizes. By prioritizing percentage errors, RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
+
 ```{python}
 #| echo: false
 trees = pd.read_csv("biomass_model_dataset.csv")
