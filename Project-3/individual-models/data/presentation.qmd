@@ -134,7 +134,28 @@ plt.show()
 # Performace Metric
 
 The Performance metric we choose is Root Mean Square Logarithmic Error(RMSLE), because when we were looking at the dataset of the biomass of different kinds of tree species, we saw that some species have more data than other species so the assume that the data is skewed 
-
+```{python}
+#| echo: false
+trees = pd.read_csv("biomass_model_dataset.csv")
+species = pd.read_csv("FIATreeSpeciesCode.csv")
+species_codes = species[["SPCD","COMMON_NAME"]]
+combined_df = trees.merge(species_codes,on='SPCD', how='left')
+combined_df = combined_df.dropna(subset = "COMMON_NAME")
+counts = combined_df["COMMON_NAME"].value_counts()
+frequent_values = counts[counts >= 100].index
+df_filtered = combined_df[combined_df["COMMON_NAME"].isin(frequent_values)]
+train = []
+test = []
+selection = []
+tree = []
+for i in range(len(df_filtered)):
+  #ntrain = df_filtered["COMMON_NAME"].value_counts()[0] * 0.80
+  #nst = df_filtered["COMMON_NAME"].value_counts()[0] - ntrain
+  #nselection = nst/2
+  #ntest = nselection
+  if (df_filtered["COMMON_NAME"].iloc[i] == "loblolly pine"):
+    tree.append(df_filtered.iloc[i])
+```
 # Model
 ```{python}
 #| echo: false
