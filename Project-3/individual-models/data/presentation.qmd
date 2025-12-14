@@ -248,7 +248,11 @@ performance_df
 ```
 
 # Technical Lead
-Tree Measurement Data:
+ - Split and filtering methods
+ - Feature engineering (what worked and what didn't)
+ - Tuning k for the best model
+ - The final "best" model and error
+# Tree Measurement Data:
 ```{python}
 #| echo: false
 trees = pd.read_csv("biomass_model_dataset.csv")
@@ -267,4 +271,15 @@ species_codes.head()
 combined_df = trees.merge(species_codes,on='SPCD', how='left')
 combined_df.head()
 ```
+
+# Filtered data
+```{python}
+counts = combined_df["COMMON_NAME"].value_counts()
+frequent_values = counts[counts >= 100].index
+df_filtered = combined_df[combined_df["COMMON_NAME"].isin(frequent_values)]
+df_filtered.head()
+```
+
+
+
 # Quality Assurance
