@@ -132,9 +132,27 @@ sns.scatterplot(data=df_visuals, x='DO_BH',y='HT_TOT',hue='COMMON_NAME',size='TT
 plt.show()
 ```
 
+# Model Domain Information
+## Model Inputs & Domains:
+- **SPCD:** FIA species code (categorical). Valid species only include species in the dataset with a count greater than 100.
+- **DO_BH:** Diameter at breast height, measured in **inches**. Valid Range: 1.0-255.9 inches (based on training data)
+- **HT_TOT:** Total tree height, measured in **feet**. Valid Range: 2.5-370.5 feet
+
+## Output: 
+- **TT_DW_CRM**: Total above-ground dry biomass in **kilograms**
+
+
+# Model Limitations: 
+- Will not work for less frequent species in the dataset or species that don't appear in it
+- May work very well for some species or poorly for others: 
+-RMSLE of 0.037176 for Sweetgum vs RMSLE of 0.666503 for Shagbark hickory 
+- k=3: Lower k value may lead to overfitting of data due to potential outliers and noise
+
+
+
 # Domain Expert 3 (Explain the inputs and settings for the best model)
 
-<!--Domain Expert Slides Start -->
+<!--Domain Expert Slides End -->
 
 <!--Project Manager Slides Start -->
 # Performance Metric

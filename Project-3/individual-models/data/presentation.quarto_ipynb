@@ -1,0 +1,394 @@
+{
+  "cells": [
+    {
+      "cell_type": "raw",
+      "metadata": {},
+      "source": [
+        "---\n",
+        "title: \"Redwood Analytics Project 3: Predicting Tree Biomass\"\n",
+        "subtitle: \"By Evan Blem, Dean Callahan, Zach Griffiths, and Jaiden Roe\"\n",
+        "format: pptx\n",
+        "execute:\n",
+        "    echo: false\n",
+        "---"
+      ],
+      "id": "8f77964e"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "#Setting up environment & dataframes\n",
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "import seaborn as sns\n",
+        "from sklearn.linear_model import LinearRegression\n",
+        "from sklearn.neighbors import KNeighborsRegressor\n",
+        "from sklearn.metrics import mean_squared_error, mean_squared_log_error\n",
+        "from sklearn.preprocessing import StandardScaler\n",
+        "from scipy import stats\n",
+        "from mpl_toolkits.mplot3d import Axes3D\n",
+        "import warnings\n",
+        "warnings.filterwarnings('ignore')\n",
+        "\n",
+        "# Set random seed for reproducibility\n",
+        "#| echo: false\n",
+        "np.random.seed(42)\n",
+        "\n",
+        "#| echo: false\n",
+        "df=pd.read_csv(\"biomass_model_dataset.csv\")\n",
+        "full_species_codes=pd.read_csv(\"FIATreeSpeciesCode.csv\")\n",
+        "species_codes=full_species_codes[[\"SPCD\",\"COMMON_NAME\"]]\n",
+        "df_visuals=df.merge(species_codes,on='SPCD', how='left')\n",
+        "#df_visuals.head()"
+      ],
+      "id": "43121266",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "<!--Domain Expert Slides Start -->\n",
+        "# Data Dictionary\n",
+        "\n",
+        "- SPCD (Species Code): A numeric code which unqiuely identifies each tree species as specifed by the FIA (Forest Inventory and Analysis) species coding system. Each FIA species code corresponds uniquely to a scientific and common name. (Official definition: FIA species code.)\n",
+        "\n",
+        "- DO_BH (Diameter at Breast Height [Outside Bark]): Diameter of the tree stem measured at breast height (4.5 feet or 1.37 meters above ground) including bark. This is the standard foresty measurement \"DBH (outside bark)\" and is the primary size variable used in nearly all allometric biomass models. This is measured in inches. \n",
+        "\n",
+        "# Data Dictionary Continued\n",
+        "- HT_TOT (Total Tree Height): The total height of the tree measured from ground level to the top of the crown. Used as a second size metric in volume and biomass modeling.This is measured in feet. \n",
+        "\n",
+        "- TT_DW_CRM (Total Tree Dry Biomass): The total above-ground dry weight of the tree (includes stem wood, stem bark, branches, folliage). This value comes from destructive sampling: the tree was felled, seperated into componenets, oven-dried, and weighed. This variable serves as the response variable (\"target\") from biomass prediction. This is measured in kilograms.\n",
+        "\n",
+        "\n",
+        "# Univariate Visualizations"
+      ],
+      "id": "72f2063d"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        " #Univariate Visulizations & Summaries\n",
+        "fig, axes = plt.subplots(1, 3, figsize=(16, 8))\n",
+        "axes[0].hist(df_visuals['DO_BH'],bins=50)\n",
+        "axes[0].set_xlim(0,50)\n",
+        "axes[0].set_xlabel('Diameter', fontsize=11)\n",
+        "axes[0].set_ylabel('Frequency', fontsize=11)\n",
+        "axes[0].set_title('Tree Diameter Distribution', fontsize=12, fontweight='bold')\n",
+        "\n",
+        "axes[1].hist(df_visuals['HT_TOT'],bins=20)\n",
+        "axes[1].set_xlim(0,200)\n",
+        "\n",
+        "axes[1].set_xlabel('Height', fontsize=11)\n",
+        "axes[1].set_ylabel('Frequency', fontsize=11)\n",
+        "axes[1].set_title('Tree Height Distribution', fontsize=12, fontweight='bold')\n",
+        "\n",
+        "log_biomass = np.log10(df_visuals['TT_DW_CRM'])\n",
+        "axes[2].hist(log_biomass,bins=50)\n",
+        "axes[2].set_xlabel('Biomass', fontsize=11)\n",
+        "axes[2].set_ylabel('Frequency', fontsize=11)\n",
+        "axes[2].set_title('Tree Biomass Frequency', fontsize=12, fontweight='bold')\n",
+        "plt.show()"
+      ],
+      "id": "007da627",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Data Summaries"
+      ],
+      "id": "bea9ebb3"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#Univariate for SPCD (using corresponding common name instead for readibility)\n",
+        "print(df_visuals[\"COMMON_NAME\"].value_counts().head(10))\n",
+        "df_visuals.describe()"
+      ],
+      "id": "e0af7f07",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Bivariate Visualizations"
+      ],
+      "id": "99f2c9ba"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#Bivariate Visualizations\n",
+        "# Figure 2: Individual relationships\n",
+        "fig, axes = plt.subplots(1, 2, figsize=(16, 8))\n",
+        "\n",
+        "axes[0].scatter(df_visuals['DO_BH'], df_visuals['TT_DW_CRM'], alpha=0.7, s=80, edgecolors='black')\n",
+        "axes[0].set_xlabel('Tree Diameter', fontsize=11)\n",
+        "axes[0].set_ylabel('Biomass', fontsize=11)\n",
+        "axes[0].set_title('Tree Diameter vs Biomass', fontsize=12, fontweight='bold')\n",
+        "axes[0].grid(True, alpha=0.3)\n",
+        "\n",
+        "axes[1].scatter(df_visuals['HT_TOT'], df_visuals['TT_DW_CRM'], alpha=0.7, s=80, edgecolors='black', color='orange')\n",
+        "axes[1].set_xlabel('Tree Height', fontsize=11)\n",
+        "axes[1].set_ylabel('Biomass', fontsize=11)\n",
+        "axes[1].set_title('Tree Height vs Biomass', fontsize=12, fontweight='bold')\n",
+        "axes[1].grid(True, alpha=0.3)"
+      ],
+      "id": "a5df0c66",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Additional Visualizations"
+      ],
+      "id": "9f81eb80"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        " #combined vars vs biomass 3d view\n",
+        "fig, axes = plt.subplots(1, 2, figsize=(16, 8))\n",
+        "\n",
+        "# Left: Scatter plot colored by tree biomass\n",
+        "scatter = axes[0].scatter(df['DO_BH'], df['HT_TOT'], c=df['TT_DW_CRM'],\n",
+        "                         cmap='viridis', s=50, alpha=0.7, edgecolors='black')\n",
+        "axes[0].set_xlabel('Diameter', fontsize=12)\n",
+        "axes[0].set_ylabel('Height', fontsize=12)\n",
+        "axes[0].set_title('Tree Measurements vs Biomass (Color)', fontsize=14, fontweight='bold')\n",
+        "plt.colorbar(scatter, ax=axes[0], label='Biomass')\n",
+        "axes[0].grid(True, alpha=0.3)\n",
+        "\n",
+        "# Right: 3D relationship (DO_BH, HT_TOT, TT_DW_CRM)\n",
+        "ax = fig.add_subplot(122, projection='3d')\n",
+        "scatter3d = ax.scatter(df['DO_BH'], df['HT_TOT'], df['TT_DW_CRM'],\n",
+        "                      c=df['TT_DW_CRM'], cmap='viridis', s=50, alpha=0.7)\n",
+        "ax.set_xlabel('Diameter', fontsize=11)\n",
+        "ax.set_ylabel('Height', fontsize=11)\n",
+        "ax.set_zlabel('Biomass', fontsize=11)\n",
+        "ax.set_title('3D View: Tree Measurements vs Biomass', fontsize=14, fontweight='bold')\n",
+        "\n",
+        "plt.tight_layout()\n",
+        "plt.show()"
+      ],
+      "id": "190a5684",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Additional Visualizations"
+      ],
+      "id": "22f428ae"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#Visualization Containing all 4 Variables\n",
+        "sns.scatterplot(data=df_visuals, x='DO_BH',y='HT_TOT',hue='COMMON_NAME',size='TT_DW_CRM',legend=False)\n",
+        "plt.show()"
+      ],
+      "id": "d5856e14",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Model Domain Information\n",
+        "## Model Inputs & Domains:\n",
+        "- **SPCD:** FIA species code (categorical). Valid species only include species in the dataset with a count greater than 100.\n",
+        "- **DO_BH:** Diameter at breast height, measured in **inches**. Valid Range: 1.0-255.9 inches (based on training data)\n",
+        "- **HT_TOT:** Total tree height, measured in **feet**. Valid Range: 2.5-370.5 feet\n",
+        "\n",
+        "## Output: \n",
+        "- **TT_DW_CRM**: Total above-ground dry biomass in **kilograms**\n",
+        "\n",
+        "\n",
+        "# Model Limitations: \n",
+        "- Will not work for less frequent species in the dataset or species that don't appear in it\n",
+        "- May work very well for some species or poorly for others: \n",
+        "-RMSLE of 0.037176 for Sweetgum vs RMSLE of 0.666503 for Shagbark hickory \n",
+        "- k=3: Lower k value may lead to overfitting of data due to potential outliers and noise\n",
+        "\n",
+        "\n",
+        "\n",
+        "# Domain Expert 3 (Explain the inputs and settings for the best model)\n",
+        "\n",
+        "<!--Domain Expert Slides End -->\n",
+        "\n",
+        "<!--Project Manager Slides Start -->\n",
+        "# Performance Metric\n",
+        "\n",
+        "The Performance metric we choose is Root Mean Square Logarithmic Error(RMSLE), because when we were looking at the dataset of the biomass of different kinds of tree species, we saw that some species have more data than other species so the assume that the data is skewed \n",
+        "\n",
+        "# Model"
+      ],
+      "id": "7bb94845"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "from sklearn.preprocessing import StandardScaler\n",
+        "from sklearn.metrics import mean_squared_error, mean_absolute_error, mean_squared_log_error\n",
+        "train_df=pd.read_csv(\"training_data.csv\")\n",
+        "test_df=pd.read_csv(\"testing_data.csv\")\n",
+        "\n",
+        "# Metrics storage\n",
+        "performance = []\n",
+        "\n",
+        "# Loop through each species\n",
+        "for species in train_df[\"COMMON_NAME\"].unique():\n",
+        "\n",
+        "    # Filter datasets\n",
+        "    train_species = train_df[train_df[\"COMMON_NAME\"] == species]\n",
+        "    test_species = test_df[test_df[\"COMMON_NAME\"] == species]\n",
+        "\n",
+        "    # Skip if too few samples\n",
+        "    if len(train_species) < 3 or len(test_species) < 1:\n",
+        "        print(f\"Skipping {species} (not enough data)\")\n",
+        "        continue\n",
+        "\n",
+        "    # Features and target\n",
+        "    X_train = train_species[['SPCD', 'DO_BH', 'HT_TOT']]\n",
+        "    y_train = train_species['TT_DW_CRM']\n",
+        "\n",
+        "    X_test = test_species[['SPCD', 'DO_BH', 'HT_TOT']]\n",
+        "    y_test = test_species['TT_DW_CRM']\n",
+        "\n",
+        "    # Scale features\n",
+        "    scaler = StandardScaler()\n",
+        "    X_train_scaled = scaler.fit_transform(X_train)\n",
+        "    X_test_scaled = scaler.transform(X_test)\n",
+        "\n",
+        "    # Try k = 2 through 10\n",
+        "    for k in range(2, 11):\n",
+        "\n",
+        "        model = KNeighborsRegressor(n_neighbors=k)\n",
+        "        model.fit(X_train_scaled, y_train)\n",
+        "\n",
+        "        y_pred = model.predict(X_test_scaled)\n",
+        "\n",
+        "        # Compute metrics\n",
+        "        mse = mean_squared_error(y_test, y_pred)\n",
+        "        rmse = np.sqrt(mse)\n",
+        "        mae = mean_absolute_error(y_test, y_pred)\n",
+        "\n",
+        "        # RMSLE — must ensure predictions > 0\n",
+        "        y_pred_adj = np.maximum(y_pred, 1e-5)\n",
+        "        y_test_adj = np.maximum(y_test, 1e-5)\n",
+        "        rmsle = np.sqrt(mean_squared_log_error(y_test_adj, y_pred_adj))\n",
+        "\n",
+        "        # Save metrics\n",
+        "        performance.append({\n",
+        "            \"Species\": species,\n",
+        "            \"k\": k,\n",
+        "            \"MSE\": mse,\n",
+        "            \"RMSE\": rmse,\n",
+        "            \"MAE\": mae,\n",
+        "            \"RMSLE\": rmsle\n",
+        "        })"
+      ],
+      "id": "dc4ee53f",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "# Convert to dataframe\n",
+        "performance_df = pd.DataFrame(performance)\n",
+        "performance_df"
+      ],
+      "id": "4fc9b63c",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Technical Lead"
+      ],
+      "id": "5f64686a"
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "trees = pd.read_csv(\"biomass_model_dataset.csv\")\n",
+        "species = pd.read_csv(\"FIATreeSpeciesCode.csv\")\n",
+        "species_codes = species[[\"SPCD\",\"COMMON_NAME\"]]\n",
+        "trees.head()"
+      ],
+      "id": "80afaac1",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "species_codes.head()"
+      ],
+      "id": "acb6c8cb",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "metadata": {},
+      "source": [
+        "#| echo: false\n",
+        "combined_df = trees.merge(species_codes,on='SPCD', how='left')\n",
+        "combined_df.head()"
+      ],
+      "id": "21bf0a44",
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {},
+      "source": [
+        "# Quality Assurance"
+      ],
+      "id": "6d5bbd88"
+    }
+  ],
+  "metadata": {
+    "kernelspec": {
+      "name": "python3",
+      "language": "python",
+      "display_name": "Python 3 (ipykernel)",
+      "path": "/Users/deancallahan/Library/Python/3.13/share/jupyter/kernels/python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 5
+}
