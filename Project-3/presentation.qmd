@@ -173,13 +173,14 @@ plt.show()
 <!--Domain Expert Slides End -->
 
 <!--Project Manager Slides Start -->
-# Consultation SERC scientist
-
-
+# Insights 
+<!-- :3 -->
+- When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous unc trees, some trees having exponential growth. 
+- We chose kNN regression over linear regression because, according to science, most UNC trees grow exponentially, which makes us think that kNN regression would be more accurate than linear regression. 
 
 # Performance Metric
-
-When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous grandpa trees, some trees having exponential growth. RMSLE focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. This metric is particularly useful in accurately assessing the predictive performance of models when dealing with such diverse ranges of tree sizes. By prioritizing percentage errors, RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
+- **RMSLE over RMSE**: focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. 
+- By prioritizing percentage errors, RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
 
 ```{python}
 #| echo: false
@@ -196,10 +197,6 @@ test = []
 selection = []
 tree = []
 for i in range(len(df_filtered)):
-  #ntrain = df_filtered["COMMON_NAME"].value_counts()[0] * 0.80
-  #nst = df_filtered["COMMON_NAME"].value_counts()[0] - ntrain
-  #nselection = nst/2
-  #ntest = nselection
   if (df_filtered["COMMON_NAME"].iloc[i] == "loblolly pine"):
     tree.append(df_filtered.iloc[i])
 ```
@@ -266,7 +263,7 @@ for species in train_df["COMMON_NAME"].unique():
     for k in range(2, 11):
         model = KNeighborsRegressor(n_neighbors=k)
         model.fit(X_train_scaled, y_train)
-
+        #Delete this comment when the code it fix
         y_pred = model.predict(X_test_scaled)
 
         # Metrics
@@ -282,7 +279,7 @@ for species in train_df["COMMON_NAME"].unique():
         performance.append({
             "Species": species,
             "k": k,
-            "RMSE": rmse,
+            "RMSE": rmse, #this is a bad metric cus it sucks
             "MAE": mae,
             "RMSLE": rmsle
         })
