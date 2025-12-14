@@ -133,12 +133,12 @@ plt.show()
 ```
 
 # Model Domain Information
-## Model Inputs & Domains:
-- **SPCD:** FIA species code (categorical). Valid species only include species in the dataset with a count greater than 100.
-- **DO_BH:** Diameter at breast height, measured in **inches**. Valid Range: 1.0-255.9 inches (based on training data)
-- **HT_TOT:** Total tree height, measured in **feet**. Valid Range: 2.5-370.5 feet
+### Model Inputs & Domains:
+- **SPCD:** FIA species code (categorical). Only includes species in the full dataset with a count greater than 100.
+- **DO_BH:** Diameter, measured in **inches**. Valid Range: 1.0-255.9 inches (based on training data min and max)
+- **HT_TOT:** Height, measured in **feet**. Valid Range: 2.5-370.5 feet
 
-## Output: 
+### Output: 
 - **TT_DW_CRM**: Total above-ground dry biomass in **kilograms**
 
 
@@ -147,10 +147,6 @@ plt.show()
 - May work very well for some species or poorly for others: 
 -RMSLE of 0.037176 for Sweetgum vs RMSLE of 0.666503 for Shagbark hickory 
 - k=3: Lower k value may lead to overfitting of data due to potential outliers and noise
-
-
-
-# Domain Expert 3 (Explain the inputs and settings for the best model)
 
 <!--Domain Expert Slides End -->
 
