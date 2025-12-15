@@ -175,15 +175,12 @@ plt.show()
 <!--Project Manager Slides Start -->
 # Consultation
 <!-- :3 -->
-- When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous trees, majority of trees having exponential growth. 
-- We chose kNN regression over linear regression because when looking at the graphs Dean presented, we saw that the tree diameter/height vs. biomass graphs all have exponential growth. 
-
-# Consultation pt 2
-- When relations between biomass and trees diameter and height are complex and non linear, data is abundent, and the model needs to be adaptive with out maksing major changes in the model. kNN excels in capturing patterns and irregular patterns.
+- We choose kNN regression over linear regression because when looking at the graphs Dean made, we saw that the tree diameter/height vs. biomass graphs all have exponential growth. 
+- When relations between biomass and trees' diameter and height are complex and nonlinear, data is abundant, and the model needs to be adaptive without making major changes in the model. kNN excels in capturing patterns and irregular patterns.
 
 # Performance Metric
-- **RMSLE over RMSE**: focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. 
-- By prioritizing percentage errors, RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
+- When predicting tree biomass, we chose Root Mean Square Logarithmic Error for our performance metric since biomass data varies greatly, ranging from tiny saplings to enormous trees, and trees have exponential growth. 
+- **RMSLE over RMSE**: focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
 
 ```{python}
 #| echo: false
@@ -203,7 +200,7 @@ for i in range(len(df_filtered)):
   if (df_filtered["COMMON_NAME"].iloc[i] == "loblolly pine"):
     tree.append(df_filtered.iloc[i])
 ```
-# Model
+# Project Manager Model
 ```{python}
 #| echo: false
 # Assume df_filtered already exists and includes COMMON_NAME
@@ -360,7 +357,5 @@ for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
 avg_rmsle = sum(rmsle)/len(rmsle) #averages
 print(f"Average Root Mean Squared Log Error (RMSLE) for k = 3: {avg_rmsle}") #averages
 ```
-
-
 
 # Quality Assurance
