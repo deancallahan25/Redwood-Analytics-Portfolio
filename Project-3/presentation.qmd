@@ -173,10 +173,13 @@ plt.show()
 <!--Domain Expert Slides End -->
 
 <!--Project Manager Slides Start -->
-# Insights 
+# Consultation
 <!-- :3 -->
-- When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous unc trees, some trees having exponential growth. 
-- We chose kNN regression over linear regression because, according to science, most UNC trees grow exponentially, which makes us think that kNN regression would be more accurate than linear regression. 
+- When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous trees, majority of trees having exponential growth. 
+- We chose kNN regression over linear regression because when looking at the graphs Dean presented, we saw that the tree diameter/height vs. biomass graphs all have exponential growth. 
+
+# Consultation pt 2
+- When relations between biomass and trees diameter and height are complex and non linear, data is abundent, and the model needs to be adaptive with out maksing major changes in the model. kNN excels in capturing patterns and irregular patterns.
 
 # Performance Metric
 - **RMSLE over RMSE**: focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. 
