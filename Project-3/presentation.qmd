@@ -9,7 +9,7 @@ execute:
 #| echo: false
 #Setting up environment & dataframes
 import numpy as np
-import pandas as pd
+import pandas as pd # panda 
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LinearRegression
@@ -173,13 +173,17 @@ plt.show()
 <!--Domain Expert Slides End -->
 
 <!--Project Manager Slides Start -->
-# Consultation SERC scientist
+# Consultation
+<!-- :3 -->
+- When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous trees, majority of trees having exponential growth. 
+- We chose kNN regression over linear regression because when looking at the graphs Dean presented, we saw that the tree diameter/height vs. biomass graphs all have exponential growth. 
 
-
+# Consultation pt 2
+- When relations between biomass and trees diameter and height are complex and non linear, data is abundent, and the model needs to be adaptive with out maksing major changes in the model. kNN excels in capturing patterns and irregular patterns.
 
 # Performance Metric
-
-When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous grandpa trees, some trees having exponential growth. RMSLE focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. This metric is particularly useful in accurately assessing the predictive performance of models when dealing with such diverse ranges of tree sizes. By prioritizing percentage errors, RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
+- **RMSLE over RMSE**: focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. 
+- By prioritizing percentage errors, RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
 
 ```{python}
 #| echo: false
@@ -196,10 +200,6 @@ test = []
 selection = []
 tree = []
 for i in range(len(df_filtered)):
-  #ntrain = df_filtered["COMMON_NAME"].value_counts()[0] * 0.80
-  #nst = df_filtered["COMMON_NAME"].value_counts()[0] - ntrain
-  #nselection = nst/2
-  #ntest = nselection
   if (df_filtered["COMMON_NAME"].iloc[i] == "loblolly pine"):
     tree.append(df_filtered.iloc[i])
 ```
@@ -266,7 +266,7 @@ for species in train_df["COMMON_NAME"].unique():
     for k in range(2, 11):
         model = KNeighborsRegressor(n_neighbors=k)
         model.fit(X_train_scaled, y_train)
-
+        #Delete this comment when the code it fix
         y_pred = model.predict(X_test_scaled)
 
         # Metrics
@@ -282,7 +282,7 @@ for species in train_df["COMMON_NAME"].unique():
         performance.append({
             "Species": species,
             "k": k,
-            "RMSE": rmse,
+            "RMSE": rmse, #this is a bad metric cus it sucks
             "MAE": mae,
             "RMSLE": rmsle
         })
@@ -293,10 +293,12 @@ performance_df
 ```
 
 # Technical Lead
- - Split and filtering methods
- - Feature engineering (what worked and what didn't)
- - Tuning k for the best model
- - The final "best" model and error
+- Overview of data manipulation
+- Split and filtering methods
+- Feature engineering (what worked and what didn't)
+- Tuning k for the best model
+- The final "best" model and error
+
 # Tree Measurement Data:
 ```{python}
 #| echo: false
@@ -317,12 +319,46 @@ combined_df = trees.merge(species_codes,on='SPCD', how='left')
 combined_df.head()
 ```
 
-# Filtered data
+# Filtered data (minimum 100 data points)
 ```{python}
 counts = combined_df["COMMON_NAME"].value_counts()
 frequent_values = counts[counts >= 100].index
 df_filtered = combined_df[combined_df["COMMON_NAME"].isin(frequent_values)]
-df_filtered.head()
+df_filtered
+```
+
+# Base datset calculations:
+```{python}
+training_dataset = pd.read_csv("individual-models/data/training_data.csv")
+testing_dataset = pd.read_csv("individual-models/data/testing_data.csv")
+rmsle = []
+for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
+
+    tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+
+    #put in new dataframes
+    train = training_dataset.loc[training_dataset['COMMON_NAME'] == tree_name]
+    test = testing_dataset.loc[testing_dataset['COMMON_NAME'] == tree_name]
+
+    # Split data into training and testing sets
+    X_train = train[['DO_BH', 'HT_TOT']]
+    y_train = train['TT_DW_CRM']
+    X_test = test[['DO_BH', 'HT_TOT']]
+    y_test = test['TT_DW_CRM']
+
+    # Scale the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor.fit(X_train_scaled, y_train)
+    y_pred = knn_regressor.predict(X_test_scaled)
+
+    rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) #averages
+
+avg_rmsle = sum(rmsle)/len(rmsle) #averages
+print(f"Average Root Mean Squared Log Error (RMSLE) for k = 3: {avg_rmsle}") #averages
 ```
 
 
