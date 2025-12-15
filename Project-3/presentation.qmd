@@ -288,10 +288,12 @@ performance_df
 ```
 
 # Technical Lead
- - Split and filtering methods
- - Feature engineering (what worked and what didn't)
- - Tuning k for the best model
- - The final "best" model and error
+- Overview of data manipulation
+- Split and filtering methods
+- Feature engineering (what worked and what didn't)
+- Tuning k for the best model
+- The final "best" model and error
+
 # Tree Measurement Data:
 ```{python}
 #| echo: false
@@ -312,12 +314,46 @@ combined_df = trees.merge(species_codes,on='SPCD', how='left')
 combined_df.head()
 ```
 
-# Filtered data
+# Filtered data (minimum 100 data points)
 ```{python}
 counts = combined_df["COMMON_NAME"].value_counts()
 frequent_values = counts[counts >= 100].index
 df_filtered = combined_df[combined_df["COMMON_NAME"].isin(frequent_values)]
-df_filtered.head()
+df_filtered
+```
+
+# Base datset calculations:
+```{python}
+training_dataset = pd.read_csv("individual-models/data/training_data.csv")
+testing_dataset = pd.read_csv("individual-models/data/testing_data.csv")
+rmsle = []
+for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
+
+    tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+
+    #put in new dataframes
+    train = training_dataset.loc[training_dataset['COMMON_NAME'] == tree_name]
+    test = testing_dataset.loc[testing_dataset['COMMON_NAME'] == tree_name]
+
+    # Split data into training and testing sets
+    X_train = train[['DO_BH', 'HT_TOT']]
+    y_train = train['TT_DW_CRM']
+    X_test = test[['DO_BH', 'HT_TOT']]
+    y_test = test['TT_DW_CRM']
+
+    # Scale the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor.fit(X_train_scaled, y_train)
+    y_pred = knn_regressor.predict(X_test_scaled)
+
+    rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) #averages
+
+avg_rmsle = sum(rmsle)/len(rmsle) #averages
+print(f"Average Root Mean Squared Log Error (RMSLE) for k = 3: {avg_rmsle}") #averages
 ```
 
 
