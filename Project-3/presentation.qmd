@@ -478,3 +478,159 @@ print(f"Volume feature average RMSLE: {avg_rmsle}")
 ```
 
 # Quality Assurance
+- Testing uncertainty quantification methods for our prediction intervals
+- We did not use a linear model, so t-based prediction intervals couldn't be made
+- Compared the other three methods
+    - Conformal Prediction Intervals
+    - Quantile Regression Prediction Intervals
+    - Conformalized Quantile Regression (CQR) Prediction Intervals
+
+# Conformal Prediction Intervals
+```{python}
+# Imports
+species_name_df = pd.read_csv('individual-models/data/FIATreeSpeciesCode.csv')
+species_info_df = pd.read_csv('individual-models/data/biomass_model_dataset')
+train_df = pd.read_csv('individual-models/data/training_data.csv')
+select_df = pd.read_csv('individual-models/data/selection_data.csv')
+test_df = pd.read_csv('individual-models/data/testing_data.csv')
+df = pd.merge(species_info_df, species_name_df.loc[:, ['SPCD', 'COMMON_NAME']], on='SPCD', how='inner')
+counts = df["COMMON_NAME"].value_counts()
+frequent_values = counts[counts >= 100].index
+df_filter = df[df["COMMON_NAME"].isin(frequent_values)]
+df_volume = df_filter.assign(VOLUME = (df_filter["HT_TOT"]*3.14159*(0.5*df_filter["DO_BH"])**2))
+
+# Evan's Model
+rmsle = []
+for i in range(len(df_volume["COMMON_NAME"].value_counts())):
+    tree_name = df_volume["COMMON_NAME"].value_counts().index[i]
+    tree_subset = df_volume.loc[df_volume['COMMON_NAME'] == tree_name]
+    train_index = int(tree_subset["COMMON_NAME"].value_counts()[0] * 0.80)
+    test_index = int(tree_subset["COMMON_NAME"].value_counts()[0] * 0.90)
+    selection_index = int(tree_subset["COMMON_NAME"].value_counts()[0])
+    train = pd.DataFrame(tree_subset.iloc[:train_index])
+    test = pd.DataFrame(tree_subset.iloc[train_index:test_index])
+    selection = pd.DataFrame(tree_subset.iloc[test_index:selection_index])
+    X_train = train[['DO_BH', 'HT_TOT', 'VOLUME']]
+    y_train = train['TT_DW_CRM']
+    X_test = test[['DO_BH', 'HT_TOT', 'VOLUME']]
+    y_test = test['TT_DW_CRM']
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor.fit(X_train_scaled, y_train)
+    y_pred = knn_regressor.predict(X_test_scaled)
+    rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred)))
+avg_rmsle = sum(rmsle)/len(rmsle)
+
+# Setting up conformal and calibration variables
+X_train_conf = train[['DO_BH', 'HT_TOT', 'VOLUME']]
+X_cal = selection[['DO_BH', 'HT_TOT', 'VOLUME']]
+y_train_conf = train['TT_DW_CRM']
+y_cal = selection['TT_DW_CRM']
+k = 3
+knn = KNeighborsRegressor(n_neighbors=k)
+knn.fit(X_train_conf, y_train_conf)
+y_pred_cal = knn.predict(X_cal)
+calibration_residuals = np.abs(y_cal - y_pred_cal)
+alpha = 0.05
+q_conformal = np.quantile(calibration_residuals, 1 - alpha)
+X = df_volume[['DO_BH', 'HT_TOT', 'VOLUME']].values
+y = df_volume['TT_DW_CRM'].values
+y_pred_knn = knn.predict(X)
+pi_lower_conformal = y_pred_knn - q_conformal
+pi_upper_conformal = y_pred_knn + q_conformal
+
+# preparing new dataframes for plotting and creating model on calibration sets
+all_species_conformal_results = []
+unique_species = df_volume['COMMON_NAME'].unique()
+for tree_name in unique_species:
+    tree_subset = df_volume[df_volume['COMMON_NAME'] == tree_name].copy()
+    train_end_idx = int(len(tree_subset) * 0.8)
+    train_species = tree_subset.iloc[:train_end_idx]
+    calibration_species = tree_subset.iloc[train_end_idx:int(len(tree_subset)* 0.9)]
+    features = ['DO_BH', 'HT_TOT', 'VOLUME']
+    target = 'TT_DW_CRM'
+    X_train_species = train_species[features]
+    y_train_species = train_species[target]
+    X_calibration_species = calibration_species[features]
+    y_calibration_species = calibration_species[target]
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train_species)
+    X_calibration_scaled = scaler.transform(X_calibration_species)
+    k = 3
+    knn = KNeighborsRegressor(n_neighbors=k)
+    knn.fit(X_train_scaled, y_train_species)
+    y_calibration_pred = knn.predict(X_calibration_scaled)
+    calibration_residuals = np.abs(y_calibration_species - y_calibration_pred)
+    alpha = 0.05
+    q_conformal = np.quantile(calibration_residuals, 1 - alpha)
+    X_full_species_scaled = scaler.transform(tree_subset[features])
+    y_pred_full_species = knn.predict(X_full_species_scaled)
+    pi_lower_conformal = y_pred_full_species - q_conformal
+    pi_upper_conformal = y_pred_full_species + q_conformal
+    avg_actual = tree_subset[target].mean()
+    avg_predicted = y_pred_full_species.mean()
+    avg_lower_bound = pi_lower_conformal.mean()
+    avg_upper_bound = pi_upper_conformal.mean()
+    species_results = {
+        'tree_name': tree_name,
+        'average_actual_biomass': avg_actual,
+        'average_predicted_biomass': avg_predicted,
+        'average_lower_bound': avg_lower_bound,
+        'average_upper_bound': avg_upper_bound
+    }
+    all_species_conformal_results.append(species_results)
+    average_prediction_intervals_df = pd.DataFrame(all_species_conformal_results)
+average_prediction_intervals_df.columns = [
+    'Species Name',
+    'Average Actual Biomass',
+    'Average Predicted Biomass',
+    'Average Lower Bound',
+    'Average Upper Bound'
+]
+average_prediction_intervals_df_sorted = average_prediction_intervals_df.sort_values(by='Average Predicted Biomass').reset_index(drop=True)
+
+average_prediction_intervals_df_sorted['Interval Width'] = average_prediction_intervals_df_sorted['Average Upper Bound'] - average_prediction_intervals_df_sorted['Average Lower Bound']
+Q1 = average_prediction_intervals_df_sorted['Interval Width'].quantile(0.25)
+Q3 = average_prediction_intervals_df_sorted['Interval Width'].quantile(0.75)
+IQR = Q3 - Q1
+upper_bound_iqr = Q3 + 1.5 * IQR
+partially_filtered_prediction_intervals_df = average_prediction_intervals_df_sorted[average_prediction_intervals_df_sorted['Interval Width'] <= upper_bound_iqr]
+filtered_prediction_intervals_df = partially_filtered_prediction_intervals_df[partially_filtered_prediction_intervals_df['Average Predicted Biomass'] < 1000]
+
+# actually plotting the conformal prediction intervals
+fig, ax = plt.subplots(2, 1, figsize=(14, 10))
+ax[0].plot(average_prediction_intervals_df_sorted.index, average_prediction_intervals_df_sorted['Average Predicted Biomass'],
+         label='Average Predicted Biomass', color='blue', marker='o', linestyle='-', markersize=4, linewidth=1.5)
+ax[0].scatter(average_prediction_intervals_df_sorted.index, average_prediction_intervals_df_sorted['Average Actual Biomass'],
+            label='Average Actual Biomass', color='red', marker='x', s=60)
+ax[0].fill_between(average_prediction_intervals_df_sorted.index,
+                 average_prediction_intervals_df_sorted['Average Lower Bound'],
+                 average_prediction_intervals_df_sorted['Average Upper Bound'],
+                 color='skyblue', alpha=0.3, label='95% Conformal Prediction Interval')
+
+ax[0].set_xlabel('Species Index (Sorted by Predicted Biomass)', fontsize=12)
+ax[0].set_ylabel('Biomass', fontsize=12)
+ax[0].set_title('Conformal Prediction Intervals for All Tree Species', fontsize=14, fontweight='bold')
+ax[0].legend(fontsize=10)
+ax[0].grid(True, linestyle='--', alpha=0.6)
+
+ax[1].plot(filtered_prediction_intervals_df.index, filtered_prediction_intervals_df['Average Predicted Biomass'],
+         label='Average Predicted Biomass', color='blue', marker='o', linestyle='-', markersize=4, linewidth=1.5)
+ax[1].scatter(filtered_prediction_intervals_df.index, filtered_prediction_intervals_df['Average Actual Biomass'],
+            label='Average Actual Biomass', color='red', marker='x', s=60)
+ax[1].fill_between(filtered_prediction_intervals_df.index,
+                 filtered_prediction_intervals_df['Average Lower Bound'],
+                 filtered_prediction_intervals_df['Average Upper Bound'],
+                 color='skyblue', alpha=0.3, label='95% Conformal Prediction Interval')
+ax[1].set_xlabel('Species Index (Sorted by Predicted Biomass, Outliers Removed)', fontsize=12)
+ax[1].set_ylabel('Biomass', fontsize=12)
+ax[1].set_title('Conformal Prediction Intervals for Tree Species (Outliers Removed,Biomass < 1000)', fontsize=14, fontweight='bold')
+ax[1].legend(fontsize=10)
+ax[1].grid(True, linestyle='--', alpha=0.6)
+
+plt.tight_layout()
+plt.show()
+```
+
