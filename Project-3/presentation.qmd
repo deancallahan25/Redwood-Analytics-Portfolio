@@ -37,7 +37,7 @@ df_visuals=df.merge(species_codes,on='SPCD', how='left')
 
 - SPCD (FIA Species Code): A numeric code which unqiuely identifies each tree species and corresponds to a scientific and common name for the tree as specified by the FIA (Forest Inventory and Analysis) species coding system.
 
-- DO_BH (Diameter at Breast Height): Diameter of the tree stem measured at breast height (4.5 feet or 1.37 meters above ground) including bark. This is the standard foresty measurement "DBH (outside bark)" and is the primary size variable used in nearly all allometric biomass models. This is measured in **inches**. 
+- DO_BH (Diameter at Breast Height): Diameter of the tree stem measured at breast height (4.5 feet or 1.37 meters above ground) including bark. This is the standard forestry measurement "DBH (outside bark)" and is the primary size variable used in nearly all allometric biomass models. This is measured in **inches**. 
 
 # Data Dictionary Continued
 - HT_TOT (Total Tree Height): The total height of the tree measured from ground level to the top of the crown. Used as a second size metric in volume and biomass modeling. This is measured in **feet**. 
