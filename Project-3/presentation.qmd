@@ -295,8 +295,8 @@ performance_df
 # Technical Lead
 - Overview of data manipulation
 - Split and filtering methods
-- Feature engineering (what worked and what didn't)
 - Tuning k for the best model
+- Feature engineering (what worked and what didn't)
 - The final "best" model and error
 
 # Tree Measurement Data:
@@ -305,6 +305,8 @@ performance_df
 trees = pd.read_csv("individual-models/data/biomass_model_dataset.csv")
 species = pd.read_csv("individual-models/data/FIATreeSpeciesCode.csv")
 species_codes = species[["SPCD","COMMON_NAME"]]
+training_dataset = pd.read_csv("individual-models/data/training_data.csv")
+testing_dataset = pd.read_csv("individual-models/data/testing_data.csv")
 trees.head()
 ```
 # Tree Species Name Data:
@@ -326,14 +328,11 @@ frequent_values = counts[counts >= 100].index
 df_filtered = combined_df[combined_df["COMMON_NAME"].isin(frequent_values)]
 df_filtered
 ```
-
-# Base datset calculations:
+# Testing k values
 ```{python}
-training_dataset = pd.read_csv("individual-models/data/training_data.csv")
-testing_dataset = pd.read_csv("individual-models/data/testing_data.csv")
-rmsle = []
-for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
-
+for j in range(3,8):
+  rmsle = []
+  for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
     tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
 
     #put in new dataframes
@@ -351,16 +350,115 @@ for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
 
-    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor = KNeighborsRegressor(n_neighbors=j)
     knn_regressor.fit(X_train_scaled, y_train)
     y_pred = knn_regressor.predict(X_test_scaled)
 
     rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) #averages
 
-avg_rmsle = sum(rmsle)/len(rmsle) #averages
-print(f"Average Root Mean Squared Log Error (RMSLE) for k = 3: {avg_rmsle}") #averages
+  avg_rmsle = sum(rmsle)/len(rmsle) #averages
+  print(f"Average Root Mean Squared Log Error (RMSLE) for k = {j}: {avg_rmsle}") #averages
+```
+# Adding features 
+```{python}
+feature_train = training_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.14159*(0.5*training_dataset["DO_BH"])**2)).assign(H_D_INT = (training_dataset["HT_TOT"]*training_dataset["DO_BH"])).assign(H_SQUARED = (training_dataset["HT_TOT"]**2))
+
+feature_test = testing_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.14159*(0.5*training_dataset["DO_BH"])**2)).assign(H_D_INT = (training_dataset["HT_TOT"]*training_dataset["DO_BH"])).assign(H_SQUARED = (training_dataset["HT_TOT"]**2))
+
+feature_train.head()
 ```
 
+# Testing and comparing models
+```{python}
+#----------------------Height squared------------------------
+rmsle = []
+for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
+  tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+
+  #put in new dataframes
+  train = feature_train.loc[feature_train['COMMON_NAME'] == tree_name]
+  test = feature_test.loc[feature_test['COMMON_NAME'] == tree_name]
+
+  # Split data into training and testing sets
+  X_train = train[['DO_BH', 'HT_TOT','H_SQUARED']]
+  y_train = train['TT_DW_CRM']
+  X_test = test[['DO_BH', 'HT_TOT','H_SQUARED']]
+  y_test = test['TT_DW_CRM']
+
+  # Scale the features
+  scaler = StandardScaler()
+  X_train_scaled = scaler.fit_transform(X_train)
+  X_test_scaled = scaler.transform(X_test)
+  knn_regressor = KNeighborsRegressor(n_neighbors=3)
+  knn_regressor.fit(X_train_scaled, y_train)
+  y_pred = knn_regressor.predict(X_test_scaled)
+    
+  #gather all calculations
+  rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
+
+avg_rmsle = sum(rmsle)/len(rmsle) 
+print(f"Height squared:\nAverage RMSLE for k = 3- {avg_rmsle}") 
+
+#----------------------Height and diameter------------------------
+rmsle = []
+for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
+    tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+
+    #put in new dataframes
+    train = feature_train.loc[feature_train['COMMON_NAME'] == tree_name]
+    test = feature_test.loc[feature_test['COMMON_NAME'] == tree_name]
+
+    # Split data into training and testing sets
+    X_train = train[['DO_BH', 'HT_TOT','H_D_INT']]
+    y_train = train['TT_DW_CRM']
+    X_test = test[['DO_BH', 'HT_TOT','H_D_INT']]
+    y_test = test['TT_DW_CRM']
+
+    # Scale the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor.fit(X_train_scaled, y_train)
+    y_pred = knn_regressor.predict(X_test_scaled)
+    
+    #gather all calculations
+    rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
+
+avg_rmsle = sum(rmsle)/len(rmsle) 
+print(f"Height and diameter interaction:\nAverage RMSLE for k = 3- {avg_rmsle}") 
+
+#----------------------Volume feature------------------------------
+rmsle = []
+for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
+    tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+
+    #put in new dataframes
+    train = feature_train.loc[feature_train['COMMON_NAME'] == tree_name]
+    test = feature_test.loc[feature_test['COMMON_NAME'] == tree_name]
+
+    # Split data into training and testing sets
+    X_train = train[['DO_BH', 'HT_TOT','VOLUME']]
+    y_train = train['TT_DW_CRM']
+    X_test = test[['DO_BH', 'HT_TOT','VOLUME']]
+    y_test = test['TT_DW_CRM']
+
+    # Scale the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor.fit(X_train_scaled, y_train)
+    y_pred = knn_regressor.predict(X_test_scaled)
+    
+    #gather all calculations
+    rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
+
+avg_rmsle = sum(rmsle)/len(rmsle) 
+print(f"Volume of cylinder feature:\nAverage RMSLE for k = 3- {avg_rmsle}") 
+```
 
 
 # Quality Assurance
