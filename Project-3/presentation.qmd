@@ -285,8 +285,20 @@ for species in train_df["COMMON_NAME"].unique():
         })
 
 performance_df = pd.DataFrame(performance)
-performance_df
+performance_df.head(n=9)
+```
 
+# Average Root Mean Square Logarithmic Error
+```{python}
+avg_rmsle_by_k = (
+    performance_df
+    .groupby("k")["RMSLE"]
+    .mean()
+    .reset_index()
+    .rename(columns={"RMSLE": "Avg_RMSLE"})
+)
+
+print(avg_rmsle_by_k)
 ```
 
 # Technical Lead
