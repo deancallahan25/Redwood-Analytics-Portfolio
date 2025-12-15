@@ -316,18 +316,18 @@ species = pd.read_csv("individual-models/data/FIATreeSpeciesCode.csv")
 species_codes = species[["SPCD","COMMON_NAME"]]
 training_dataset = pd.read_csv("individual-models/data/training_data.csv")
 testing_dataset = pd.read_csv("individual-models/data/testing_data.csv")
-trees.head()
+trees
 ```
 # Tree Species Name Data:
 ```{python}
 #| echo: false
-species_codes.head()
+species_codes
 ```
 # Combined Dataset (species mapped onto bigger dataset):
 ```{python}
 #| echo: false
 combined_df = trees.merge(species_codes,on='SPCD', how='left')
-combined_df.head()
+combined_df
 ```
 
 # Filtered data (minimum 100 data points)
@@ -366,7 +366,7 @@ for j in range(3,8):
     rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) #averages
 
   avg_rmsle = sum(rmsle)/len(rmsle) #averages
-  print(f"Average Root Mean Squared Log Error (RMSLE) for k = {j}: {avg_rmsle}") #averages
+  print(f"Average (RMSLE) for k = {j}: {avg_rmsle}") #averages
 ```
 # Adding features 
 ```{python}
@@ -374,19 +374,22 @@ feature_train = training_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.1
 
 feature_test = testing_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.14159*(0.5*training_dataset["DO_BH"])**2)).assign(H_D_INT = (training_dataset["HT_TOT"]*training_dataset["DO_BH"])).assign(H_SQUARED = (training_dataset["HT_TOT"]**2))
 
-feature_train.head()
+feature_train
 ```
 
 # Testing and comparing models
 ```{python}
 #----------------------Height squared------------------------
+height_training = training_dataset.assign(H_SQUARED = (training_dataset["HT_TOT"]**2))
+height_test = testing_dataset.assign(H_SQUARED = (testing_dataset["HT_TOT"]**2))
+
 rmsle = []
-for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
-  tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+for i in range(len(feature_train["COMMON_NAME"].value_counts())):
+  tree_name = feature_train["COMMON_NAME"].value_counts().index[i]
 
   #put in new dataframes
-  train = feature_train.loc[feature_train['COMMON_NAME'] == tree_name]
-  test = feature_test.loc[feature_test['COMMON_NAME'] == tree_name]
+  train = height_training.loc[height_training['COMMON_NAME'] == tree_name]
+  test = height_test.loc[height_test['COMMON_NAME'] == tree_name]
 
   # Split data into training and testing sets
   X_train = train[['DO_BH', 'HT_TOT','H_SQUARED']]
@@ -406,16 +409,18 @@ for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
   rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
 
 avg_rmsle = sum(rmsle)/len(rmsle) 
-print(f"Height squared:\nAverage RMSLE for k = 3- {avg_rmsle}") 
+print(f"Height squared average RMSLE: {avg_rmsle}") 
 
 #----------------------Height and diameter------------------------
+h_d_training = training_dataset.assign(H_D_INT = (training_dataset["HT_TOT"]*training_dataset["DO_BH"]))
+h_d_test = testing_dataset.assign(H_D_INT = (testing_dataset["HT_TOT"]*testing_dataset["DO_BH"]))
 rmsle = []
-for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
-    tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+for i in range(len(feature_train["COMMON_NAME"].value_counts())):
+    tree_name = feature_train["COMMON_NAME"].value_counts().index[i]
 
     #put in new dataframes
-    train = feature_train.loc[feature_train['COMMON_NAME'] == tree_name]
-    test = feature_test.loc[feature_test['COMMON_NAME'] == tree_name]
+    train = h_d_training.loc[h_d_training['COMMON_NAME'] == tree_name]
+    test = h_d_test.loc[h_d_test['COMMON_NAME'] == tree_name]
 
     # Split data into training and testing sets
     X_train = train[['DO_BH', 'HT_TOT','H_D_INT']]
@@ -436,16 +441,19 @@ for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
     rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
 
 avg_rmsle = sum(rmsle)/len(rmsle) 
-print(f"Height and diameter interaction:\nAverage RMSLE for k = 3- {avg_rmsle}") 
+print(f"Height * diameter interacion average RMSLE: {avg_rmsle}") 
 
 #----------------------Volume feature------------------------------
+vol_training = training_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.14159*(0.5*training_dataset["DO_BH"])**2))
+vol_test = testing_dataset.assign(VOLUME = (testing_dataset["HT_TOT"]*3.14159*(0.5*testing_dataset["DO_BH"])**2))
+
 rmsle = []
-for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
-    tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
+for i in range(len(feature_train["COMMON_NAME"].value_counts())):
+    tree_name = feature_train["COMMON_NAME"].value_counts().index[i]
 
     #put in new dataframes
-    train = feature_train.loc[feature_train['COMMON_NAME'] == tree_name]
-    test = feature_test.loc[feature_test['COMMON_NAME'] == tree_name]
+    train = vol_training.loc[vol_training['COMMON_NAME'] == tree_name]
+    test = vol_test.loc[vol_test['COMMON_NAME'] == tree_name]
 
     # Split data into training and testing sets
     X_train = train[['DO_BH', 'HT_TOT','VOLUME']]
@@ -466,11 +474,7 @@ for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
     rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
 
 avg_rmsle = sum(rmsle)/len(rmsle) 
-print(f"Volume of cylinder feature:\nAverage RMSLE for k = 3- {avg_rmsle}") 
+print(f"Volume feature average RMSLE: {avg_rmsle}") 
 ```
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 91177b9a96467b13cef66fb2c71a5dea96f6b2d7
 # Quality Assurance
