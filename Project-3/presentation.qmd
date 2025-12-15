@@ -175,15 +175,12 @@ plt.show()
 <!--Project Manager Slides Start -->
 # Consultation
 <!-- :3 -->
-- When predicting tree biomass, employ the performance metric root mean square logarithmic error since biomass data varies greatly, ranging from tiny saplings to enormous trees, majority of trees having exponential growth. 
-- We chose kNN regression over linear regression because when looking at the graphs Dean presented, we saw that the tree diameter/height vs. biomass graphs all have exponential growth. 
-
-# Consultation pt 2
-- When relations between biomass and trees diameter and height are complex and non linear, data is abundent, and the model needs to be adaptive with out maksing major changes in the model. kNN excels in capturing patterns and irregular patterns.
+- We choose kNN regression over linear regression because when looking at the graphs Dean made, we saw that the tree diameter/height vs. biomass graphs all have exponential growth. 
+- When relations between biomass and trees' diameter and height are complex and nonlinear, data is abundant, and the model needs to be adaptive without making major changes in the model. kNN excels in capturing patterns and irregular patterns.
 
 # Performance Metric
-- **RMSLE over RMSE**: focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. 
-- By prioritizing percentage errors, RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
+- When predicting tree biomass, we chose Root Mean Square Logarithmic Error for our performance metric since biomass data varies greatly, ranging from tiny saplings to enormous trees, and trees have exponential growth. 
+- **RMSLE over RMSE**: focuses on percentage errors, making it fair to both small and large trees, unlike RMSE, which we believe penalizes errors on big trees. Fitting biomass estimations where scale matters more than absolute error. RMSLE provides a more balanced evaluation that considers the unique characteristics of tree biomass data.
 
 ```{python}
 #| echo: false
@@ -203,7 +200,7 @@ for i in range(len(df_filtered)):
   if (df_filtered["COMMON_NAME"].iloc[i] == "loblolly pine"):
     tree.append(df_filtered.iloc[i])
 ```
-# Model
+# Project Manager Model
 ```{python}
 #| echo: false
 # Assume df_filtered already exists and includes COMMON_NAME
@@ -288,15 +285,27 @@ for species in train_df["COMMON_NAME"].unique():
         })
 
 performance_df = pd.DataFrame(performance)
-performance_df
+performance_df.head(n=9)
+```
 
+# Average Root Mean Square Logarithmic Error
+```{python}
+avg_rmsle_by_k = (
+    performance_df
+    .groupby("k")["RMSLE"]
+    .mean()
+    .reset_index()
+    .rename(columns={"RMSLE": "Avg_RMSLE"})
+)
+
+print(avg_rmsle_by_k)
 ```
 
 # Technical Lead
 - Overview of data manipulation
 - Split and filtering methods
-- Feature engineering (what worked and what didn't)
 - Tuning k for the best model
+- Feature engineering (what worked and what didn't)
 - The final "best" model and error
 
 # Tree Measurement Data:
@@ -305,18 +314,20 @@ performance_df
 trees = pd.read_csv("individual-models/data/biomass_model_dataset.csv")
 species = pd.read_csv("individual-models/data/FIATreeSpeciesCode.csv")
 species_codes = species[["SPCD","COMMON_NAME"]]
-trees.head()
+training_dataset = pd.read_csv("individual-models/data/training_data.csv")
+testing_dataset = pd.read_csv("individual-models/data/testing_data.csv")
+trees
 ```
 # Tree Species Name Data:
 ```{python}
 #| echo: false
-species_codes.head()
+species_codes
 ```
 # Combined Dataset (species mapped onto bigger dataset):
 ```{python}
 #| echo: false
 combined_df = trees.merge(species_codes,on='SPCD', how='left')
-combined_df.head()
+combined_df
 ```
 
 # Filtered data (minimum 100 data points)
@@ -326,14 +337,11 @@ frequent_values = counts[counts >= 100].index
 df_filtered = combined_df[combined_df["COMMON_NAME"].isin(frequent_values)]
 df_filtered
 ```
-
-# Base datset calculations:
+# Testing k values
 ```{python}
-training_dataset = pd.read_csv("individual-models/data/training_data.csv")
-testing_dataset = pd.read_csv("individual-models/data/testing_data.csv")
-rmsle = []
-for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
-
+for j in range(3,8):
+  rmsle = []
+  for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
     tree_name = df_filtered["COMMON_NAME"].value_counts().index[i]
 
     #put in new dataframes
@@ -351,16 +359,122 @@ for i in range(len(df_filtered["COMMON_NAME"].value_counts())):
     X_train_scaled = scaler.fit_transform(X_train)
     X_test_scaled = scaler.transform(X_test)
 
-    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor = KNeighborsRegressor(n_neighbors=j)
     knn_regressor.fit(X_train_scaled, y_train)
     y_pred = knn_regressor.predict(X_test_scaled)
 
     rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) #averages
 
-avg_rmsle = sum(rmsle)/len(rmsle) #averages
-print(f"Average Root Mean Squared Log Error (RMSLE) for k = 3: {avg_rmsle}") #averages
+  avg_rmsle = sum(rmsle)/len(rmsle) #averages
+  print(f"Average (RMSLE) for k = {j}: {avg_rmsle}") #averages
+```
+# Adding features 
+```{python}
+feature_train = training_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.14159*(0.5*training_dataset["DO_BH"])**2)).assign(H_D_INT = (training_dataset["HT_TOT"]*training_dataset["DO_BH"])).assign(H_SQUARED = (training_dataset["HT_TOT"]**2))
+
+feature_test = testing_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.14159*(0.5*training_dataset["DO_BH"])**2)).assign(H_D_INT = (training_dataset["HT_TOT"]*training_dataset["DO_BH"])).assign(H_SQUARED = (training_dataset["HT_TOT"]**2))
+
+feature_train
 ```
 
+# Testing and comparing models
+```{python}
+#----------------------Height squared------------------------
+height_training = training_dataset.assign(H_SQUARED = (training_dataset["HT_TOT"]**2))
+height_test = testing_dataset.assign(H_SQUARED = (testing_dataset["HT_TOT"]**2))
 
+rmsle = []
+for i in range(len(feature_train["COMMON_NAME"].value_counts())):
+  tree_name = feature_train["COMMON_NAME"].value_counts().index[i]
+
+  #put in new dataframes
+  train = height_training.loc[height_training['COMMON_NAME'] == tree_name]
+  test = height_test.loc[height_test['COMMON_NAME'] == tree_name]
+
+  # Split data into training and testing sets
+  X_train = train[['DO_BH', 'HT_TOT','H_SQUARED']]
+  y_train = train['TT_DW_CRM']
+  X_test = test[['DO_BH', 'HT_TOT','H_SQUARED']]
+  y_test = test['TT_DW_CRM']
+
+  # Scale the features
+  scaler = StandardScaler()
+  X_train_scaled = scaler.fit_transform(X_train)
+  X_test_scaled = scaler.transform(X_test)
+  knn_regressor = KNeighborsRegressor(n_neighbors=3)
+  knn_regressor.fit(X_train_scaled, y_train)
+  y_pred = knn_regressor.predict(X_test_scaled)
+    
+  #gather all calculations
+  rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
+
+avg_rmsle = sum(rmsle)/len(rmsle) 
+print(f"Height squared average RMSLE: {avg_rmsle}") 
+
+#----------------------Height and diameter------------------------
+h_d_training = training_dataset.assign(H_D_INT = (training_dataset["HT_TOT"]*training_dataset["DO_BH"]))
+h_d_test = testing_dataset.assign(H_D_INT = (testing_dataset["HT_TOT"]*testing_dataset["DO_BH"]))
+rmsle = []
+for i in range(len(feature_train["COMMON_NAME"].value_counts())):
+    tree_name = feature_train["COMMON_NAME"].value_counts().index[i]
+
+    #put in new dataframes
+    train = h_d_training.loc[h_d_training['COMMON_NAME'] == tree_name]
+    test = h_d_test.loc[h_d_test['COMMON_NAME'] == tree_name]
+
+    # Split data into training and testing sets
+    X_train = train[['DO_BH', 'HT_TOT','H_D_INT']]
+    y_train = train['TT_DW_CRM']
+    X_test = test[['DO_BH', 'HT_TOT','H_D_INT']]
+    y_test = test['TT_DW_CRM']
+
+    # Scale the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor.fit(X_train_scaled, y_train)
+    y_pred = knn_regressor.predict(X_test_scaled)
+    
+    #gather all calculations
+    rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
+
+avg_rmsle = sum(rmsle)/len(rmsle) 
+print(f"Height * diameter interacion average RMSLE: {avg_rmsle}") 
+
+#----------------------Volume feature------------------------------
+vol_training = training_dataset.assign(VOLUME = (training_dataset["HT_TOT"]*3.14159*(0.5*training_dataset["DO_BH"])**2))
+vol_test = testing_dataset.assign(VOLUME = (testing_dataset["HT_TOT"]*3.14159*(0.5*testing_dataset["DO_BH"])**2))
+
+rmsle = []
+for i in range(len(feature_train["COMMON_NAME"].value_counts())):
+    tree_name = feature_train["COMMON_NAME"].value_counts().index[i]
+
+    #put in new dataframes
+    train = vol_training.loc[vol_training['COMMON_NAME'] == tree_name]
+    test = vol_test.loc[vol_test['COMMON_NAME'] == tree_name]
+
+    # Split data into training and testing sets
+    X_train = train[['DO_BH', 'HT_TOT','VOLUME']]
+    y_train = train['TT_DW_CRM']
+    X_test = test[['DO_BH', 'HT_TOT','VOLUME']]
+    y_test = test['TT_DW_CRM']
+
+    # Scale the features
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    knn_regressor = KNeighborsRegressor(n_neighbors=3)
+    knn_regressor.fit(X_train_scaled, y_train)
+    y_pred = knn_regressor.predict(X_test_scaled)
+    
+    #gather all calculations
+    rmsle.append(np.sqrt(mean_squared_log_error(y_test, y_pred))) 
+
+avg_rmsle = sum(rmsle)/len(rmsle) 
+print(f"Volume feature average RMSLE: {avg_rmsle}") 
+```
 
 # Quality Assurance
