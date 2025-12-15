@@ -489,7 +489,7 @@ print(f"Volume feature average RMSLE: {avg_rmsle}")
 ```{python}
 # Imports
 species_name_df = pd.read_csv('individual-models/data/FIATreeSpeciesCode.csv')
-species_info_df = pd.read_csv('individual-models/data/biomass_model_dataset')
+species_info_df = pd.read_csv('individual-models/data/biomass_model_dataset.csv')
 train_df = pd.read_csv('individual-models/data/training_data.csv')
 select_df = pd.read_csv('individual-models/data/selection_data.csv')
 test_df = pd.read_csv('individual-models/data/testing_data.csv')
@@ -634,3 +634,73 @@ plt.tight_layout()
 plt.show()
 ```
 
+# Quantile Regression Prediciton Intervals
+```{python}
+# setting up parameters for quantile regression
+x_conf_train_test = train[['DO_BH', 'HT_TOT', 'VOLUME']]
+y_conf_train_test = train['TT_DW_CRM']
+X = df_volume[['DO_BH', 'HT_TOT', 'VOLUME']]
+
+quantile_lower = alpha / 2
+quantile_upper = 1 - alpha / 2
+def quantile_knn_predict(X_train_df, y_train_series, X_test_df, k, quantile):
+  X_train = X_train_df.values
+  X_test = X_test_df.values
+  predictions = []
+  for x_test_row in X_test:
+    distances = np.sqrt(np.sum((X_train - x_test_row)**2, axis=1))
+    k_indices = np.argsort(distances)[:k]
+    k_neighbors_y = y_train_series.iloc[k_indices]
+    pred = np.quantile(k_neighbors_y, quantile)
+    predictions.append(pred)
+  return np.array(predictions)
+
+y_pred_lower_quantile = quantile_knn_predict(x_conf_train_test, y_conf_train_test, X, 3, quantile_lower)
+y_pred_upper_quantile = quantile_knn_predict(x_conf_train_test, y_conf_train_test, X, 3, quantile_upper)
+pi_lower_quantile = y_pred_lower_quantile
+pi_upper_quantile = y_pred_upper_quantile
+y_pred_lower_cal = quantile_knn_predict(x_conf_train_test, y_conf_train_test, X_cal, 3, quantile_lower)
+y_pred_upper_cal = quantile_knn_predict(x_conf_train_test, y_conf_train_test, X_cal, 3, quantile_upper)
+coverage_quantile = np.mean((y_cal >= y_pred_lower_cal) & (y_cal <= y_pred_upper_cal))
+
+# creating new dataframes and aggregating data for plotting
+plot_data = {
+    'COMMON_NAME': df_volume['COMMON_NAME'],
+    'Actual Biomass': y,
+    'Predicted Biomass': y_pred_knn,
+    'Lower Quantile': pi_lower_quantile,
+    'Upper Quantile': pi_upper_quantile
+}
+plot_df_quantile = pd.DataFrame(plot_data)
+average_quantile_prediction_intervals_df = plot_df_quantile.groupby('COMMON_NAME').mean().reset_index()
+average_quantile_prediction_intervals_df.columns = [
+    'Species Name',
+    'Average Actual Biomass',
+    'Average Predicted Biomass',
+    'Average Lower Quantile',
+    'Average Upper Quantile'
+]
+average_quantile_prediction_intervals_df_sorted_almost = average_quantile_prediction_intervals_df.sort_values(by='Average Predicted Biomass').reset_index(drop=True)
+average_quantile_prediction_intervals_df_sorted = average_quantile_prediction_intervals_df_sorted_almost.loc[average_quantile_prediction_intervals_df_sorted_almost['Average Actual Biomass']<=1000]
+
+# final plot of quantile regression prediction intervals
+plt.figure(figsize=(14, 7))
+
+sort_idx = np.argsort(average_quantile_prediction_intervals_df_sorted['Species Name'])
+plt.plot(average_quantile_prediction_intervals_df_sorted.index, average_quantile_prediction_intervals_df_sorted['Average Actual Biomass'], 'o', label='Average Actual Biomass', markersize=8, color='black', alpha=0.7)
+plt.plot(average_quantile_prediction_intervals_df_sorted.index, average_quantile_prediction_intervals_df_sorted['Average Predicted Biomass'], 'o-', label='Average kNN Predicted Biomass', linewidth=2, markersize=6, color='blue', alpha=0.7)
+plt.fill_between(average_quantile_prediction_intervals_df_sorted.index,
+                 average_quantile_prediction_intervals_df_sorted['Average Lower Quantile'],
+                 average_quantile_prediction_intervals_df_sorted['Average Upper Quantile'],
+                 alpha=0.3, label='95% Quantile Prediction Interval', color='green')
+plt.xlabel('Species Index', fontsize=11)
+plt.ylabel('Average Biomass', fontsize=11)
+plt.title('kNN Quantile Regression: Average Prediction Intervals per Species (Biomass < 1000)', fontsize=14, fontweight='bold')
+plt.legend(fontsize=9)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
+
+# CQR Prediction Intervals
+```{python}
