@@ -704,3 +704,100 @@ plt.show()
 
 # CQR Prediction Intervals
 ```{python}
+# setting up data for CQR
+all_species_cqr_results = []
+alpha = 0.05
+k = 3
+
+for tree_name in unique_species:
+    tree_subset = df_volume[df_volume['COMMON_NAME'] == tree_name].copy()
+
+    train_split_ratio = 0.8
+    cal_split_ratio = 0.10
+
+    train_size = int(len(tree_subset) * train_split_ratio)
+    cal_size = int(len(tree_subset) * cal_split_ratio)
+
+    train_species = tree_subset.iloc[:train_size]
+    calibration_species = tree_subset.iloc[train_size : train_size + cal_size]
+
+    features = ['DO_BH', 'HT_TOT', 'VOLUME']
+    target = 'TT_DW_CRM'
+
+    X_train_species = train_species[features]
+    y_train_species = train_species[target]
+    X_calibration_species = calibration_species[features]
+    y_calibration_species = calibration_species[target]
+
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train_species)
+    X_calibration_scaled = scaler.transform(X_calibration_species)
+    X_full_species_scaled = scaler.transform(tree_subset[features]) 
+
+    X_train_scaled_df = pd.DataFrame(X_train_scaled, columns=features)
+    X_calibration_scaled_df = pd.DataFrame(X_calibration_scaled, columns=features)
+    X_full_species_scaled_df = pd.DataFrame(X_full_species_scaled, columns=features)
+
+    q_lower_cal_base = quantile_knn_predict(X_train_scaled_df, y_train_species,
+                                            X_calibration_scaled_df, k, alpha / 2)
+    q_upper_cal_base = quantile_knn_predict(X_train_scaled_df, y_train_species,
+                                            X_calibration_scaled_df, k, 1 - alpha / 2)
+
+    non_conformity_scores_cal = np.maximum(q_lower_cal_base - y_calibration_species.values,
+                                           y_calibration_species.values - q_upper_cal_base)
+    non_conformity_scores_cal[non_conformity_scores_cal < 0] = 0
+
+    q_conformal_cqr = np.quantile(non_conformity_scores_cal, 1 - alpha)
+
+    q_lower_full_base = quantile_knn_predict(X_train_scaled_df, y_train_species, X_full_species_scaled_df, k, alpha / 2)
+    q_upper_full_base = quantile_knn_predict(X_train_scaled_df, y_train_species, X_full_species_scaled_df, k, 1 - alpha / 2)
+
+    pi_lower_cqr = q_lower_full_base - q_conformal_cqr
+    pi_upper_cqr = q_upper_full_base + q_conformal_cqr
+
+    y_pred_median_full = quantile_knn_predict(X_train_scaled_df, y_train_species, X_full_species_scaled_df, k, 0.5)
+
+    avg_actual = tree_subset[target].mean()
+    avg_predicted = y_pred_median_full.mean()
+    avg_lower_bound = pi_lower_cqr.mean()
+    avg_upper_bound = pi_upper_cqr.mean()
+
+    species_results = {
+        'tree_name': tree_name,
+        'average_actual_biomass': avg_actual,
+        'average_predicted_biomass': avg_predicted,
+        'average_lower_bound_cqr': avg_lower_bound,
+        'average_upper_bound_cqr': avg_upper_bound
+    }
+    all_species_cqr_results.append(species_results)
+
+cqr_prediction_intervals_df = pd.DataFrame(all_species_cqr_results)
+cqr_prediction_intervals_df.columns = [
+    'Species Name',
+    'Average Actual Biomass',
+    'Average Predicted Biomass',
+    'Average Lower Bound CQR',
+    'Average Upper Bound CQR'
+]
+
+cqr_prediction_intervals_df_sorted = cqr_prediction_intervals_df.sort_values(by='Average Predicted Biomass').reset_index(drop=True)
+cqr_prediction_intervals_df_filtered = cqr_prediction_intervals_df_sorted[cqr_prediction_intervals_df_sorted['Average Actual Biomass'] <= 1000]
+
+plt.figure(figsize=(14, 7))
+
+# CQR Plot
+plt.plot(cqr_prediction_intervals_df_filtered.index, cqr_prediction_intervals_df_filtered['Average Actual Biomass'], 'o', label='Average Actual Biomass', markersize=8, color='black', alpha=0.7)
+plt.plot(cqr_prediction_intervals_df_filtered.index, cqr_prediction_intervals_df_filtered['Average Predicted Biomass'], 'o-', label='Average CQR Predicted Biomass (Median)', linewidth=2, markersize=6, color='purple', alpha=0.7)
+plt.fill_between(cqr_prediction_intervals_df_filtered.index,
+                 cqr_prediction_intervals_df_filtered['Average Lower Bound CQR'],
+                 cqr_prediction_intervals_df_filtered['Average Upper Bound CQR'],
+                 alpha=0.3, label='95% CQR Prediction Interval', color='orange')
+
+plt.xlabel('Species Index (Sorted by Average Predicted Biomass)', fontsize=11)
+plt.ylabel('Average Biomass', fontsize=11)
+plt.title('kNN Conformalized Quantile Regression: Average Prediction Intervals per Species (Biomass < 1000)', fontsize=14, fontweight='bold')
+plt.legend(fontsize=9)
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.show()
+```
